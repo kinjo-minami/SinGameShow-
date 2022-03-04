@@ -1,11 +1,2 @@
-<<<<<<< HEAD
-a
-
-kinjou
-
-確認出来たら改行してok書いて
-
-ok
-=======
 All Ok
->>>>>>> master
+
