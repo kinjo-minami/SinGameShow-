@@ -1,7 +1,2 @@
-a
+All Ok
 
-tutiya
-
-確認出来たら改行してok書いて
-
-ok
