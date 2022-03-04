@@ -72,7 +72,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 
+<<<<<<< HEAD
 	Model* modelPost = Model::LoadFromOBJ("boxGrass");
+=======
+	Model* modelPost = Model::LoadFromOBJ("boxgrass");
+>>>>>>> asakawa
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
 
 	Object3d* objPost = Object3d::Create();
