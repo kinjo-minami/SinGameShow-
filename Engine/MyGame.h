@@ -2,39 +2,23 @@
 
 #include<vector>
 
-#include "Input.h"
-#include "WinApp.h"
-#include "DirectXCommon.h"
-#include "Audio.h"
+#include "Framework.h"
 
-#include "Object3d.h"
-#include "Model.h"
-#include"SpriteCommon.h"
-#include"Sprite.h"
-
-class MyGame
+class MyGame : public Framework
 {
 public:
-	void Initialize();
+	void Initialize() override;
 
-	void Finalize();
+	void Finalize() override;
 
-	void Update();
+	void Update() override;
 
-	void Draw();
+	void Draw() override;
 
-	bool GetGameloopEndReqest() { return gameloopEndReqest_; }
 
-private:
-	bool gameloopEndReqest_ = false;
-	WinApp* winApp = nullptr;
-	DirectXCommon* dxCommon = nullptr;
-	Input* input = nullptr;
-	MSG msg{};  // メッセージ
 
 
 private:
-	SpriteCommon* spriteCommon = new SpriteCommon();
 	Sprite* sprite = nullptr;
 	Model* modelPost = nullptr;
 	Model* modelChr = nullptr;

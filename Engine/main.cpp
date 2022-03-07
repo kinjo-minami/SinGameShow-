@@ -2,19 +2,9 @@
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	MyGame myGame;
+	Framework* myGame = new MyGame();
+	
+	myGame->Run();
 
-	myGame.Initialize();
-
-
-	while (true)  // ゲームループ
-	{
-		myGame.Update();
-		if (myGame.GetGameloopEndReqest() == true) {
-			break;
-		}
-		myGame.Draw();
-	}
-	myGame.Finalize();
 	return 0;
 }

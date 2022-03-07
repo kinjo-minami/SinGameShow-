@@ -16,9 +16,6 @@
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{7e5584a5-2895-4181-9eaf-f65622106b57}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\base">
-      <UniqueIdentifier>{50aa5fda-830c-4c0b-b667-9a78df8896b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\base">
       <UniqueIdentifier>{7ee04bcb-8846-4367-ac00-80b8269a44de}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     <Filter Include="ソース ファイル\game\framework">
       <UniqueIdentifier>{af0f7634-7113-44ea-88e5-212c0044c74d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{50aa5fda-830c-4c0b-b667-9a78df8896b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,14 +75,17 @@
     <ClCompile Include="WinApp.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="MyGame.cpp">
-      <Filter>ソース ファイル\game\framework</Filter>
-    </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework.cpp">
+      <Filter>ソース ファイル\game\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="MyGame.cpp">
+      <Filter>ソース ファイル\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -138,14 +141,17 @@
     <ClInclude Include="PipelineSet.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Audio.h">
+    <ClInclude Include="Framework.h">
+      <Filter>ヘッダー ファイル\game\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="MyGame.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル\game</Filter>
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="MyGame.h">
-      <Filter>ヘッダー ファイル\game\framework</Filter>
+    <ClInclude Include="Audio.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

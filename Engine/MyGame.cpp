@@ -3,27 +3,9 @@
 void MyGame::Initialize()
 {
 
-#pragma region WindowsAPI初期化
-
-	winApp = new WinApp();
-	winApp->Initialize();
-
-#pragma endregion WindowsAPI初期化
-
-#pragma region DirectX初期化処理
-
-
-	dxCommon = new DirectXCommon();
-	dxCommon->Initialize(winApp);
-
-	input = new Input();
-	input->Initialize(winApp);
-
-	Object3d::StaticInitialize(dxCommon->GetDev(), winApp->window_width, winApp->window_height);
-
-#pragma endregion DirectX初期化処理
-
 #pragma region 描画初期化処理
+
+	Framework::Initialize();
 
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 
@@ -75,18 +57,7 @@ void MyGame::Initialize()
 
 void MyGame::Finalize()
 {
-	// XAudio2解放
-// xAudio2.Reset();
- // 音声データ解放
-// SoundUnload(&soundData1);
 
-
-#pragma region WindowsAPI後始末
-	winApp->Finalize();
-#pragma endregion WindowsAPI後始末
-	delete input;
-	delete winApp;
-	delete spriteCommon;
 	for (auto& sprite : sprites)
 	{
 		delete sprite;
@@ -96,20 +67,17 @@ void MyGame::Finalize()
 	delete modelChr;
 	delete objChr;
 	delete objPost;
+
+	Framework::Finalize();
 }
 
 void MyGame::Update()
 {
-#pragma region ウィンドウメッセージ処理
-	if (winApp->ProcessMessage()) {
-		gameloopEndReqest_ = true;
-		return;
-	}
-#pragma endregion ウィンドウメッセージ処理
+
 #pragma region DirectX毎フレーム処理
 	// DirectX毎フレーム処理　ここから
+	Framework::Update();
 
-	input->Update();
 
 	const int cycle = 540; // 繰り返しの周期
 	counter++;
