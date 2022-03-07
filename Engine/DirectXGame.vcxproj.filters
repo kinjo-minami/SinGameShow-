@@ -16,34 +16,73 @@
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{7e5584a5-2895-4181-9eaf-f65622106b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{50aa5fda-830c-4c0b-b667-9a78df8896b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base">
+      <UniqueIdentifier>{7ee04bcb-8846-4367-ac00-80b8269a44de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game">
+      <UniqueIdentifier>{93f29f86-8f15-4ea9-ae5e-1fc97f6b51f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\2D,3Dobject">
+      <UniqueIdentifier>{a3783c12-20f5-4bb1-a9b5-e0de105f27ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\2D,3Dobject\2D">
+      <UniqueIdentifier>{417b5164-9369-4381-ae81-78673e53de44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\2D,3Dobject\3D">
+      <UniqueIdentifier>{3e016e20-a194-48ed-bac9-dc4b54ef275b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game">
+      <UniqueIdentifier>{d8dda368-e9fa-400d-8737-a8c4f0b86c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game\2D,3Dobject">
+      <UniqueIdentifier>{0669acd8-6841-4f37-9665-21d40cdd8f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game\2D,3Dobject\2D">
+      <UniqueIdentifier>{93796382-d594-40a2-a372-a9233944495c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game\2D,3Dobject\3D">
+      <UniqueIdentifier>{ae13b0f1-5560-4e85-a238-0ec233c5073e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game\framework">
+      <UniqueIdentifier>{53ad28b8-049c-4f24-9ce8-a08ad580bfc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\framework">
+      <UniqueIdentifier>{af0f7634-7113-44ea-88e5-212c0044c74d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Object3d.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
     </ClCompile>
     <ClCompile Include="SpriteCommon.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\game\2D,3Dobject\2D</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\game\2D,3Dobject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXCommon.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="WinApp.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="MyGame.cpp">
+      <Filter>ソース ファイル\game\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,32 +117,35 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXCommon.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
     <ClInclude Include="WinApp.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Object3d.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Object3d.h">
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
     </ClInclude>
     <ClInclude Include="SpriteCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
     </ClInclude>
     <ClInclude Include="PipelineSet.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="MyGame.h">
+      <Filter>ヘッダー ファイル\game\framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
