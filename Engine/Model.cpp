@@ -10,6 +10,7 @@ using namespace std;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 ID3D12Device* Model::device = nullptr;
+
 Model* Model::LoadFromOBJ(const std::string& modelname)
 {
 	Model* model = new Model();

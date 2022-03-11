@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -227,6 +229,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Model.h" />

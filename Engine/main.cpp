@@ -9,7 +9,7 @@
 #include "Model.h"
 #include"SpriteCommon.h"
 #include"Sprite.h"
-
+#include"DebugCamera.h"
 
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -35,7 +35,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input = new Input();
 	input->Initialize(winApp);
 
-	Object3d::StaticInitialize(dxCommon->GetDev(), winApp->window_width, winApp->window_height);
+	Object3d::StaticInitialize(dxCommon->GetDev());
+	DebugCamera* camera = nullptr;
+	camera = new DebugCamera(WinApp::window_width, WinApp::window_height);
+	Object3d::SetCamera(camera);
 
 #pragma endregion DirectX初期化処理
 
@@ -43,7 +46,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	SpriteCommon* spriteCommon = new SpriteCommon();
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
-	
+
 	spriteCommon->LoadTexture(0, L"Resources/texture.png");
 	spriteCommon->LoadTexture(1, L"Resources/house.png");
 
@@ -78,15 +81,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* objPost = Object3d::Create();
 	Object3d* objChr = Object3d::Create();
 
-
 	objPost->SetModel(modelPost);
-	objChr->SetModel(modelPost);
+	objChr->SetModel(modelChr);
 
 	objPost->SetPosition({ -10,0,-5 });
 	objChr->SetPosition({ +10,0,+5 });
 
-	objPost->Update();
-	objChr->Update();
+	camera->SetTarget({ -10,0,-100 });
+	camera->SetEye({ 0, 0, 0 });
+
+	/*objPost->Update();
+	objChr->Update();*/
 
 #pragma endregion 描画初期化処理
 
@@ -112,7 +117,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		scale *= 360.0f;
 		objPost->SetModel(modelPost);
-		objChr->SetModel(modelPost);
+		objChr->SetModel(modelChr);
 		if (input->TriggerKey(DIK_0)) // 数字の0キーが押されていたら
 		{
 			OutputDebugStringA("Hit 0\n");  // 出力ウィンドウに「Hit 0」と表示
@@ -142,11 +147,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		objPost->Update();
 		objChr->Update();
+		camera->Update();
 		for (auto& sprite : sprites)
 		{
 			sprite->Update();
 		}
-		
+
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 
@@ -164,7 +170,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			sprite->Draw();
 		}
-		
+
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
 
@@ -175,7 +181,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 音声データ解放
    // SoundUnload(&soundData1);
 
-	
+
 #pragma region WindowsAPI後始末
 	winApp->Finalize();
 #pragma endregion WindowsAPI後始末
