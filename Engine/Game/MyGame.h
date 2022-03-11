@@ -15,9 +15,6 @@ public:
 
 	void Draw() override;
 
-
-
-
 private:
 	Sprite* sprite = nullptr;
 	Model* modelPost = nullptr;

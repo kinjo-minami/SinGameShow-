@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,17 +143,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="DirectXCommon.cpp" />
-    <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Base\Audio.cpp" />
+    <ClCompile Include="Base\DirectXCommon.cpp" />
+    <ClCompile Include="Base\Input.cpp" />
+    <ClCompile Include="Base\WinApp.cpp" />
+    <ClCompile Include="Game\2D,3D\2D\Sprite.cpp" />
+    <ClCompile Include="Game\2D,3D\2D\SpriteCommon.cpp" />
+    <ClCompile Include="Game\2D,3D\3D\Model.cpp" />
+    <ClCompile Include="Game\2D,3D\3D\Object3d.cpp" />
+    <ClCompile Include="Game\Framework\Framework.cpp" />
+    <ClCompile Include="Game\MyGame.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="MyGame.cpp" />
-    <ClCompile Include="Object3d.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteCommon.cpp" />
-    <ClCompile Include="WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
@@ -228,17 +228,17 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="DirectXCommon.h" />
-    <ClInclude Include="Framework.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="MyGame.h" />
-    <ClInclude Include="Object3d.h" />
-    <ClInclude Include="PipelineSet.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteCommon.h" />
-    <ClInclude Include="WinApp.h" />
+    <ClInclude Include="Base\Audio.h" />
+    <ClInclude Include="Base\DirectXCommon.h" />
+    <ClInclude Include="Base\Input.h" />
+    <ClInclude Include="Base\PipelineSet.h" />
+    <ClInclude Include="Base\WinApp.h" />
+    <ClInclude Include="Game\2D,3D\2D\Sprite.h" />
+    <ClInclude Include="Game\2D,3D\2D\SpriteCommon.h" />
+    <ClInclude Include="Game\2D,3D\3D\Model.h" />
+    <ClInclude Include="Game\2D,3D\3D\Object3d.h" />
+    <ClInclude Include="Game\Framework\Framework.h" />
+    <ClInclude Include="Game\MyGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

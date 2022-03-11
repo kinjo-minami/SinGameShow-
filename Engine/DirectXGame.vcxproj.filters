@@ -43,49 +43,46 @@
     <Filter Include="ヘッダー ファイル\game\2D,3Dobject\3D">
       <UniqueIdentifier>{ae13b0f1-5560-4e85-a238-0ec233c5073e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\game\framework">
-      <UniqueIdentifier>{53ad28b8-049c-4f24-9ce8-a08ad580bfc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\game\framework">
-      <UniqueIdentifier>{af0f7634-7113-44ea-88e5-212c0044c74d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\base">
       <UniqueIdentifier>{50aa5fda-830c-4c0b-b667-9a78df8896b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\base\Main">
+      <UniqueIdentifier>{49bbc401-848c-4cb9-bfcd-a79c02259274}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Object3d.cpp">
-      <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommon.cpp">
+    <ClCompile Include="Game\2D,3D\2D\SpriteCommon.cpp">
       <Filter>ソース ファイル\game\2D,3Dobject\2D</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="Game\2D,3D\2D\Sprite.cpp">
       <Filter>ソース ファイル\game\2D,3Dobject\2D</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXCommon.cpp">
+    <ClCompile Include="Game\2D,3D\3D\Object3d.cpp">
+      <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\2D,3D\3D\Model.cpp">
+      <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\WinApp.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="WinApp.cpp">
+    <ClCompile Include="Base\Input.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
+    <ClCompile Include="Base\DirectXCommon.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
+    <ClCompile Include="Base\Audio.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Framework.cpp">
-      <Filter>ソース ファイル\game\framework</Filter>
+    <ClCompile Include="Game\Framework\Framework.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="MyGame.cpp">
+    <ClCompile Include="Game\MyGame.cpp">
       <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\base\Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,38 +117,38 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXCommon.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Object3d.h">
-      <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteCommon.h">
+    <ClInclude Include="Game\2D,3D\2D\SpriteCommon.h">
       <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
+    <ClInclude Include="Game\2D,3D\3D\Model.h">
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
     </ClInclude>
-    <ClInclude Include="PipelineSet.h">
+    <ClInclude Include="Game\2D,3D\3D\Object3d.h">
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\WinApp.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Framework.h">
-      <Filter>ヘッダー ファイル\game\framework</Filter>
+    <ClInclude Include="Base\PipelineSet.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="MyGame.h">
+    <ClInclude Include="Base\Input.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\DirectXCommon.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Audio.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Framework\Framework.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\MyGame.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>ヘッダー ファイル\base</Filter>
+    <ClInclude Include="Game\2D,3D\2D\Sprite.h">
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
