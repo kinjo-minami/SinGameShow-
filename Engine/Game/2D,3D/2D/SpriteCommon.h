@@ -11,6 +11,9 @@ private:
 public:
 	static const int SpriteSRVCount = 512;
 
+public:
+	static SpriteCommon* GetInstance();
+
 private:
 
 	PipelineSet pipelineSet;

@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(ProjectDir)Game\Scene;$(ProjectDir)Game;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(ProjectDir)Game\Scene;$(ProjectDir)Game;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(ProjectDir)Game\Scene;$(ProjectDir)Game;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Game;$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Base;$(ProjectDir)Game\Framework;$(ProjectDir)Game\2D,3D\3D;$(ProjectDir)Game\2D,3D\2D;$(ProjectDir)Game\Scene;$(ProjectDir)Game;$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,7 +152,8 @@
     <ClCompile Include="Game\2D,3D\3D\Model.cpp" />
     <ClCompile Include="Game\2D,3D\3D\Object3d.cpp" />
     <ClCompile Include="Game\Framework\Framework.cpp" />
-    <ClCompile Include="Game\MyGame.cpp" />
+    <ClCompile Include="Game\Scene\GamePlayScene.cpp" />
+    <ClCompile Include="Game\Scene\MyGame.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -238,7 +239,8 @@
     <ClInclude Include="Game\2D,3D\3D\Model.h" />
     <ClInclude Include="Game\2D,3D\3D\Object3d.h" />
     <ClInclude Include="Game\Framework\Framework.h" />
-    <ClInclude Include="Game\MyGame.h" />
+    <ClInclude Include="Game\Scene\GamePlayScene.h" />
+    <ClInclude Include="Game\Scene\MyGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

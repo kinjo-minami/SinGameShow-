@@ -1,4 +1,4 @@
-#include "Input.h"
+ï»¿#include "Input.h"
 
 
 
@@ -15,7 +15,7 @@ void Input::Initialize(WinApp* winApp)
 
     result = dinput->CreateDevice(GUID_SysKeyboard, &devkeyboard, NULL);
 
-    result = devkeyboard->SetDataFormat(&c_dfDIKeyboard); // •W€Œ`Ž®
+    result = devkeyboard->SetDataFormat(&c_dfDIKeyboard); // æ¨™æº–å½¢å¼
 
     result = devkeyboard->SetCooperativeLevel(
         winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);

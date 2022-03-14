@@ -49,6 +49,12 @@
     <Filter Include="ソース ファイル\base\Main">
       <UniqueIdentifier>{49bbc401-848c-4cb9-bfcd-a79c02259274}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\Scene">
+      <UniqueIdentifier>{6826b163-8cb6-4485-ac78-cf057b8753a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game\Scene">
+      <UniqueIdentifier>{e3002e77-bd98-4767-83da-e5edc1fa6c1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\2D,3D\2D\SpriteCommon.cpp">
@@ -78,11 +84,14 @@
     <ClCompile Include="Game\Framework\Framework.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Game\MyGame.cpp">
-      <Filter>ソース ファイル\game</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\base\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\MyGame.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\GamePlayScene.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,11 +153,14 @@
     <ClInclude Include="Game\Framework\Framework.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Game\MyGame.h">
-      <Filter>ヘッダー ファイル\game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\2D,3D\2D\Sprite.h">
       <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\MyGame.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\GamePlayScene.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

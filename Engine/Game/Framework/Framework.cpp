@@ -1,10 +1,9 @@
-#include "Framework.h"
+ï»¿#include "Framework.h"
 
-void Framework::Run()
-{
+void Framework::Run() {
 	Initialize();
 
-	while (true)  // ƒQ[ƒ€ƒ‹[ƒv
+	while (true)  // ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	{
 		Update();
 		if (GetGameloopEndReqest() == true) {
@@ -16,62 +15,61 @@ void Framework::Run()
 	Finalize();
 }
 
-void Framework::Initialize()
-{
+void Framework::Initialize() {
 
-#pragma region WindowsAPI‰Šú‰»
+#pragma region WindowsAPIåˆæœŸåŒ–
 
-	winApp = new WinApp();
-	winApp->Initialize();
+	winApp_ = new WinApp();
+	winApp_->Initialize();
 
-	MSG msg{};  // ƒƒbƒZ[ƒW
+	MSG msg{};  // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
-#pragma endregion WindowsAPI‰Šú‰»
+#pragma endregion WindowsAPIåˆæœŸåŒ–
 
-#pragma region DirectX‰Šú‰»ˆ—
+#pragma region DirectXåˆæœŸåŒ–å‡¦ç†
 
 
-	dxCommon = new DirectXCommon();
-	dxCommon->Initialize(winApp);
+	dxCommon_ = new DirectXCommon();
+	dxCommon_->Initialize(winApp_);
 
-	input = new Input();
-	input->Initialize(winApp);
+	input_ = new Input();
+	input_->Initialize(winApp_);
 	
-	spriteCommon = new SpriteCommon();
+	spriteCommon_ = new SpriteCommon();
+	spriteCommon_->initialize(dxCommon_->GetDev(), dxCommon_->GetCmdList(), winApp_->window_width, winApp_->window_height);
 
-	Object3d::StaticInitialize(dxCommon->GetDev(), winApp->window_width, winApp->window_height);
 
-#pragma endregion DirectX‰Šú‰»ˆ—
+	Object3d::StaticInitialize(dxCommon_->GetDev(), winApp_->window_width, winApp_->window_height);
+
+#pragma endregion DirectXåˆæœŸåŒ–å‡¦ç†
 
 }
 
-void Framework::Finalize()
-{
-	// XAudio2‰ð•ú
+void Framework::Finalize() {
+	// XAudio2è§£æ”¾
 // xAudio2.Reset();
- // ‰¹ºƒf[ƒ^‰ð•ú
+ // éŸ³å£°ãƒ‡ãƒ¼ã‚¿è§£æ”¾
 // SoundUnload(&soundData1);
 
-	delete input;
-	delete spriteCommon;
-#pragma region WindowsAPIŒãŽn––
-	winApp->Finalize();
-#pragma endregion WindowsAPIŒãŽn––
-	delete winApp;
+	delete input_;
+	delete spriteCommon_;
+#pragma region WindowsAPIå¾Œå§‹æœ«
+	winApp_->Finalize();
+#pragma endregion WindowsAPIå¾Œå§‹æœ«
+	delete winApp_;
 }
 
-void Framework::Update()
-{
-#pragma region ƒEƒBƒ“ƒhƒEƒƒbƒZ[ƒWˆ—
-	if (winApp->ProcessMessage()) {
+void Framework::Update() {
+#pragma region ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
+	if (winApp_->ProcessMessage()) {
 		gameloopEndReqest_ = true;
 		return;
 	}
-#pragma endregion ƒEƒBƒ“ƒhƒEƒƒbƒZ[ƒWˆ—
-	input->Update();
+#pragma endregion ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
+	input_->Update();
 
 }
 
-void Framework::Draw()
-{
+void Framework::Draw() {
+
 }

@@ -28,10 +28,10 @@ public:
 
 protected:
 	bool gameloopEndReqest_ = false;
-	WinApp* winApp = nullptr;
-	DirectXCommon* dxCommon = nullptr;
-	Input* input = nullptr;
-	SpriteCommon* spriteCommon = nullptr;
-	Audio* audio = nullptr;
+	WinApp* winApp_ = nullptr;
+	DirectXCommon* dxCommon_ = nullptr;
+	Input* input_ = nullptr;
+	SpriteCommon* spriteCommon_ = nullptr;
+	Audio* audio_ = nullptr;
 };
 

@@ -57,13 +57,12 @@ private:
 	// ”ñ•\Ž¦
 	bool isInvisible_ = false;
 
-	SpriteCommon* SspriteCommon = nullptr;
 
 public:
 
-	static Sprite* Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static Sprite* Create(UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
-	void initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	void initialize(UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	void TransferVertexBuffer();
 

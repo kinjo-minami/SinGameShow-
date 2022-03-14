@@ -1,4 +1,4 @@
-#include "WinApp.h"
+ï»¿#include "WinApp.h"
 
 LRESULT WinApp::windowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -14,31 +14,31 @@ LRESULT WinApp::windowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 void WinApp::Initialize()
 {
     w.cbSize = sizeof(WNDCLASSEX);
-    w.lpfnWndProc = (WNDPROC)windowProc; // ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ðÝ’è
-    w.lpszClassName = L"DirectXGame"; // ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX–¼
-    w.hInstance = GetModuleHandle(nullptr); // ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-    w.hCursor = LoadCursor(NULL, IDC_ARROW); // ƒJ[ƒ\ƒ‹Žw’è
+    w.lpfnWndProc = (WNDPROC)windowProc; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã‚’è¨­å®š
+    w.lpszClassName = L"DirectXGame"; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹å
+    w.hInstance = GetModuleHandle(nullptr); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+    w.hCursor = LoadCursor(NULL, IDC_ARROW); // ã‚«ãƒ¼ã‚½ãƒ«æŒ‡å®š
 
-    // ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ðOS‚É“o˜^
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’OSã«ç™»éŒ²
     RegisterClassEx(&w);
-    // ƒEƒBƒ“ƒhƒEƒTƒCƒY{ XÀ•W YÀ•W ‰¡• c• }
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º{ Xåº§æ¨™ Yåº§æ¨™ æ¨ªå¹… ç¸¦å¹… }
     RECT wrc = { 0, 0, window_width, window_height };
-    AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // Ž©“®‚ÅƒTƒCƒY•â³
+    AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // è‡ªå‹•ã§ã‚µã‚¤ã‚ºè£œæ­£
 
-    // ƒEƒBƒ“ƒhƒEƒIƒuƒWƒFƒNƒg‚Ì¶¬
-    this->hwnd = CreateWindow(w.lpszClassName, // ƒNƒ‰ƒX–¼
-        L"DirectXGame",         // ƒ^ƒCƒgƒ‹ƒo[‚Ì•¶Žš
-        WS_OVERLAPPEDWINDOW,        // •W€“I‚ÈƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹
-        CW_USEDEFAULT,              // •\Ž¦XÀ•WiOS‚É”C‚¹‚éj
-        CW_USEDEFAULT,              // •\Ž¦YÀ•WiOS‚É”C‚¹‚éj
-        wrc.right - wrc.left,       // ƒEƒBƒ“ƒhƒE‰¡•
-        wrc.bottom - wrc.top,   // ƒEƒBƒ“ƒhƒEc•
-        nullptr,                // eƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-        nullptr,                // ƒƒjƒ…[ƒnƒ“ƒhƒ‹
-        w.hInstance,            // ŒÄ‚Ño‚µƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹
-        nullptr);               // ƒIƒvƒVƒ‡ƒ“
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+    this->hwnd = CreateWindow(w.lpszClassName, // ã‚¯ãƒ©ã‚¹å
+        L"DirectXGame",         // ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ã®æ–‡å­—
+        WS_OVERLAPPEDWINDOW,        // æ¨™æº–çš„ãªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«
+        CW_USEDEFAULT,              // è¡¨ç¤ºXåº§æ¨™ï¼ˆOSã«ä»»ã›ã‚‹ï¼‰
+        CW_USEDEFAULT,              // è¡¨ç¤ºYåº§æ¨™ï¼ˆOSã«ä»»ã›ã‚‹ï¼‰
+        wrc.right - wrc.left,       // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
+        wrc.bottom - wrc.top,   // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹…
+        nullptr,                // è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+        nullptr,                // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ³ãƒ‰ãƒ«
+        w.hInstance,            // å‘¼ã³å‡ºã—ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«
+        nullptr);               // ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 
-    // ƒEƒBƒ“ƒhƒE•\Ž¦
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¡¨ç¤º
     ShowWindow(hwnd, SW_SHOW);
 }
 
@@ -48,7 +48,7 @@ void WinApp::Update()
 
 void WinApp::Finalize()
 {
-    // ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ð“o˜^‰ðœ
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’ç™»éŒ²è§£é™¤
     UnregisterClass(w.lpszClassName, w.hInstance);
 }
 
