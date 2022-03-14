@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <windows.h>
 #include <wrl.h>
 
-#define DIRECTINPUT_VERSION     0x0800   // DirectInput‚Ìƒo[ƒWƒ‡ƒ“w’è
+#define DIRECTINPUT_VERSION     0x0800   // DirectInputã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®š
 #include <dinput.h>
 
 #include "WinApp.h"
@@ -12,13 +12,13 @@ class Input
 public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(WinApp* winApp);
-	//XV
+	//æ›´æ–°
 	void Update();
-	//ƒL[‚Ì‰Ÿ‰º‚ğƒ`ƒFƒbƒN
+	//ã‚­ãƒ¼ã®æŠ¼ä¸‹ã‚’ãƒã‚§ãƒƒã‚¯
 	bool PushKey(BYTE keyNumber);
-	//ƒL[‚ÌƒgƒŠƒK[‚ğƒ`ƒFƒbƒN
+	//ã‚­ãƒ¼ã®ãƒˆãƒªã‚¬ãƒ¼ã‚’ãƒã‚§ãƒƒã‚¯
 	bool TriggerKey(BYTE keyNumber);
 private:
 	//windowsAPI

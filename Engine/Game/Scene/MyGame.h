@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include<vector>
 
@@ -18,7 +18,7 @@ public:
 
 
 private:
-	int counter = 0; // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒo‰ßŠÔƒJƒEƒ“ƒ^[
+	int counter = 0; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 
 };
 

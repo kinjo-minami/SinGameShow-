@@ -1,18 +1,18 @@
-#pragma once
+ï»¿#pragma once
 #include <Windows.h>
 
 class WinApp
 {
-public://Ã“Iƒƒ“ƒoŠÖ”
+public://é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 	static LRESULT windowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-public://ƒƒ“ƒoŠÖ”
-	//‰Šú‰»
+public://ãƒ¡ãƒ³ãƒé–¢æ•°
+	//åˆæœŸåŒ–
 	void Initialize();
-	//XV
+	//æ›´æ–°
 	void Update();
-	//I—¹
+	//çµ‚äº†
 	void Finalize();
-	//ƒƒbƒZ[ƒWˆ—
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 	bool ProcessMessage();
 	
 	//getter
@@ -20,14 +20,14 @@ public://ƒƒ“ƒoŠÖ”
 	HINSTANCE GetHInstance() { return w.hInstance; }
 
 
-public://Ã“Iƒƒ“ƒo•Ï”
+public://é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
-	static const int window_width = 1280;  // ‰¡•
-	static const int window_height = 720;  // c•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	static const int window_width = 1280;  // æ¨ªå¹…
+	static const int window_height = 720;  // ç¸¦å¹…
 
-private://ƒƒ“ƒo•Ï”
+private://ãƒ¡ãƒ³ãƒå¤‰æ•°
 	HWND hwnd = nullptr;
-	WNDCLASSEX w{}; // ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ìİ’è
+	WNDCLASSEX w{}; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 };
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<string>
 #include <wrl.h>
 #include <d3d12.h>
@@ -11,29 +11,29 @@ private:
 	//Microsoft::WRL::ComPtr<ID3D12Resource>constBuffB1;
 
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	// ’¸“_ƒf[ƒ^\‘¢‘Ì
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct VertexPosNormalUv
 	{
-		XMFLOAT3 pos; // xyzÀ•W
-		XMFLOAT3 normal; // –@üƒxƒNƒgƒ‹
-		XMFLOAT2 uv;  // uvÀ•W
+		XMFLOAT3 pos; // xyzåº§æ¨™
+		XMFLOAT3 normal; // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		XMFLOAT2 uv;  // uvåº§æ¨™
 	};
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒãƒ†ãƒªã‚¢ãƒ«
 	struct Material
 	{
-		std::string name;//ƒ}ƒeƒŠƒAƒ‹–¼
-		XMFLOAT3 ambient;//ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-		XMFLOAT3 diffuse;//ƒfƒBƒqƒ…[ƒY‰e‹¿“x
-		XMFLOAT3 specular;//ƒXƒyƒLƒ…ƒ‰‰e‹¿“x
+		std::string name;//ãƒãƒ†ãƒªã‚¢ãƒ«å
+		XMFLOAT3 ambient;//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+		XMFLOAT3 diffuse;//ãƒ‡ã‚£ãƒ’ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+		XMFLOAT3 specular;//ã‚¹ãƒšã‚­ãƒ¥ãƒ©å½±éŸ¿åº¦
 		float alpha;//
-		std::string textureFilename;//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		std::string textureFilename;//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Material() {
 			ambient = { 0.3f,0.3f,0.3f };
 			diffuse = { 0.0f,0.0f,0.0f };
@@ -41,7 +41,7 @@ public:
 			alpha = 1.0f;
 		}
 	};
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌB1
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“B1
 	struct ConstBufferDataB1
 	{
 		XMFLOAT3 ambient;
@@ -59,27 +59,27 @@ public:
 private:
 	std::vector<VertexPosNormalUv>vertices;
 	//static VertexPosNormalUv vertices[vertexCount];
-	// ’¸“_ƒCƒ“ƒfƒbƒNƒX”z—ñ
+	// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 	std::vector<unsigned short>indices;
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> descHeap;
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒãƒ†ãƒªã‚¢ãƒ«
 	Material material;
-	// ƒfƒXƒNƒŠƒvƒ^ƒTƒCƒY
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã‚µã‚¤ã‚º
 	UINT descriptorHandleIncrementSize;
-	// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> vertBuff;
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> indexBuff;
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> texbuff;
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_VERTEX_BUFFER_VIEW vbView;
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_INDEX_BUFFER_VIEW ibView;
 	ComPtr<ID3D12Resource> constBuffB1;
 
@@ -87,7 +87,7 @@ private:
 	static ID3D12Device* device;
 private:
 
-	/// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì‰Šú‰»
+	/// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®åˆæœŸåŒ–
 	bool InitializeDescriptorHeap();
 	void CreateBuffer();
 	void LoadFromObjInternal(const std::string& modelname);
