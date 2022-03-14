@@ -154,6 +154,7 @@
     <ClCompile Include="Game\Framework\Framework.cpp" />
     <ClCompile Include="Game\Scene\GamePlayScene.cpp" />
     <ClCompile Include="Game\Scene\MyGame.cpp" />
+    <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +242,7 @@
     <ClInclude Include="Game\Framework\Framework.h" />
     <ClInclude Include="Game\Scene\GamePlayScene.h" />
     <ClInclude Include="Game\Scene\MyGame.h" />
+    <ClInclude Include="Game\Scene\TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

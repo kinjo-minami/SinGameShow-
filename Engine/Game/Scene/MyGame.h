@@ -5,6 +5,7 @@
 #include "Framework.h"
 
 class GamePlayScene;
+class TitleScene;
 
 class MyGame : public Framework
 {

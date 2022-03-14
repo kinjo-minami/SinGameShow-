@@ -93,6 +93,9 @@
     <ClCompile Include="Game\Scene\GamePlayScene.cpp">
       <Filter>ソース ファイル\game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -160,6 +163,9 @@
       <Filter>ヘッダー ファイル\game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Game\Scene\GamePlayScene.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\TitleScene.h">
       <Filter>ヘッダー ファイル\game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
