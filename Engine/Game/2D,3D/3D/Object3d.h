@@ -35,10 +35,10 @@ private:
 	static const int planeCount = division * 2 + division * 2;
 	static const int vertexCount = planeCount * 3;
 public: // 静的メンバ関数
-	static bool StaticInitialize(ID3D12Device* device, int window_width, int window_height);
+	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height);
 
 	/// 描画前処理
-	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
+	static void PreDraw();
 
 	/// 描画後処理
 	static void PostDraw();

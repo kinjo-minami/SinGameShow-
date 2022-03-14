@@ -7,9 +7,13 @@ class GamePlayScene
 public:
 	void Initialize();
 
+	void Finalize();
+
 	void Update();
 
 	void Draw();
+
+	void DrawUI();
 
 private:
 	Sprite* sprite = nullptr;

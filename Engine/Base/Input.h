@@ -11,6 +11,10 @@ class Input
 {
 public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+public:
+	static Input* GetInstance();
+
 public:
 	//初期化
 	void Initialize(WinApp* winApp);

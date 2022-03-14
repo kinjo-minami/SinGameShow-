@@ -4,6 +4,8 @@
 
 #include "Framework.h"
 
+class GamePlayScene;
+
 class MyGame : public Framework
 {
 public:
@@ -20,5 +22,6 @@ public:
 private:
 	int counter = 0; // アニメーションの経過時間カウンター
 
+	GamePlayScene* scene_ = nullptr;
 };
 

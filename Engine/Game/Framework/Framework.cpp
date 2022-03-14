@@ -32,14 +32,14 @@ void Framework::Initialize() {
 	dxCommon_ = new DirectXCommon();
 	dxCommon_->Initialize(winApp_);
 
-	input_ = new Input();
+	input_ = Input::GetInstance();
 	input_->Initialize(winApp_);
 	
-	spriteCommon_ = new SpriteCommon();
+	spriteCommon_ = SpriteCommon::GetInstance();
 	spriteCommon_->initialize(dxCommon_->GetDev(), dxCommon_->GetCmdList(), winApp_->window_width, winApp_->window_height);
 
 
-	Object3d::StaticInitialize(dxCommon_->GetDev(), winApp_->window_width, winApp_->window_height);
+	Object3d::StaticInitialize(dxCommon_->GetDev(),dxCommon_->GetCmdList() ,winApp_->window_width, winApp_->window_height);
 
 #pragma endregion DirectX初期化処理
 
@@ -51,8 +51,6 @@ void Framework::Finalize() {
  // 音声データ解放
 // SoundUnload(&soundData1);
 
-	delete input_;
-	delete spriteCommon_;
 #pragma region WindowsAPI後始末
 	winApp_->Finalize();
 #pragma endregion WindowsAPI後始末

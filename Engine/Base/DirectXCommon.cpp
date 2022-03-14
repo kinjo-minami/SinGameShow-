@@ -2,8 +2,9 @@
 #include <cassert>
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
-void DirectXCommon::Initialize(WinApp* win)
-{
+
+
+void DirectXCommon::Initialize(WinApp* win) {
 
     assert(win);
 
@@ -17,8 +18,7 @@ void DirectXCommon::Initialize(WinApp* win)
 
 }
 
-void DirectXCommon::PreDraw()
-{
+void DirectXCommon::PreDraw() {
     // バックバッファの番号を取得（2つなので0番か1番）
     UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
 
@@ -46,8 +46,7 @@ void DirectXCommon::PreDraw()
 
 }
 
-void DirectXCommon::PostDraw()
-{
+void DirectXCommon::PostDraw() {
     UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
     cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
         D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
@@ -74,8 +73,7 @@ void DirectXCommon::PostDraw()
     swapchain->Present(1, 0);
 }
 
-void DirectXCommon::InitializeDevice()
-{
+void DirectXCommon::InitializeDevice() {
 #ifdef _DEBUG
     //デバッグレイヤーをオンに
     ComPtr<ID3D12Debug> debugController;
@@ -144,8 +142,7 @@ void DirectXCommon::InitializeDevice()
 
 }
 
-void DirectXCommon::InitializeCommand()
-{
+void DirectXCommon::InitializeCommand() {
     HRESULT result;
 
     // コマンドアロケータを生成
@@ -165,8 +162,7 @@ void DirectXCommon::InitializeCommand()
     dev->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&cmdQueue));
 }
 
-void DirectXCommon::InitializeSwapchain()
-{
+void DirectXCommon::InitializeSwapchain() {
     HRESULT result;
 
     // 各種設定をしてスワップチェーンを生成
@@ -195,8 +191,7 @@ void DirectXCommon::InitializeSwapchain()
     swapchain1.As(&swapchain);
 }
 
-void DirectXCommon::InitializeRenderTargetView()
-{
+void DirectXCommon::InitializeRenderTargetView() {
     HRESULT result;
 
     // 各種設定をしてデスクリプタヒープを生成
@@ -226,8 +221,7 @@ void DirectXCommon::InitializeRenderTargetView()
     }
 }
 
-void DirectXCommon::InitializeDepthBuffer()
-{
+void DirectXCommon::InitializeDepthBuffer() {
     HRESULT result;
 
     // 深度バッファリソース設定
@@ -264,8 +258,7 @@ void DirectXCommon::InitializeDepthBuffer()
 
 }
 
-void DirectXCommon::InitializeFence()
-{
+void DirectXCommon::InitializeFence() {
     HRESULT result;
 
 
