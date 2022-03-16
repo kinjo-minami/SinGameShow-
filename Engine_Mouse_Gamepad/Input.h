@@ -15,10 +15,13 @@ public:
 		LONG    lY;
 		LONG    lZ;
 	};
-	struct JoyMove {
+	struct StickMove {
 		LONG    lX;
 		LONG    lY;
 		LONG    lZ;
+		LONG    lRx;
+		LONG    lRy;
+		LONG    lRz;
 	};
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
@@ -68,11 +71,25 @@ public:
 	bool PushStickLeft();
 	// ゲームパッドの右スティック押下をチェック
 	bool PushStickRight();
+	// ゲームパッドの上ボタン押下をチェック
+	bool PushButtonUp();
+	// ゲームパッドの右上ボタン押下をチェック
+	bool PushButtonUpperRight();
+	// ゲームパッドの右ボタン押下をチェック
+	bool PushButtonRight();
+	// ゲームパッドの右下ボタン押下をチェック
+	bool PushButtonLowerRight();
+	// ゲームパッドの下ボタン押下をチェック
+	bool PushButtonDown();
+	// ゲームパッドの左下ボタン押下をチェック
+	bool PushButtonLowerLeft();
 	// ゲームパッドの左ボタン押下をチェック
 	bool PushButtonLeft();
+	// ゲームパッドの左上ボタン押下をチェック
+	bool PushButtonUpperLeft();
 
-	// ゲームパッド移動量を取得
-	//JoyMove GetJoyMove();
+	// スティック移動量を取得
+	StickMove GetStickMove();
 private:
 	//windowsAPI
 	WinApp* winApp = nullptr;
@@ -91,4 +108,3 @@ private:
 	DIJOYSTATE2 joyState = {};
 	DIJOYSTATE2 joyStatePre = {};
 };
-

@@ -211,19 +211,78 @@ bool Input::PushStickRight()
 	return false;
 }
 
-bool Input::PushButtonLeft()
+bool Input::PushButtonUp()
 {
-	if (joyState.rgdwPOV[0] != -1) {
+	if (joyState.rgdwPOV[0] == 0) {
 		return true;
 	}
 	return false;
 }
 
-//Input::JoyMove Input::GetJoyMove()
-//{
-//	JoyMove tmp;
-//	tmp.lX = joyState.lX;
-//	tmp.lY = joyState.lY;
-//	tmp.lZ = joyState.lZ;
-//	return tmp;
-//}
+bool Input::PushButtonUpperRight()
+{
+	if (joyState.rgdwPOV[0] == 4500) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::PushButtonRight()
+{
+	if (joyState.rgdwPOV[0] == 9000) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::PushButtonLowerRight()
+{
+	if (joyState.rgdwPOV[0] == 13500) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::PushButtonDown()
+{
+	if (joyState.rgdwPOV[0] == 18000) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::PushButtonLowerLeft()
+{
+	if (joyState.rgdwPOV[0] == 22500) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::PushButtonLeft()
+{
+	if (joyState.rgdwPOV[0] == 27000) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::PushButtonUpperLeft()
+{
+	if (joyState.rgdwPOV[0] == 31500) {
+		return true;
+	}
+	return false;
+}
+
+Input::StickMove Input::GetStickMove()
+{
+	StickMove tmp;
+	tmp.lX = joyState.lX;
+	tmp.lY = joyState.lY;
+	tmp.lZ = joyState.lZ;
+	tmp.lRx = joyState.lRx;
+	tmp.lRy = joyState.lRy;
+	tmp.lRz = joyState.lRz;
+	return tmp;
+}

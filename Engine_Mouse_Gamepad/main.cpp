@@ -44,7 +44,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	SpriteCommon* spriteCommon = new SpriteCommon();
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
-	
+
 	spriteCommon->LoadTexture(0, L"Resources/texture.png");
 	spriteCommon->LoadTexture(1, L"Resources/house.png");
 
@@ -143,17 +143,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		XMFLOAT3 PostPosition = objPost->GetPosition();
 		Input::MouseMove mouseMove = input->GetMouseMove();
-		//Input::JoyMove joyMove = input->GetJoyMove();
+		Input::StickMove stickMove = input->GetStickMove();
 		// マウスの左ボタンが押されていたら
-		if (input->PushMouseLeft()){PostPosition.x -= 1.0f;}
+		if (input->PushMouseLeft()) { PostPosition.x -= 1.0f; }
 		// マウスの右ボタンが押されていたら
-		if (input->PushMouseRight()){PostPosition.x += 1.0f;}
+		if (input->PushMouseRight()) { PostPosition.x += 1.0f; }
 		// ホイールを前に動かしたら
-		if(mouseMove.lZ > 0){ PostPosition.z += 2.0f; }
+		if (mouseMove.lZ > 0) { PostPosition.z += 2.0f; }
 		// ホイールを後ろに動かしたら
 		if (mouseMove.lZ < 0) { PostPosition.z -= 2.0f; }
-		// ゲームパッドのボタンが押されていたら
-		if (input->PushButtonLeft()) { PostPosition.x += 1.0f; }
+
+		// ゲームパッドのスティックテスト(最小0、最大65535、真ん中32767)
+		/*if (stickMove.lX < 27767) { PostPosition.x -= 2.0f; }
+		if (stickMove.lX > 37767) { PostPosition.x += 2.0f; }
+		if (stickMove.lY < 27767) { PostPosition.y += 2.0f; }
+		if (stickMove.lY > 37767) { PostPosition.y -= 2.0f; }*/
+
+		// 右トリガー押し込み
+		//if (stickMove.lZ == 128) { PostPosition.y -= 2.0f; }
+		// 右トリガー押してない
+		//if (stickMove.lZ == 32767) { PostPosition.y += 2.0f; }
+
+		// 左トリガー押し込み
+		//if (stickMove.lRz > 0) { PostPosition.y -= 2.0f; }
+		// 左トリガー押してない
+		//if (stickMove.lZ == -127) { PostPosition.y += 2.0f; }
+
+
 		objPost->SetPosition(PostPosition);
 
 		objPost->Update();
@@ -162,7 +178,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			sprite->Update();
 		}
-		
+
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 
@@ -180,7 +196,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			sprite->Draw();
 		}
-		
+
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
 
@@ -191,7 +207,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 音声データ解放
    // SoundUnload(&soundData1);
 
-	
+
 #pragma region WindowsAPI後始末
 	winApp->Finalize();
 #pragma endregion WindowsAPI後始末
