@@ -116,7 +116,3 @@ void GamePlayScene::Draw() {
 		sprite->Draw();
 	}
 }
-
-void GamePlayScene::DrawUI() {
-
-}

@@ -1,17 +1,18 @@
 #pragma once
+#include"IScene.h"
 #include"Sprite.h"
 #include"Object3d.h"
 
-class TitleScene {
+class TitleScene : public IScene {
 
 public:
-	void Initialize();
+	void Initialize() override;
 
-	void Finalize();
+	void Finalize() override;
 
-	void Update();
+	void Update() override;
 
-	void Draw();
+	void Draw() override;
 
 private:
 	Sprite* sprite = nullptr;

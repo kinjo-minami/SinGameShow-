@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Iscene.h"
 #include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
@@ -21,7 +22,7 @@ public:
 
 	virtual void Update();
 	
-	virtual void Draw() = 0;
+	virtual void Draw();
 
 	virtual bool GetGameloopEndReqest() { return gameloopEndReqest_; }
 
@@ -33,5 +34,6 @@ protected:
 	Input* input_ = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
 	Audio* audio_ = nullptr;
+	IScene* scene_ = nullptr;
 };
 

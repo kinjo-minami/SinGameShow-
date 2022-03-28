@@ -65,9 +65,13 @@ void Framework::Update() {
 	}
 #pragma endregion ウィンドウメッセージ処理
 	input_->Update();
-
+	scene_->Update();
 }
 
 void Framework::Draw() {
+	dxCommon_->PreDraw();
 
+	scene_->Draw();
+
+	dxCommon_->PostDraw();
 }
