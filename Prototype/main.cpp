@@ -87,16 +87,47 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Model* modelPost = Model::LoadFromOBJ("posuto");
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
+	Model* modelEnemyMovA = nullptr;
+	Model* modelEnemyMovB = nullptr;
+	Model* modelEnemyMovC = nullptr;
+	Object3d* objEnemyMov[10] = {};
+	XMFLOAT3 enemyMovPos[10];
+
+	int enemyNam = 10;
+
+	int enemyflag[10] = {};
+
+	const float PI = 3.1415926f;
+
+	modelEnemyMovA = Model::LoadFromOBJ("rat");
+	modelEnemyMovB = Model::LoadFromOBJ("greenbox");
+	modelEnemyMovC = Model::LoadFromOBJ("bluebox");
 
 	Object3d* objPost = Object3d::Create();
 	Object3d* objChr = Object3d::Create();
+	Object3d* player = Object3d::Create();
 
+	player->SetModel(modelChr);
 	objPost->SetModel(modelPost);
 	objChr->SetModel(modelChr);
 
 	objPost->SetPosition({ 0,0,50 });
 	objChr->SetPosition({ 0,-25,-75 });
-
+	for (int i = 0; i < enemyNam; i++)
+	{
+		objEnemyMov[i] = Object3d::Create();
+		objEnemyMov[i]->SetModel(modelEnemyMovA);
+		XMFLOAT3 vel{};
+		const float rnd_acc = 0.0000f;
+		float radius = (float)(rand() % 600);
+		vel.x = cos((((float)(rand() % 360)) * PI) / 180) * radius;
+		vel.y = 0.0f;
+		vel.z = sin((((float)(rand() % 360)) * PI) / 180) * radius;
+		enemyMovPos[i] = vel;
+		objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+		objEnemyMov[i]->Update();
+	}
+	player->SetPosition({ 0.0,0.0,0.0 });
 	camera->SetTarget({ 0,0,-100 });
 	camera->SetEye({ 0, 0, 0 });
 
@@ -114,6 +145,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float scaleY = 1.0f / (float)WinApp::window_height;
 	bool viewDirty = false;
 	float distance = 20.0f;
+	XMFLOAT3 cameraMove = {};
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 
 	while (true)  // ゲームループ
@@ -176,25 +208,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			XMVECTOR move = { 1.0f, 0, 0, 0 };
 			move = XMVector3Transform(move, matRot);
+			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
 			camera->MoveVector(move);
 		}
 		if (input->PushKey(DIK_A))
 		{
 			XMVECTOR move = { -1.0f, 0, 0, 0 };
 			move = XMVector3Transform(move, matRot);
+			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
+
 			camera->MoveVector(move);
 		}
 		if (input->PushKey(DIK_W))
 		{
 			XMVECTOR move = { 0, 0, 1.0f, 0 };
+			
 			move = XMVector3Transform(move, matRot);
+			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
+
 			camera->MoveVector(move);
-		}
+		} 
 		if (input->PushKey(DIK_S))
 		{
 			XMVECTOR move = { 0, 0, -1.0f, 0 };
 			move = XMVector3Transform(move, matRot);
+			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
+
 			camera->MoveVector(move);
+		}
+
+		for (int i = 0; i < enemyNam; i++)
+		{
+
 		}
 
 		dirty = true;
@@ -224,8 +269,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//objChr->SetPosition(ChrPos);
-
+		for (int i = 0; i < enemyNam; i++)
+		{
+			objEnemyMov[i]->Update();
+		}
 		objPost->Update();
+		player->Update();
 		objChr->Update();
 		camera->Update();
 		for (auto& sprite : sprites)
@@ -243,12 +292,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PreDraw(dxCommon->GetCmdList());
 		objPost->Draw();
 		objChr->Draw();
+
+		for (int i = 0; i < enemyNam; i++)
+		{
+			objEnemyMov[i]->Draw();
+		}
+		player->Draw();
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
 		for (auto& sprite : sprites)
 		{
-			sprite->Draw();
+			//sprite->Draw();
 		}
 
 		// ４．描画コマンドここまで
