@@ -7,9 +7,10 @@
 
 #include "Object3d.h"
 #include "Model.h"
-#include"SpriteCommon.h"
-#include"Sprite.h"
-#include"DebugCamera.h"
+#include "SpriteCommon.h"
+#include "Sprite.h"
+#include "DebugCamera.h"
+#include "Collision.h"
 
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -47,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d::SetCamera(camera);
 
 	// カメラ注視点をセット
-	camera->SetTarget({ 0, 1, 0 });
+	camera->SetTarget({ 0, 1, 500 });
 	camera->SetDistance(3.0f);
 
 #pragma endregion DirectX初期化処理
@@ -82,11 +83,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		sprites.push_back(sprite);
 		//sprite->SetPosition({ 500,300,0 });
-
 	}
 
 	Model* modelPost = Model::LoadFromOBJ("posuto");
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
+	Model* modelThunder = Model::LoadFromOBJ("solothunder");
 	Model* modelEnemyMovA = nullptr;
 	Model* modelEnemyMovB = nullptr;
 	Model* modelEnemyMovC = nullptr;
@@ -95,7 +96,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	int enemyNam = 10;
 
-	int enemyflag[10] = {};
+	int enemyFlag[10] = {};
 
 	const float PI = 3.1415926f;
 
@@ -106,10 +107,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* objPost = Object3d::Create();
 	Object3d* objChr = Object3d::Create();
 	Object3d* player = Object3d::Create();
+	Object3d* objThunder = Object3d::Create();
 
 	player->SetModel(modelChr);
 	objPost->SetModel(modelPost);
 	objChr->SetModel(modelChr);
+	objThunder->SetModel(modelThunder);
 
 	objPost->SetPosition({ 0,0,50 });
 	objChr->SetPosition({ 0,-25,-75 });
@@ -127,8 +130,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 		objEnemyMov[i]->Update();
 	}
-	player->SetPosition({ 0.0,0.0,0.0 });
-	camera->SetTarget({ 0,0,-100 });
+	player->SetPosition({ 0.0f,0.0f,0.0f });
+	objThunder->SetPosition({ 0.0f,100.0f,0.0f });
 	camera->SetEye({ 0, 0, 0 });
 
 	/*objPost->Update();
@@ -138,6 +141,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	int counter = 0; // アニメーションの経過時間カウンター
 
+	// カメラ関係
 	bool dirty = false;
 	float angleX = 0;
 	float angleY = 0;
@@ -145,8 +149,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float scaleY = 1.0f / (float)WinApp::window_height;
 	bool viewDirty = false;
 	float distance = 20.0f;
-	XMFLOAT3 cameraMove = {};
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
+
+	// 最短距離関係
+	float earliest[2];
+	XMFLOAT3 Earliest;
+	int earliestEnemyNum;
+
+	// 雷関係
+	XMFLOAT3 thunderPos = objThunder->GetPosition();
+	int thunderFlag = 0;
+	int thunderTimer = 0;
 
 	while (true)  // ゲームループ
 	{
@@ -169,34 +182,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		scale *= 360.0f;
 		objPost->SetModel(modelPost);
 		objChr->SetModel(modelChr);
-		if (input->TriggerKey(DIK_0)) // 数字の0キーが押されていたら
-		{
-			OutputDebugStringA("Hit 0\n");  // 出力ウィンドウに「Hit 0」と表示
-		}
+		objThunder->SetModel(modelThunder);
 
-		float clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
-
-		if (input->PushKey(DIK_SPACE))     // スペースキーが押されていたら
-		{
-			// 画面クリアカラーの数値を書き換える
-			clearColor[1] = 1.0f;
-			objPost->SetModel(modelChr);
-			objChr->SetModel(modelChr);
-		}
-
-		// 座標操作
-		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-		{
-
-		}
-
-
-		if (input->PushKey(DIK_D) || input->PushKey(DIK_A))
-		{
-
-		}
-
-		//XMFLOAT3 ChrPos = objChr->GetPosition();
+		XMFLOAT3 playerPos = camera->GetTarget();
+		//camera->SetTarget(CameraPos);
 
 		// マウスの入力を取得
 		Input::MouseMove mouseMove = input->GetMouseMove();
@@ -208,38 +197,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			XMVECTOR move = { 1.0f, 0, 0, 0 };
 			move = XMVector3Transform(move, matRot);
-			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
 			camera->MoveVector(move);
 		}
 		if (input->PushKey(DIK_A))
 		{
 			XMVECTOR move = { -1.0f, 0, 0, 0 };
 			move = XMVector3Transform(move, matRot);
-			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
-
 			camera->MoveVector(move);
 		}
 		if (input->PushKey(DIK_W))
 		{
 			XMVECTOR move = { 0, 0, 1.0f, 0 };
-			
 			move = XMVector3Transform(move, matRot);
-			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
-
 			camera->MoveVector(move);
-		} 
+		}
 		if (input->PushKey(DIK_S))
 		{
 			XMVECTOR move = { 0, 0, -1.0f, 0 };
 			move = XMVector3Transform(move, matRot);
-			player->SetPosition({ move.m128_f32[0], move.m128_f32[1],move.m128_f32[2] });
-
 			camera->MoveVector(move);
-		}
-
-		for (int i = 0; i < enemyNam; i++)
-		{
-
 		}
 
 		dirty = true;
@@ -268,7 +244,65 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 		}
 
-		//objChr->SetPosition(ChrPos);
+		// 最短距離を求める
+		for (int i = 0; i < enemyNam; i++)
+		{
+			Earliest.x = playerPos.x - enemyMovPos[i].x;
+			Earliest.y = playerPos.y - enemyMovPos[i].y;
+			Earliest.z = playerPos.z - enemyMovPos[i].z;
+
+			if (enemyFlag[i] == 0)
+			{
+				if (i == 0)
+				{
+					earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+					earliestEnemyNum = i;
+				}
+				if (i > 0)
+				{
+					earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+					if (earliest[0] > earliest[1])
+					{
+						earliestEnemyNum = i;
+						earliest[0] = earliest[1];
+					}
+					if (earliest[0] < earliest[1])
+					{
+						earliestEnemyNum = earliestEnemyNum;
+					}
+				}
+			}
+			// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
+		}
+
+		// 攻撃処理
+		if (input->TriggerMouseLeft() && thunderFlag == 0)
+		{
+			// 攻撃判定
+			bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
+			if (isTerritory)
+			{
+				thunderFlag = 1;
+				thunderPos = enemyMovPos[earliestEnemyNum];
+				thunderPos.y += 100.0;
+				thunderTimer = 10;
+				objThunder->SetPosition(thunderPos);
+			}
+		}
+		if (thunderFlag == 1)
+		{
+			thunderPos.y -= 20.0f;
+			if (thunderPos.y <= 40)
+			{
+				enemyFlag[earliestEnemyNum] = 1;
+				thunderFlag = 0;
+			}
+		}
+
+		// 雷表示時間
+		if (thunderTimer != 0) { thunderTimer--; }
+
 		for (int i = 0; i < enemyNam; i++)
 		{
 			objEnemyMov[i]->Update();
@@ -276,6 +310,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objPost->Update();
 		player->Update();
 		objChr->Update();
+		objThunder->Update();
 		camera->Update();
 		for (auto& sprite : sprites)
 		{
@@ -291,31 +326,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		Object3d::PreDraw(dxCommon->GetCmdList());
 		objPost->Draw();
-		objChr->Draw();
+
+		//objChr->Draw();
 
 		for (int i = 0; i < enemyNam; i++)
 		{
-			objEnemyMov[i]->Draw();
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
 		}
-		player->Draw();
+		//player->Draw();
+		if (0 < thunderTimer) { objThunder->Draw(); }
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
 		for (auto& sprite : sprites)
 		{
-			//sprite->Draw();
+			sprite->Draw();
 		}
 
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
-
-
 	}
 	// XAudio2解放
    // xAudio2.Reset();
 	// 音声データ解放
    // SoundUnload(&soundData1);
-
 
 #pragma region WindowsAPI後始末
 	winApp->Finalize();
@@ -330,7 +364,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete sprite;
 	delete modelPost;
 	delete modelChr;
+	delete modelThunder;
+	delete modelEnemyMovA;
+	delete modelEnemyMovB;
+	delete modelEnemyMovC;
 	delete objChr;
 	delete objPost;
+	delete objThunder;
+	for (int i = 0; i < enemyNam; i++)
+	{
+		delete objEnemyMov[i];
+	}
 	return 0;
 }

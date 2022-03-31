@@ -144,6 +144,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMFLOAT3 PostPosition = objPost->GetPosition();
 		Input::MouseMove mouseMove = input->GetMouseMove();
 		Input::StickMove stickMove = input->GetStickMove();
+		if (input->PushButtonA()) { PostPosition.x -= 1.0f; }
+
 		// マウスの左ボタンが押されていたら
 		if (input->PushMouseLeft()) { PostPosition.x -= 1.0f; }
 		// マウスの右ボタンが押されていたら
