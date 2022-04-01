@@ -85,7 +85,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//sprite->SetPosition({ 500,300,0 });
 	}
 
-	Model* modelPost = Model::LoadFromOBJ("posuto");
+	Model* coa = Model::LoadFromOBJ("posuto");
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
 	Model* modelThunder = Model::LoadFromOBJ("solothunder");
 	Model* modelEnemyMovA = nullptr;
@@ -104,17 +104,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	modelEnemyMovB = Model::LoadFromOBJ("greenbox");
 	modelEnemyMovC = Model::LoadFromOBJ("bluebox");
 
-	Object3d* objPost = Object3d::Create();
+	Object3d* OBJCoa = Object3d::Create();
 	Object3d* objChr = Object3d::Create();
 	Object3d* player = Object3d::Create();
 	Object3d* objThunder = Object3d::Create();
 
 	player->SetModel(modelChr);
-	objPost->SetModel(modelPost);
+	OBJCoa->SetModel(coa);
 	objChr->SetModel(modelChr);
 	objThunder->SetModel(modelThunder);
 
-	objPost->SetPosition({ 0,0,50 });
+	OBJCoa->SetPosition({ 0,0,50 });
 	objChr->SetPosition({ 0,-25,-75 });
 	for (int i = 0; i < enemyNam; i++)
 	{
@@ -180,7 +180,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		float scale = (float)counter / cycle; // [0,1]の数値
 
 		scale *= 360.0f;
-		objPost->SetModel(modelPost);
+		OBJCoa->SetModel(coa);
 		objChr->SetModel(modelChr);
 		objThunder->SetModel(modelThunder);
 
@@ -307,7 +307,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			objEnemyMov[i]->Update();
 		}
-		objPost->Update();
+		OBJCoa->Update();
 		player->Update();
 		objChr->Update();
 		objThunder->Update();
@@ -325,7 +325,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dxCommon->PreDraw();
 
 		Object3d::PreDraw(dxCommon->GetCmdList());
-		objPost->Draw();
+		OBJCoa->Draw();
 
 		//objChr->Draw();
 
@@ -362,14 +362,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		delete sprite;
 	}
 	//delete sprite;
-	delete modelPost;
+	delete coa;
 	delete modelChr;
 	delete modelThunder;
 	delete modelEnemyMovA;
 	delete modelEnemyMovB;
 	delete modelEnemyMovC;
 	delete objChr;
-	delete objPost;
+	delete OBJCoa;
 	delete objThunder;
 	for (int i = 0; i < enemyNam; i++)
 	{
