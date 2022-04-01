@@ -85,12 +85,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//sprite->SetPosition({ 500,300,0 });
 	}
 
-	Model* coa = Model::LoadFromOBJ("posuto");
+	Model* inCoa = Model::LoadFromOBJ("core_in");
+	Model* outCoa = Model::LoadFromOBJ("core_out");
+
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
 	Model* modelThunder = Model::LoadFromOBJ("solothunder");
 	Model* modelEnemyMovA = nullptr;
 	Model* modelEnemyMovB = nullptr;
 	Model* modelEnemyMovC = nullptr;
+	Model* modelBack = Model::LoadFromOBJ("back");
 	Object3d* objEnemyMov[10] = {};
 	XMFLOAT3 enemyMovPos[10];
 
@@ -104,17 +107,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	modelEnemyMovB = Model::LoadFromOBJ("greenbox");
 	modelEnemyMovC = Model::LoadFromOBJ("bluebox");
 
-	Object3d* OBJCoa = Object3d::Create();
+	Object3d* OBJInCoa = Object3d::Create();
+	Object3d* OBJOutCoaA = Object3d::Create();
+	Object3d* OBJOutCoaB = Object3d::Create();
+	Object3d* OBJBack= Object3d::Create();
+
+
 	Object3d* objChr = Object3d::Create();
 	Object3d* player = Object3d::Create();
 	Object3d* objThunder = Object3d::Create();
 
 	player->SetModel(modelChr);
-	OBJCoa->SetModel(coa);
+	OBJInCoa->SetModel(inCoa);
+	OBJOutCoaA->SetModel(outCoa);
+	OBJOutCoaB->SetModel(outCoa);
+	OBJBack->SetModel(modelBack);
+
+
 	objChr->SetModel(modelChr);
 	objThunder->SetModel(modelThunder);
 
-	OBJCoa->SetPosition({ 0,0,50 });
+	OBJInCoa->SetPosition({ 0,0,50 });
+	OBJOutCoaA->SetPosition({ 0,0,50 });
+	OBJOutCoaB->SetPosition({ 0,0,50 });
+	OBJBack->SetPosition({ 0,0,50 });
+
 	objChr->SetPosition({ 0,-25,-75 });
 	for (int i = 0; i < enemyNam; i++)
 	{
@@ -136,7 +153,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	/*objPost->Update();
 	objChr->Update();*/
-
+	OBJBack->SetScale({ 5.0f,5.0f,5.0f });
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
@@ -160,6 +177,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 thunderPos = objThunder->GetPosition();
 	int thunderFlag = 0;
 	int thunderTimer = 0;
+	
+	//コア係
+	XMFLOAT3 CoaRotA = {};
+	XMFLOAT3 CoaRotB = {};
+
 
 	while (true)  // ゲームループ
 	{
@@ -173,6 +195,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理　ここから
 
 		input->Update();
+		CoaRotA.y += 0.6f;
+		CoaRotB.y -= 0.6f;
+
+		OBJInCoa->SetRotation(CoaRotA);
+		OBJOutCoaA->SetRotation(CoaRotB);
+		OBJOutCoaB->SetRotation(CoaRotA);
 
 		const int cycle = 540; // 繰り返しの周期
 		counter++;
@@ -180,7 +208,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		float scale = (float)counter / cycle; // [0,1]の数値
 
 		scale *= 360.0f;
-		OBJCoa->SetModel(coa);
+		OBJInCoa->SetModel(inCoa);
 		objChr->SetModel(modelChr);
 		objThunder->SetModel(modelThunder);
 
@@ -307,7 +335,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			objEnemyMov[i]->Update();
 		}
-		OBJCoa->Update();
+		OBJInCoa->Update();
+		OBJOutCoaA->Update();
+		OBJOutCoaB->Update();
+		OBJBack->Update();
+
 		player->Update();
 		objChr->Update();
 		objThunder->Update();
@@ -325,7 +357,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dxCommon->PreDraw();
 
 		Object3d::PreDraw(dxCommon->GetCmdList());
-		OBJCoa->Draw();
+		OBJBack->Draw();
+		OBJInCoa->Draw();
+		OBJOutCoaA->Draw();
+		OBJOutCoaB->Draw();
 
 		//objChr->Draw();
 
@@ -362,14 +397,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		delete sprite;
 	}
 	//delete sprite;
-	delete coa;
+	delete inCoa;
 	delete modelChr;
 	delete modelThunder;
 	delete modelEnemyMovA;
 	delete modelEnemyMovB;
 	delete modelEnemyMovC;
 	delete objChr;
-	delete OBJCoa;
+	delete OBJInCoa;
 	delete objThunder;
 	for (int i = 0; i < enemyNam; i++)
 	{
