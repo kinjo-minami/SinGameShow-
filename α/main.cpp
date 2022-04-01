@@ -87,6 +87,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Model* inCoa = Model::LoadFromOBJ("core_in");
 	Model* outCoa = Model::LoadFromOBJ("core_out");
+	Model* modelGround = Model::LoadFromOBJ("ground");
 
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
 	Model* modelThunder = Model::LoadFromOBJ("solothunder");
@@ -116,22 +117,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* objChr = Object3d::Create();
 	Object3d* player = Object3d::Create();
 	Object3d* objThunder = Object3d::Create();
+	Object3d* objGround = Object3d::Create();
+
 
 	player->SetModel(modelChr);
 	OBJInCoa->SetModel(inCoa);
 	OBJOutCoaA->SetModel(outCoa);
 	OBJOutCoaB->SetModel(outCoa);
 	OBJBack->SetModel(modelBack);
+	objGround->SetModel(modelGround);
 
 
 	objChr->SetModel(modelChr);
 	objThunder->SetModel(modelThunder);
 
-	OBJInCoa->SetPosition({ 0,0,50 });
-	OBJOutCoaA->SetPosition({ 0,0,50 });
-	OBJOutCoaB->SetPosition({ 0,0,50 });
+	OBJInCoa->SetPosition({ 0,4,50 });
+	OBJOutCoaA->SetPosition({ 0,4,50 });
+	OBJOutCoaB->SetPosition({ 0,4,50 });
 	OBJBack->SetPosition({ 0,0,50 });
-
+	objGround->SetPosition({ 0,-10,50 });
 	objChr->SetPosition({ 0,-25,-75 });
 	for (int i = 0; i < enemyNam; i++)
 	{
@@ -339,7 +343,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		OBJOutCoaA->Update();
 		OBJOutCoaB->Update();
 		OBJBack->Update();
-
+		objGround->Update();
 		player->Update();
 		objChr->Update();
 		objThunder->Update();
@@ -358,6 +362,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		Object3d::PreDraw(dxCommon->GetCmdList());
 		OBJBack->Draw();
+		objGround->Draw();
 		OBJInCoa->Draw();
 		OBJOutCoaA->Draw();
 		OBJOutCoaB->Draw();
