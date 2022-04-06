@@ -60,7 +60,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	spriteCommon->LoadTexture(0, L"Resources/texture.png");
 	spriteCommon->LoadTexture(1, L"Resources/house.png");
-	spriteCommon->LoadTexture(2, L"Resources/player.png");
+	//spriteCommon->LoadTexture(2, L"Resources/player.png");
+	spriteCommon->LoadTexture(2, L"Resources/cloud.png");
 
 	std::vector<Sprite*> sprites;
 	/*Sprite* sprite = Sprite::Create(spriteCommon, 0);
