@@ -58,33 +58,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SpriteCommon* spriteCommon = new SpriteCommon();
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 
-	spriteCommon->LoadTexture(0, L"Resources/texture.png");
-	spriteCommon->LoadTexture(1, L"Resources/house.png");
-	//spriteCommon->LoadTexture(2, L"Resources/player.png");
-	spriteCommon->LoadTexture(2, L"Resources/cloud.png");
+	spriteCommon->LoadTexture(0, L"Resources/cloud.png");
+	spriteCommon->LoadTexture(1, L"Resources/cloud2.png");
+	Sprite* cloud = Sprite::Create(spriteCommon, 0, { 0,0 }, false, false);
+	Sprite* cloud2 = Sprite::Create(spriteCommon, 1, { 0,0 }, false, false);
 
-	std::vector<Sprite*> sprites;
-	/*Sprite* sprite = Sprite::Create(spriteCommon, 0);
-	sprites.push_back(sprite);
-	sprite->SetPosition({ 500,300,0 });*/
+	//std::vector<Sprite*> sprites;
 
-	for (int i = 0; i < 20; i++)
-	{
-		int texNum = rand() % 2;
+	//cloud->TransferVertexBuffer();
+	//sprites.push_back(cloud);
 
-		Sprite* sprite = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
-
-		//sprite->SetPosition({ (float)(rand() % 1280),(float)(rand() % 720),0 });
-
-		//sprite->SetRotation((float)(rand() % 360));
-
-		//sprite->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-
-		sprite->TransferVertexBuffer();
-
-		sprites.push_back(sprite);
-		//sprite->SetPosition({ 500,300,0 });
-	}
+	//cloud2->TransferVertexBuffer();
+	//sprites.push_back(cloud2);
 
 	Model* modelPost = Model::LoadFromOBJ("posuto");
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
@@ -135,9 +120,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	objThunder->SetPosition({ 0.0f,100.0f,0.0f });
 	camera->SetEye({ 0, 0, 0 });
 
-	/*objPost->Update();
-	objChr->Update();*/
-
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
@@ -186,12 +168,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objThunder->SetModel(modelThunder);
 
 		XMFLOAT3 playerPos = camera->GetTarget();
-		//camera->SetTarget(CameraPos);
 
 		// マウスの入力を取得
 		Input::MouseMove mouseMove = input->GetMouseMove();
 		float dy = mouseMove.lX * scaleY;
 		angleY = -dy * XM_PI;
+		// マウスを表示するかどうか(TRUEで表示、FALSEで非表示)
+		ShowCursor(FALSE);
 
 		// ボタンが押されていたらカメラを並行移動させる
 		if (input->PushKey(DIK_D))
@@ -313,9 +296,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objChr->Update();
 		objThunder->Update();
 		camera->Update();
-		for (auto& sprite : sprites)
-		{
-			sprite->Update();
+		cloud->Update();
+		cloud2->Update();
+
+		if (input->PushKey(DIK_ESCAPE)) {
+			break;
 		}
 
 		// DirectX毎フレーム処理　ここまで
@@ -328,21 +313,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Object3d::PreDraw(dxCommon->GetCmdList());
 		objPost->Draw();
 
-		//objChr->Draw();
-
 		for (int i = 0; i < enemyNam; i++)
 		{
 			if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
 		}
-		//player->Draw();
 		if (0 < thunderTimer) { objThunder->Draw(); }
 		Object3d::PostDraw();
 
 		spriteCommon->PreDraw();
-		for (auto& sprite : sprites)
-		{
-			sprite->Draw();
-		}
+		cloud->Draw();
+		if (0 < thunderTimer) { cloud2->Draw(); }
 
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
@@ -358,11 +338,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete input;
 	delete winApp;
 	delete spriteCommon;
-	for (auto& sprite : sprites)
-	{
-		delete sprite;
-	}
-	//delete sprite;
+	delete cloud;
+	delete cloud2;
 	delete modelPost;
 	delete modelChr;
 	delete modelThunder;
