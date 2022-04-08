@@ -86,7 +86,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	Model* inCoa = Model::LoadFromOBJ("core_in");
-	Model* outCoa = Model::LoadFromOBJ("core_out");
+	Model* outCoa1 = Model::LoadFromOBJ("core_out1");
+	Model* outCoa2 = Model::LoadFromOBJ("core_out2");
+
 	Model* modelGround = Model::LoadFromOBJ("ground");
 
 	Model* modelChr = Model::LoadFromOBJ("chr_sword");
@@ -122,8 +124,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	player->SetModel(modelChr);
 	OBJInCoa->SetModel(inCoa);
-	OBJOutCoaA->SetModel(outCoa);
-	OBJOutCoaB->SetModel(outCoa);
+	OBJOutCoaA->SetModel(outCoa1);
+	OBJOutCoaB->SetModel(outCoa2);
 	OBJBack->SetModel(modelBack);
 	objGround->SetModel(modelGround);
 
@@ -199,8 +201,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理　ここから
 
 		input->Update();
-		CoaRotA.y += 0.6f;
-		CoaRotB.y -= 0.6f;
+		CoaRotA.y += 0.3f;
+		CoaRotB.y -= 0.3f;
 
 		OBJInCoa->SetRotation(CoaRotA);
 		OBJOutCoaA->SetRotation(CoaRotB);
@@ -411,6 +413,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete objChr;
 	delete OBJInCoa;
 	delete objThunder;
+
 	for (int i = 0; i < enemyNam; i++)
 	{
 		delete objEnemyMov[i];

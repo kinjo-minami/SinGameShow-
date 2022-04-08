@@ -1,6 +1,6 @@
 # Blender v2.92.0 OBJ File: '1core_out.blend'
 # www.blender.org
-mtllib core_out.mtl
+mtllib core_out2.mtl
 o 球_球.001
 v -0.146447 0.923880 0.353554
 v -0.270598 0.707107 0.653282
