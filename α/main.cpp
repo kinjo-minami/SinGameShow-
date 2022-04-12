@@ -188,6 +188,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 CoaRotA = {};
 	XMFLOAT3 CoaRotB = {};
 
+	//雨
+	XMFLOAT3 rainPos[100] = {};
+	float fallRainSpeed[100] = {};
+
+	int rainFlag[100] = {};
+
+	//雪
+	XMFLOAT3 snowPos[100] = {};
+	float snowXSpeed[100] = {};
+
+	float fallSnowSpeed[100] = {};
+	int snowFlag[100] = {};
 
 	while (true)  // ゲームループ
 	{
