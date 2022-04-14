@@ -21,7 +21,7 @@ void GamePlayScene::Initialize() {
 
 	Create3D_object();
 
-	camera->SetTarget({ -10,0,-100 });
+	camera->SetTarget({ 0,0,-30 });
 	camera->SetEye({ 0, 0, 0 });
 
 #pragma endregion 描画初期化処理
@@ -44,7 +44,6 @@ void GamePlayScene::Finalize() {
 void GamePlayScene::Update() {
 	Input* input = Input::GetInstance();
 	objPost->SetModel(modelPost);
-	objChr->SetModel(modelPost);
 
 	float clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
 
@@ -102,7 +101,7 @@ void GamePlayScene::Create3D_object() {
 	objChr = Object3d::Create();
 
 	objPost->SetModel(modelPost);
-	objChr->SetModel(modelPost);
+	objChr->SetModel(modelChr);
 
 	objPost->SetPosition({ -10,0,-5 });
 	objChr->SetPosition({ +10,0,+5 });
