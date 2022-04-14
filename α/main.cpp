@@ -61,29 +61,41 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->LoadTexture(0, L"Resources/texture.png");
 	spriteCommon->LoadTexture(1, L"Resources/house.png");
 	spriteCommon->LoadTexture(2, L"Resources/player.png");
+	spriteCommon->LoadTexture(3, L"Resources/hp_bar.png");
+	spriteCommon->LoadTexture(4, L"Resources/mouse.png");
+	spriteCommon->LoadTexture(5, L"Resources/title.png");
+	spriteCommon->LoadTexture(6, L"Resources/gameClear.png");
+	spriteCommon->LoadTexture(7, L"Resources/gameover.png");
 
 	std::vector<Sprite*> sprites;
 	/*Sprite* sprite = Sprite::Create(spriteCommon, 0);
 	sprites.push_back(sprite);
 	sprite->SetPosition({ 500,300,0 });*/
+	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
+	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
+	spriteTitle->SetSize({ 1920 ,1080  });
+	spriteTitle->Update();
 
-	for (int i = 0; i < 20; i++)
-	{
-		int texNum = rand() % 2;
+	Sprite* spriteMouse = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
+	Sprite* spriteClear = Sprite::Create(spriteCommon, 6, { 0,0 }, false, false);
+	Sprite* spriteOver = Sprite::Create(spriteCommon, 7, { 0,0 }, false, false);
 
-		Sprite* sprite = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	int texNum = rand() % 2;
 
-		//sprite->SetPosition({ (float)(rand() % 1280),(float)(rand() % 720),0 });
 
-		//sprite->SetRotation((float)(rand() % 360));
+	//	//sprite->SetPosition({ (float)(rand() % 1280),(float)(rand() % 720),0 });
 
-		//sprite->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
+	//	//sprite->SetRotation((float)(rand() % 360));
 
-		sprite->TransferVertexBuffer();
+	//	//sprite->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
 
-		sprites.push_back(sprite);
-		//sprite->SetPosition({ 500,300,0 });
-	}
+	//	sprite->TransferVertexBuffer();
+
+	//	sprites.push_back(sprite);
+	//	//sprite->SetPosition({ 500,300,0 });
+	//}
 
 	Model* inCoa = Model::LoadFromOBJ("core_in");
 	Model* outCoa1 = Model::LoadFromOBJ("core_out1");
@@ -463,6 +475,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objChr->Update();
 		objThunder->Update();
 		camera->Update();
+		spriteTitle->Update();
+		spriteClear->Update();
+		spriteOver->Update();
 		for (auto& sprite : sprites)
 		{
 			sprite->Update();
@@ -474,9 +489,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region グラフィックスコマンド
 
 		dxCommon->PreDraw();
+		spriteCommon->PreDraw();
 
 		if (scene == 0)
 		{
+			spriteTitle->Draw();
 
 		}
 		if (scene == 1)
@@ -496,13 +513,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 			//player->Draw();
 			if (0 < thunderTimer) { objThunder->Draw(); }
-			Object3d::PostDraw();
 
-			spriteCommon->PreDraw();
-			for (auto& sprite : sprites)
-			{
-				sprite->Draw();
-			}
+			
+
+		}
+		if (scene == 2)
+		{
+			spriteOver->Draw();
+
+		}
+		if (scene == 3)
+		{
+			spriteClear->Draw();
+		}
+		Object3d::PostDraw();
+
+		spriteCommon->PreDraw();
+
+		if (scene == 0)
+		{
+			spriteTitle->Draw();
+
+		}
+		if (scene == 1)
+		{
+			
+		
+			/*	for (auto& sprite : sprites)
+				{
+				}*/
+			spritePlayer->Draw();
+
+
 		}
 		if (scene == 2)
 		{
@@ -512,7 +554,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 
 		}
-
 
 
 		// ４．描画コマンドここまで
