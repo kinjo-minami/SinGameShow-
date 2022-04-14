@@ -43,7 +43,6 @@ void GamePlayScene::Finalize() {
 
 void GamePlayScene::Update() {
 	Input* input = Input::GetInstance();
-	objPost->SetModel(modelPost);
 
 	float clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
 
@@ -83,8 +82,16 @@ void GamePlayScene::Update() {
 }
 
 void GamePlayScene::Draw() {
+
+	DirectXCommon* dxcommon_ = DirectXCommon::GetInstance();
+	
+	Object3d::PreDraw(dxcommon_->GetCmdList());
+	
 	objPost->Draw();
 	objChr->Draw();
+	
+	Object3d::PostDraw();
+	
 	SpriteCommon::GetInstance()->PreDraw();
 	for (auto& sprite : sprites)
 	{

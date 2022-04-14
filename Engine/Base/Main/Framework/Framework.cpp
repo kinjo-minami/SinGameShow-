@@ -70,8 +70,6 @@ void Framework::Update() {
 
 void Framework::Draw() {
 	dxCommon_->PreDraw();
-	Object3d::PreDraw(dxCommon_->GetCmdList());
 	sceneManager_->Draw();
-	Object3d::PostDraw();
 	dxCommon_->PostDraw();
 }
