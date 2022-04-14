@@ -98,8 +98,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelEnemyMovC = nullptr;
 	Model* modelBack = Model::LoadFromOBJ("back");
 	Object3d* objEnemyMov[10] = {};
-	XMFLOAT3 enemyMovPos[10];
-
+	XMFLOAT3 enemyMovPos[10] = {};
+	for (int i = 0; i < 10; i++)
+	{
+		enemyMovPos[i] = { 0,4,50 };
+	}
 	int enemyNam = 10;
 
 	int enemyFlag[10] = {};
@@ -113,7 +116,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJInCoa = Object3d::Create();
 	Object3d* OBJOutCoaA = Object3d::Create();
 	Object3d* OBJOutCoaB = Object3d::Create();
-	Object3d* OBJBack= Object3d::Create();
+	Object3d* OBJBack = Object3d::Create();
 
 
 	Object3d* objChr = Object3d::Create();
@@ -136,20 +139,42 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	OBJInCoa->SetPosition({ 0,4,50 });
 	OBJOutCoaA->SetPosition({ 0,4,50 });
 	OBJOutCoaB->SetPosition({ 0,4,50 });
+
 	OBJBack->SetPosition({ 0,0,50 });
 	objGround->SetPosition({ 0,-10,50 });
 	objChr->SetPosition({ 0,-25,-75 });
+	float radius = 500.0f;
+	float angle[10] = {};
+	
 	for (int i = 0; i < enemyNam; i++)
 	{
 		objEnemyMov[i] = Object3d::Create();
 		objEnemyMov[i]->SetModel(modelEnemyMovA);
 		XMFLOAT3 vel{};
+		float radY;
+		int ran = rand() % 360 + 1;
+		//angle[i] = (float)(rand() % 360);
+		angle[i] = 60.0f;
 		const float rnd_acc = 0.0000f;
-		float radius = (float)(rand() % 600);
-		vel.x = cos((((float)(rand() % 360)) * PI) / 180) * radius;
+		//float radius = (float)(rand() % 600);
+		vel.x = sin((ran * PI) / 180) * radius;
 		vel.y = 0.0f;
-		vel.z = sin((((float)(rand() % 360)) * PI) / 180) * radius;
-		enemyMovPos[i] = vel;
+		vel.z = cos((ran * PI) / 180) * radius;
+		enemyMovPos[i].x += vel.x;
+		enemyMovPos[i].y += vel.y;
+		enemyMovPos[i].z += vel.z;
+		/*if (angle[i] < 180) 
+		{
+			radY = cos(((angle[i] + 180) * PI) / 360);
+
+		}
+		else
+		{
+			radY = cos(((angle[i] - 180) * PI) / 360);
+
+		}*/
+
+		objEnemyMov[i]->SetRotation(vel);
 		objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 		objEnemyMov[i]->Update();
 	}
@@ -183,7 +208,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 thunderPos = objThunder->GetPosition();
 	int thunderFlag = 0;
 	int thunderTimer = 0;
-	
+
 	//コア係
 	XMFLOAT3 CoaRotA = {};
 	XMFLOAT3 CoaRotB = {};
@@ -237,7 +262,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Input::MouseMove mouseMove = input->GetMouseMove();
 		float dy = mouseMove.lX * scaleY;
 		angleY = -dy * XM_PI;
-	
+
 		// ボタンが押されていたらカメラを並行移動させる
 		if (input->PushKey(DIK_D))
 		{
@@ -264,9 +289,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			camera->MoveVector(move);
 		}
 
+		if (input->PushKey(DIK_ESCAPE))
+		{
+			break;
+		}
+
+
 		dirty = true;
 
-		if (dirty || viewDirty) {
+		if (dirty || viewDirty)
+		{
 			// 追加回転分の回転行列を生成
 			XMMATRIX matRotNew = XMMatrixIdentity();
 			matRotNew *= XMMatrixRotationX(-angleX);

@@ -24,6 +24,7 @@ void Input::Initialize(WinApp* winApp)
 
 	result = devMouse->SetCooperativeLevel(
 		winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	ShowCursor(FALSE);
 }
 
 void Input::Update()
