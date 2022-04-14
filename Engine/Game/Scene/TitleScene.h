@@ -1,11 +1,13 @@
-#pragma once
-#include"IScene.h"
+﻿#pragma once
+#include"BaseScene.h"
 #include"Sprite.h"
 #include"Object3d.h"
 
-class TitleScene : public IScene {
+class TitleScene : public BaseScene {
 
 public:
+	TitleScene(SceneManager* sceneManager);
+
 	void Initialize() override;
 
 	void Finalize() override;

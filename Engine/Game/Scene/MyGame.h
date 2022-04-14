@@ -19,7 +19,5 @@ public:
 
 
 private:
-	int counter = 0; // アニメーションの経過時間カウンター
-
 };
 

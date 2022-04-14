@@ -29,7 +29,7 @@ void Framework::Initialize() {
 #pragma region DirectX初期化処理
 
 
-	dxCommon_ = new DirectXCommon();
+	dxCommon_ = DirectXCommon::GetInstance();
 	dxCommon_->Initialize(winApp_);
 
 	input_ = Input::GetInstance();
@@ -38,9 +38,9 @@ void Framework::Initialize() {
 	spriteCommon_ = SpriteCommon::GetInstance();
 	spriteCommon_->initialize(dxCommon_->GetDev(), dxCommon_->GetCmdList(), winApp_->window_width, winApp_->window_height);
 
-
-	Object3d::StaticInitialize(dxCommon_->GetDev(),dxCommon_->GetCmdList() ,winApp_->window_width, winApp_->window_height);
-
+	Object3d::StaticInitialize(dxCommon_->GetDev());
+	
+	sceneManager_ = new SceneManager();
 #pragma endregion DirectX初期化処理
 
 }
@@ -65,13 +65,13 @@ void Framework::Update() {
 	}
 #pragma endregion ウィンドウメッセージ処理
 	input_->Update();
-	scene_->Update();
+	sceneManager_->Update();
 }
 
 void Framework::Draw() {
 	dxCommon_->PreDraw();
-
-	scene_->Draw();
-
+	Object3d::PreDraw(dxCommon_->GetCmdList());
+	sceneManager_->Draw();
+	Object3d::PostDraw();
 	dxCommon_->PostDraw();
 }

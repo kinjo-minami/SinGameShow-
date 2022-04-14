@@ -73,6 +73,12 @@ void DirectXCommon::PostDraw() {
     swapchain->Present(1, 0);
 }
 
+DirectXCommon* DirectXCommon::GetInstance()
+{
+    static DirectXCommon instance;
+    return &instance;
+}
+
 void DirectXCommon::InitializeDevice() {
 #ifdef _DEBUG
     //デバッグレイヤーをオンに

@@ -13,6 +13,7 @@ public:
 	void Initialize(WinApp* win);
     void PreDraw();
     void PostDraw();
+    static DirectXCommon* GetInstance();
 private:
 	void InitializeDevice();
     void InitializeCommand();

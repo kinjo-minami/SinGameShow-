@@ -1,12 +1,13 @@
 ﻿#pragma once
-#include "Iscene.h"
 #include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
-#include "Audio.h"
-#include"SpriteCommon.h"
-
 #include "Object3d.h"
+#include "Audio.h"
+#include "SpriteCommon.h"
+#include "DebugCamera.h"
+#include "SceneManager.h"
+
 #include "Model.h"
 #include"Sprite.h"
 
@@ -34,6 +35,6 @@ protected:
 	Input* input_ = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
 	Audio* audio_ = nullptr;
-	IScene* scene_ = nullptr;
+	SceneManager* sceneManager_ = nullptr;
 };
 

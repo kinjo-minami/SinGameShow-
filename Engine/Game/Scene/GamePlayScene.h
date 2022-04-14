@@ -1,10 +1,16 @@
 ﻿#pragma once
-#include"IScene.h"
+#include"BaseScene.h"
 #include"Sprite.h"
 #include"Object3d.h"
+#include"DebugCamera.h"
 
-class GamePlayScene : public IScene {
+
+class DirectXCommon;
+
+class GamePlayScene : public BaseScene {
 public:
+	GamePlayScene(SceneManager* sceneManager);
+	
 	void Initialize() override;
 
 	void Finalize() override;
@@ -13,12 +19,23 @@ public:
 
 	void Draw() override;
 
+public:
+
+	void Create3D_object();
+
+	void Create2D_object();
+
+	void ChangeScene();
+
+	void ClassUpdate();
+
 private:
 	Sprite* sprite = nullptr;
 	Model* modelPost = nullptr;
 	Model* modelChr = nullptr;
 	Object3d* objPost = nullptr;
 	Object3d* objChr = nullptr;
+	DebugCamera* camera;
 	std::vector<Sprite*> sprites;
 };
 

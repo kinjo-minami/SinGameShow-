@@ -5,14 +5,12 @@
 void MyGame::Initialize() {
 
 	Framework::Initialize();
-	scene_ = new GamePlayScene();
-	scene_->Initialize();
+	BaseScene* scene = new TitleScene(sceneManager_);
+	sceneManager_->SetNextScene(scene);
 }
 
 void MyGame::Finalize() {
 
-	scene_->Finalize();
-	
 	Framework::Finalize();
 }
 

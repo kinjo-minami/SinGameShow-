@@ -1,6 +1,13 @@
-#include "TitleScene.h"
+ï»¿#include "TitleScene.h"
+#include "SceneManager.h"
 #include "Input.h"
 #include "DirectXCommon.h"
+#include "GamePlayScene.h"
+
+TitleScene::TitleScene(SceneManager* sceneManager)
+	:BaseScene(sceneManager)
+{
+}
 
 void TitleScene::Initialize() {
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
@@ -32,10 +39,14 @@ void TitleScene::Finalize() {
 
 void TitleScene::Update() {
 	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_SPACE))     // ƒXƒy[ƒXƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
+	if (input->PushKey(DIK_SPACE))     // ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰
 	{
-		// ‰æ–ÊƒNƒŠƒAƒJƒ‰[‚Ì”’l‚ð‘‚«Š·‚¦‚é
+		// ç”»é¢ã‚¯ãƒªã‚¢ã‚«ãƒ©ãƒ¼ã®æ•°å€¤ã‚’æ›¸ãæ›ãˆã‚‹
 		//clearColor[1] = 1.0f;
+	}
+	if (input->TriggerKey(DIK_RETURN)) {
+		BaseScene* scene = new GamePlayScene(sceneManager_);
+		sceneManager_->SetNextScene(scene);
 	}
 	sprite->Update();
 }
