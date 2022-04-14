@@ -196,40 +196,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// ボタンが押されていたらカメラを並行移動させる
 		if (input->PushKey(DIK_D))
 		{
-			XMVECTOR move = { 1.0f, 0, 0, 0 };
+			XMVECTOR move = { 3.0f, 0, 0, 0 };
 			move = XMVector3Transform(move, matRot);
 			camera->MoveVector(move);
-			cloudPos.x -= 1.0f;
-			objCloud->SetPosition(cloudPos);
 		}
 		if (input->PushKey(DIK_A))
 		{
-			XMVECTOR move = { -1.0f, 0, 0, 0 };
+			XMVECTOR move = { -3.0f, 0, 0, 0 };
 			move = XMVector3Transform(move, matRot);
 			camera->MoveVector(move);
-			cloudPos.x += 1.0f;
-			objCloud->SetPosition(cloudPos);
 		}
 		if (input->PushKey(DIK_W))
 		{
-			XMVECTOR move = { 0, 0, 1.0f, 0 };
+			XMVECTOR move = { 0, 0, 3.0f, 0 };
 			move = XMVector3Transform(move, matRot);
 			camera->MoveVector(move);
-			cloudPos.z -= 1.0f;
-			objCloud->SetPosition(cloudPos);
 		}
 		if (input->PushKey(DIK_S))
 		{
-			XMVECTOR move = { 0, 0, -1.0f, 0 };
+			XMVECTOR move = { 0, 0, -3.0f, 0 };
 			move = XMVector3Transform(move, matRot);
 			camera->MoveVector(move);
-			cloudPos.z += 1.0f;
-			objCloud->SetPosition(cloudPos);
 		}
 
-		dirty = true;
+		//dirty = true;
 
-		if (dirty || viewDirty) {
+		//if (dirty || viewDirty) 
+		{
 			// 追加回転分の回転行列を生成
 			XMMATRIX matRotNew = XMMatrixIdentity();
 			matRotNew *= XMMatrixRotationX(-angleX);
@@ -248,9 +241,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			vUp = XMVector3Transform(vUp, matRot);
 
 			// 注視点からずらした位置に視点座標を決定
-			const XMFLOAT3& target = camera->GetTarget();
-			camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] });
+			XMFLOAT3 target = camera->GetTarget();
+			XMFLOAT3 eye = camera->GetEye();
+
+			camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] + 15.0f });
 			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+
+			cloudPos = { target.x - vTargetEye.m128_f32[0], target.y - vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] };
+			objCloud->SetPosition(cloudPos);
 		}
 
 		// 最短距離を求める
@@ -321,12 +319,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
+		//SetCursorPos(860, 440);
+
+		camera->Update();
 		objPost->Update();
 		player->Update();
 		objChr->Update();
 		objThunder->Update();
 		objCloud->Update();
-		camera->Update();
+
 		for (auto& sprite : sprites)
 		{
 			sprite->Update();
