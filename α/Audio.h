@@ -1,77 +1,71 @@
 ﻿#pragma once
-
-#include <Windows.h>
 #include <xaudio2.h>
-#include <wrl.h>
+#pragma comment(lib,"xaudio2.lib")
+#include <fstream>
+#include<wrl.h>
 
-/// <summary>
-/// オーディオコールバック
-/// </summary>
-class XAudio2VoiceCallback : public IXAudio2VoiceCallback
-{
-public:
-	// ボイス処理パスの開始時
-	//STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ UINT32 BytesRequired) {};
-	void OnVoiceProcessingPassStart(UINT32 BytesRequired) {};
-	// ボイス処理パスの終了時
-	STDMETHOD_(void, OnVoiceProcessingPassEnd) (THIS) {};
-	// バッファストリームの再生が終了した時
-	STDMETHOD_(void, OnStreamEnd) (THIS) {};
-	// バッファの使用開始時
-	STDMETHOD_(void, OnBufferStart) (THIS_ void* pBufferContext) {};
-	// バッファの末尾に達した時
-	STDMETHOD_(void, OnBufferEnd) (THIS_ void* pBufferContext) {
-		// バッファを解放する
-		delete[] pBufferContext;
-	};
-	// 再生がループ位置に達した時
-	STDMETHOD_(void, OnLoopEnd) (THIS_ void* pBufferContext) {};
-	// ボイスの実行エラー時
-	STDMETHOD_(void, OnVoiceError) (THIS_ void* pBufferContext, HRESULT Error) {};
-};
+using namespace Microsoft::WRL;
+
+
 
 class Audio
 {
-private: // エイリアス
-	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-public: // サブクラス
-	// チャンクヘッダ
-	struct Chunk
+private:
+	ComPtr<IXAudio2> xAudio2;
+	IXAudio2MasteringVoice* masterVoice;
+	IXAudio2SourceVoice* pSourceVoice;
+
+public:
+	Audio();
+	~Audio();
+
+	struct ChunkHeader
 	{
-		char	id[4]; // チャンク毎のID
-		int		size;  // チャンクサイズ
+		char id[4]; // チャンク毎のID
+		int32_t size;  // チャンクサイズ
 	};
 
 	// RIFFヘッダチャンク
 	struct RiffHeader
 	{
-		Chunk	chunk;   // "RIFF"
-		char	type[4]; // "WAVE"
+		ChunkHeader chunk;   // "RIFF"
+		char type[4]; // "WAVE"
 	};
 
 	// FMTチャンク
 	struct FormatChunk
 	{
-		Chunk		chunk; // "fmt "
-		WAVEFORMAT	fmt;   // 波形フォーマット
+		ChunkHeader chunk; // "fmt "
+		WAVEFORMATEX fmt; // 波形フォーマット
 	};
+	struct SoundData
+	{
+		WAVEFORMATEX wfex;
+		BYTE* pBuffer;
+		unsigned int bufferSize;
+	};
+private:
+	FormatChunk format = {};
+	ChunkHeader data;
+	char* pBuffer;
+	SoundData SSoundData;
+public:
 
-public: // メンバ関数
-
+	void soundData();
 	bool Initialize();
+	void SoundLoadWave(const char* filename);
+	void SoundPlayWave();
+	void stopSound();
+	void ReStart();
+	void SoundUnload();
+	void Reset();
+	//SE用
+	void SEPlayWave();
+	//void SEResetWave();
 
-	// サウンドファイルの読み込みと再生
-	void PlayWave(const char* filename);
 
-	void StopWave();
 
-private: // メンバ変数
-	ComPtr<IXAudio2> xAudio2;
-	IXAudio2MasteringVoice* masterVoice;
-	XAudio2VoiceCallback voiceCallback;
 
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
 
 };
 

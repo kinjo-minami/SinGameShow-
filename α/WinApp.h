@@ -23,8 +23,8 @@ public://メンバ関数
 public://静的メンバ変数
 
 	// ウィンドウサイズ
-	static const int window_width = 1920;  // 横幅
-	static const int window_height = 1080;  // 縦幅
+	static const int window_width = 1280;  // 横幅
+	static const int window_height = 720;  // 縦幅
 
 private://メンバ変数
 	HWND hwnd = nullptr;

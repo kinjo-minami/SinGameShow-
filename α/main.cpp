@@ -11,7 +11,7 @@
 #include "Sprite.h"
 #include "DebugCamera.h"
 #include "Collision.h"
-
+#include"Audio.h"
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -73,9 +73,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sprite->SetPosition({ 500,300,0 });*/
 	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
 	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
-	spriteTitle->SetSize({ 1920 ,1080  });
-	spriteTitle->Update();
+	spritePlayer->SetSize({ 1280 ,720 });
+	spritePlayer->TransferVertexBuffer();
+	spriteTitle->SetSize({ 1280 ,720 });
 
+	//spriteTitle->Update();
+	spriteTitle->TransferVertexBuffer();
 	Sprite* spriteMouse = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
 	Sprite* spriteClear = Sprite::Create(spriteCommon, 6, { 0,0 }, false, false);
 	Sprite* spriteOver = Sprite::Create(spriteCommon, 7, { 0,0 }, false, false);
@@ -166,7 +169,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objEnemyMov[i]->SetModel(modelEnemyMovA);
 		XMFLOAT3 vel{};
 		float radY;
-		int ran = rand() % 360 + 1;
+		//int ran = rand() % 360 + 1;
+		int ran = 30 * i;
 		angle[i] = (float)ran;
 		//angle[i] = 60.0f;
 		const float rnd_acc = 0.0000f;
@@ -206,7 +210,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 
 	// 最短距離関係
-	float earliest[2];
+	float earliest[10];
 	XMFLOAT3 Earliest;
 	int earliestEnemyNum;
 
@@ -234,6 +238,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float fallSnowSpeed[100] = {};
 	int snowFlag[100] = {};
 
+	//音
+	Audio* thunder = new Audio;
+	thunder->Initialize();
+	thunder->SoundLoadWave("Resources/BGM/thunder.wav");
+
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -244,6 +253,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理　ここから
+		SetCursorPos(860, 440);
 
 		if (scene == 0)
 		{
@@ -344,12 +354,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 			}
 			//エネミー移動
-			for (int i = 0; i < enemyNam; i++)
+			/*for (int i = 0; i < enemyNam; i++)
 			{
 				XMFLOAT3 vel = {};
-				vel.x = sin((angle[i] * PI) / 180) * 1.0f;
+				vel.x = sin((angle[i] * PI) / 180) * 0.5f;
 				vel.y = 0.0f;
-				vel.z = cos((angle[i] * PI) / 180) * 1.0f;
+				vel.z = cos((angle[i] * PI) / 180) * 0.5f;
 				enemyMovPos[i].x -= vel.x;
 				enemyMovPos[i].y -= vel.y;
 				enemyMovPos[i].z -= vel.z;
@@ -357,7 +367,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				objEnemyMov[i]->Update();
 
 
-			}
+			}*/
 
 			//コアと敵のあたり判定
 			for (int i = 0; i < enemyNam; i++)
@@ -384,35 +394,73 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 			// 最短距離を求める
+			//for (int i = 0; i < enemyNam; i++)
+			//{
+			//
+
+			//	if (enemyFlag[i] == 0)
+			//	{
+			//		
+			//		/*if (i == 0)
+			//		{
+			//			earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+			//			earliestEnemyNum = i;
+			//		}
+			//		
+			//		else if (i > 0)
+			//		{
+			//			earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+			//			if (earliest[0] > earliest[1])
+			//			{
+			//				earliestEnemyNum = i;
+			//				earliest[0] = earliest[1];
+			//			}
+			//			if (earliest[0] < earliest[1])
+			//			{
+			//				earliestEnemyNum = earliestEnemyNum;
+			//			}
+			//		}
+			//		else
+			//		{
+			//			earliestEnemyNum = earliestEnemyNum;
+			//		}*/
+			//	}
+
+			//
+			//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
+			//}
 			for (int i = 0; i < enemyNam; i++)
 			{
-				Earliest.x = playerPos.x - enemyMovPos[i].x;
-				Earliest.y = playerPos.y - enemyMovPos[i].y;
-				Earliest.z = playerPos.z - enemyMovPos[i].z;
-
 				if (enemyFlag[i] == 0)
 				{
+					Earliest.x = playerPos.x - enemyMovPos[i].x;
+					Earliest.y = playerPos.y - enemyMovPos[i].y;
+					Earliest.z = playerPos.z - enemyMovPos[i].z;
+					earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 					if (i == 0)
 					{
-						earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-						earliestEnemyNum = i;
+						earliestEnemyNum = 0;
 					}
-					if (i > 0)
+					else
 					{
-						earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-
-						if (earliest[0] > earliest[1])
+						if (earliest[earliestEnemyNum] > earliest[i])
 						{
 							earliestEnemyNum = i;
-							earliest[0] = earliest[1];
 						}
-						if (earliest[0] < earliest[1])
+						else if(earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] ==0)
 						{
 							earliestEnemyNum = earliestEnemyNum;
 						}
+						else
+						{
+							earliestEnemyNum = i;
+						}
 					}
+
 				}
-				// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
+
+
 			}
 
 			// 攻撃処理
@@ -422,6 +470,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
 				if (isTerritory)
 				{
+					thunder->SEPlayWave();
+
 					thunderFlag = 1;
 					thunderPos = enemyMovPos[earliestEnemyNum];
 					thunderPos.y += 100.0;
@@ -511,10 +561,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
 			}
+			/*if (enemyFlag[0] == 0) { objEnemyMov[0]->Draw(); }
+			if (enemyFlag[2] == 0) { objEnemyMov[2]->Draw(); }*/
 			//player->Draw();
 			if (0 < thunderTimer) { objThunder->Draw(); }
 
-			
+
 
 		}
 		if (scene == 2)
@@ -537,8 +589,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 1)
 		{
-			
-		
+
+
 			/*	for (auto& sprite : sprites)
 				{
 				}*/

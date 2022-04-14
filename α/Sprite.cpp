@@ -148,6 +148,7 @@ void Sprite::Update()
 	constMap->mat = matWorld_ * SspriteCommon->GetMatProjection();
 	constMap->color = color_;
 	constBuff_->Unmap(0, nullptr);
+	//TransferVertexBuffer();
 }
 
 void Sprite::Draw()
