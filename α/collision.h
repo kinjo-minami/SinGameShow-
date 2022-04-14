@@ -20,6 +20,6 @@ public:
 
 	static bool territory(XMFLOAT3 Player, XMFLOAT3 Enemy);
 	static bool ATKcollision(XMFLOAT3 Player, XMFLOAT3 Enemy);
-
+	static bool CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy,float rad);
 
 };

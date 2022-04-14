@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d::SetCamera(camera);
 
 	// カメラ注視点をセット
-	camera->SetTarget({ 0, 1, 500 });
+	camera->SetTarget({ 0, 1, -100 });
 	camera->SetDistance(3.0f);
 
 #pragma endregion DirectX初期化処理
@@ -105,6 +105,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 	int enemyNam = 10;
 
+	int ECount = 10;
+
 	int enemyFlag[10] = {};
 
 	const float PI = 3.1415926f;
@@ -145,7 +147,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	objChr->SetPosition({ 0,-25,-75 });
 	float radius = 500.0f;
 	float angle[10] = {};
-	
+
 	for (int i = 0; i < enemyNam; i++)
 	{
 		objEnemyMov[i] = Object3d::Create();
@@ -153,28 +155,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMFLOAT3 vel{};
 		float radY;
 		int ran = rand() % 360 + 1;
-		//angle[i] = (float)(rand() % 360);
-		angle[i] = 60.0f;
+		angle[i] = (float)ran;
+		//angle[i] = 60.0f;
 		const float rnd_acc = 0.0000f;
 		//float radius = (float)(rand() % 600);
-		vel.x = sin((ran * PI) / 180) * radius;
+		vel.x = sin((angle[i] * PI) / 180) * radius;
 		vel.y = 0.0f;
-		vel.z = cos((ran * PI) / 180) * radius;
+		vel.z = cos((angle[i] * PI) / 180) * radius;
 		enemyMovPos[i].x += vel.x;
 		enemyMovPos[i].y += vel.y;
 		enemyMovPos[i].z += vel.z;
-		/*if (angle[i] < 180) 
-		{
-			radY = cos(((angle[i] + 180) * PI) / 360);
 
-		}
-		else
-		{
-			radY = cos(((angle[i] - 180) * PI) / 360);
-
-		}*/
-
-		objEnemyMov[i]->SetRotation(vel);
+		objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
 		objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 		objEnemyMov[i]->Update();
 	}
@@ -188,6 +180,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
+
+	int scene = 0;
 
 	// カメラ関係
 	bool dirty = false;
@@ -212,6 +206,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//コア係
 	XMFLOAT3 CoaRotA = {};
 	XMFLOAT3 CoaRotB = {};
+	XMFLOAT3 CoaPos = { 0,4,50 };
+	int coaHit = 10;
 
 	//雨
 	XMFLOAT3 rainPos[100] = {};
@@ -237,154 +233,227 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理　ここから
 
-		input->Update();
-		CoaRotA.y += 0.3f;
-		CoaRotB.y -= 0.3f;
-
-		OBJInCoa->SetRotation(CoaRotA);
-		OBJOutCoaA->SetRotation(CoaRotB);
-		OBJOutCoaB->SetRotation(CoaRotA);
-
-		const int cycle = 540; // 繰り返しの周期
-		counter++;
-		counter %= cycle; // 周期を超えたら0に戻る
-		float scale = (float)counter / cycle; // [0,1]の数値
-
-		scale *= 360.0f;
-		OBJInCoa->SetModel(inCoa);
-		objChr->SetModel(modelChr);
-		objThunder->SetModel(modelThunder);
-
-		XMFLOAT3 playerPos = camera->GetTarget();
-		//camera->SetTarget(CameraPos);
-
-		// マウスの入力を取得
-		Input::MouseMove mouseMove = input->GetMouseMove();
-		float dy = mouseMove.lX * scaleY;
-		angleY = -dy * XM_PI;
-
-		// ボタンが押されていたらカメラを並行移動させる
-		if (input->PushKey(DIK_D))
+		if (scene == 0)
 		{
-			XMVECTOR move = { 1.0f, 0, 0, 0 };
-			move = XMVector3Transform(move, matRot);
-			camera->MoveVector(move);
-		}
-		if (input->PushKey(DIK_A))
-		{
-			XMVECTOR move = { -1.0f, 0, 0, 0 };
-			move = XMVector3Transform(move, matRot);
-			camera->MoveVector(move);
-		}
-		if (input->PushKey(DIK_W))
-		{
-			XMVECTOR move = { 0, 0, 1.0f, 0 };
-			move = XMVector3Transform(move, matRot);
-			camera->MoveVector(move);
-		}
-		if (input->PushKey(DIK_S))
-		{
-			XMVECTOR move = { 0, 0, -1.0f, 0 };
-			move = XMVector3Transform(move, matRot);
-			camera->MoveVector(move);
-		}
-
-		if (input->PushKey(DIK_ESCAPE))
-		{
-			break;
-		}
-
-
-		dirty = true;
-
-		if (dirty || viewDirty)
-		{
-			// 追加回転分の回転行列を生成
-			XMMATRIX matRotNew = XMMatrixIdentity();
-			matRotNew *= XMMatrixRotationX(-angleX);
-			matRotNew *= XMMatrixRotationY(-angleY);
-			// 累積の回転行列を合成
-			// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
-			// クォータニオンを使用する方が望ましい
-			matRot = matRotNew * matRot;
-
-			// 注視点から視点へのベクトルと、上方向ベクトル
-			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-			XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
-
-			// ベクトルを回転
-			vTargetEye = XMVector3Transform(vTargetEye, matRot);
-			vUp = XMVector3Transform(vUp, matRot);
-
-			// 注視点からずらした位置に視点座標を決定
-			const XMFLOAT3& target = camera->GetTarget();
-			camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] });
-			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
-		}
-
-		// 最短距離を求める
-		for (int i = 0; i < enemyNam; i++)
-		{
-			Earliest.x = playerPos.x - enemyMovPos[i].x;
-			Earliest.y = playerPos.y - enemyMovPos[i].y;
-			Earliest.z = playerPos.z - enemyMovPos[i].z;
-
-			if (enemyFlag[i] == 0)
+			if (input->TriggerMouseLeft())
 			{
-				if (i == 0)
-				{
-					earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-					earliestEnemyNum = i;
-				}
-				if (i > 0)
-				{
-					earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+				scene = 1;
 
-					if (earliest[0] > earliest[1])
+			}
+			if (input->PushKey(DIK_ESCAPE))
+			{
+				break;
+			}
+		}
+
+		if (scene == 1)
+		{
+			CoaRotA.y += 0.3f;
+			CoaRotB.y -= 0.3f;
+
+			OBJInCoa->SetRotation(CoaRotA);
+			OBJOutCoaA->SetRotation(CoaRotB);
+			OBJOutCoaB->SetRotation(CoaRotA);
+
+			const int cycle = 540; // 繰り返しの周期
+			counter++;
+			counter %= cycle; // 周期を超えたら0に戻る
+			float scale = (float)counter / cycle; // [0,1]の数値
+
+			scale *= 360.0f;
+			OBJInCoa->SetModel(inCoa);
+			objChr->SetModel(modelChr);
+			objThunder->SetModel(modelThunder);
+
+			XMFLOAT3 playerPos = camera->GetTarget();
+			//camera->SetTarget(CameraPos);
+
+			// マウスの入力を取得
+			Input::MouseMove mouseMove = input->GetMouseMove();
+			float dy = mouseMove.lX * scaleY;
+			angleY = -dy * XM_PI;
+
+			// ボタンが押されていたらカメラを並行移動させる
+			if (input->PushKey(DIK_D))
+			{
+				XMVECTOR move = { 3.0f, 0, 0, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+			}
+			if (input->PushKey(DIK_A))
+			{
+				XMVECTOR move = { -3.0f, 0, 0, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+			}
+			if (input->PushKey(DIK_W))
+			{
+				XMVECTOR move = { 0, 0, 3.0f, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+			}
+			if (input->PushKey(DIK_S))
+			{
+				XMVECTOR move = { 0, 0, -3.0f, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+			}
+
+			if (input->PushKey(DIK_ESCAPE))
+			{
+				break;
+			}
+
+
+			dirty = true;
+
+			if (dirty || viewDirty)
+			{
+				// 追加回転分の回転行列を生成
+				XMMATRIX matRotNew = XMMatrixIdentity();
+				matRotNew *= XMMatrixRotationX(-angleX);
+				matRotNew *= XMMatrixRotationY(-angleY);
+				// 累積の回転行列を合成
+				// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
+				// クォータニオンを使用する方が望ましい
+				matRot = matRotNew * matRot;
+
+				// 注視点から視点へのベクトルと、上方向ベクトル
+				XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
+				XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+
+				// ベクトルを回転
+				vTargetEye = XMVector3Transform(vTargetEye, matRot);
+				vUp = XMVector3Transform(vUp, matRot);
+
+				// 注視点からずらした位置に視点座標を決定
+				const XMFLOAT3& target = camera->GetTarget();
+				camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] });
+				camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+			}
+			//エネミー移動
+			for (int i = 0; i < enemyNam; i++)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * 1.0f;
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * 1.0f;
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+
+
+			}
+
+			//コアと敵のあたり判定
+			for (int i = 0; i < enemyNam; i++)
+			{
+				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				if (CHit && enemyFlag[i] == 0)
+				{
+					coaHit -= 1;
+					enemyFlag[i] = 1;
+					ECount--;
+				}
+			}
+
+			if (coaHit <= 0)
+			{
+				scene = 2;
+			}
+
+
+			if (coaHit > 0 && ECount <= 0)
+			{
+				scene = 3;
+			}
+
+
+			// 最短距離を求める
+			for (int i = 0; i < enemyNam; i++)
+			{
+				Earliest.x = playerPos.x - enemyMovPos[i].x;
+				Earliest.y = playerPos.y - enemyMovPos[i].y;
+				Earliest.z = playerPos.z - enemyMovPos[i].z;
+
+				if (enemyFlag[i] == 0)
+				{
+					if (i == 0)
 					{
+						earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 						earliestEnemyNum = i;
-						earliest[0] = earliest[1];
 					}
-					if (earliest[0] < earliest[1])
+					if (i > 0)
 					{
-						earliestEnemyNum = earliestEnemyNum;
+						earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+						if (earliest[0] > earliest[1])
+						{
+							earliestEnemyNum = i;
+							earliest[0] = earliest[1];
+						}
+						if (earliest[0] < earliest[1])
+						{
+							earliestEnemyNum = earliestEnemyNum;
+						}
 					}
 				}
+				// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
 			}
-			// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
+
+			// 攻撃処理
+			if (input->TriggerMouseLeft() && thunderFlag == 0)
+			{
+				// 攻撃判定
+				bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
+				if (isTerritory)
+				{
+					thunderFlag = 1;
+					thunderPos = enemyMovPos[earliestEnemyNum];
+					thunderPos.y += 100.0;
+					thunderTimer = 10;
+					objThunder->SetPosition(thunderPos);
+				}
+			}
+			if (thunderFlag == 1)
+			{
+				thunderPos.y -= 20.0f;
+				if (thunderPos.y <= 40)
+				{
+					enemyFlag[earliestEnemyNum] = 1;
+					thunderFlag = 0;
+					ECount -= 1;
+				}
+			}
+
+			// 雷表示時間
+			if (thunderTimer != 0) { thunderTimer--; }
+
 		}
 
-		// 攻撃処理
-		if (input->TriggerMouseLeft() && thunderFlag == 0)
+		if (scene == 2)
 		{
-			// 攻撃判定
-			bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
-			if (isTerritory)
+			if (input->PushKey(DIK_ESCAPE))
 			{
-				thunderFlag = 1;
-				thunderPos = enemyMovPos[earliestEnemyNum];
-				thunderPos.y += 100.0;
-				thunderTimer = 10;
-				objThunder->SetPosition(thunderPos);
+				break;
 			}
 		}
-		if (thunderFlag == 1)
+		if (scene == 3)
 		{
-			thunderPos.y -= 20.0f;
-			if (thunderPos.y <= 40)
+			if (input->PushKey(DIK_ESCAPE))
 			{
-				enemyFlag[earliestEnemyNum] = 1;
-				thunderFlag = 0;
+				break;
 			}
 		}
-
-		// 雷表示時間
-		if (thunderTimer != 0) { thunderTimer--; }
 
 		for (int i = 0; i < enemyNam; i++)
 		{
 			objEnemyMov[i]->Update();
 		}
+		input->Update();
+
 		OBJInCoa->Update();
 		OBJOutCoaA->Update();
 		OBJOutCoaB->Update();
@@ -406,28 +475,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		dxCommon->PreDraw();
 
-		Object3d::PreDraw(dxCommon->GetCmdList());
-		OBJBack->Draw();
-		objGround->Draw();
-		OBJInCoa->Draw();
-		OBJOutCoaA->Draw();
-		OBJOutCoaB->Draw();
-
-		//objChr->Draw();
-
-		for (int i = 0; i < enemyNam; i++)
+		if (scene == 0)
 		{
-			if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
-		}
-		//player->Draw();
-		if (0 < thunderTimer) { objThunder->Draw(); }
-		Object3d::PostDraw();
 
-		spriteCommon->PreDraw();
-		for (auto& sprite : sprites)
-		{
-			sprite->Draw();
 		}
+		if (scene == 1)
+		{
+			Object3d::PreDraw(dxCommon->GetCmdList());
+			OBJBack->Draw();
+			objGround->Draw();
+			OBJInCoa->Draw();
+			OBJOutCoaA->Draw();
+			OBJOutCoaB->Draw();
+
+			//objChr->Draw();
+
+			for (int i = 0; i < enemyNam; i++)
+			{
+				if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+			}
+			//player->Draw();
+			if (0 < thunderTimer) { objThunder->Draw(); }
+			Object3d::PostDraw();
+
+			spriteCommon->PreDraw();
+			for (auto& sprite : sprites)
+			{
+				sprite->Draw();
+			}
+		}
+		if (scene == 2)
+		{
+
+		}
+		if (scene == 3)
+		{
+
+		}
+
+
 
 		// ４．描画コマンドここまで
 		dxCommon->PostDraw();
