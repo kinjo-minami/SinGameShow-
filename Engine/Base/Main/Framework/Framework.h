@@ -36,5 +36,7 @@ protected:
 	SpriteCommon* spriteCommon_ = nullptr;
 	Audio* audio_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
+
+
 };
 

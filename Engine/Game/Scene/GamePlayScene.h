@@ -35,7 +35,7 @@ private:
 	Model* modelChr = nullptr;
 	Object3d* objPost = nullptr;
 	Object3d* objChr = nullptr;
-	DebugCamera* camera = nullptr;
 	std::vector<Sprite*> sprites;
+	DebugCamera* camera = nullptr;
 };
 

@@ -15,6 +15,7 @@ void GamePlayScene::Initialize() {
 	spriteCommon->LoadTexture(1, L"Resources/house.png");
 
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height);
+
 	Object3d::SetCamera(camera);
 
 	Create2D_object();
