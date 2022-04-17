@@ -76,7 +76,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spritePlayer->SetSize({ 1280 ,720 });
 	spritePlayer->TransferVertexBuffer();
 	spriteTitle->SetSize({ 1280 ,720 });
-
+	   
 	//spriteTitle->Update();
 	spriteTitle->TransferVertexBuffer();
 	Sprite* spriteMouse = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
