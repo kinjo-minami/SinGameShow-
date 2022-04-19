@@ -83,6 +83,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Sprite* spriteClear = Sprite::Create(spriteCommon, 6, { 0,0 }, false, false);
 	Sprite* spriteOver = Sprite::Create(spriteCommon, 7, { 0,0 }, false, false);
 
+	spriteOver->SetSize({ 1280 ,720 });
+	spriteClear->SetSize({ 1280 ,720 });
+	spriteOver->TransferVertexBuffer();
+	spriteClear->TransferVertexBuffer();
+
 	//for (int i = 0; i < 20; i++)
 	//{
 	//	int texNum = rand() % 2;
@@ -354,7 +359,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 			}
 			//エネミー移動
-			/*for (int i = 0; i < enemyNam; i++)
+			for (int i = 0; i < enemyNam; i++)
 			{
 				XMFLOAT3 vel = {};
 				vel.x = sin((angle[i] * PI) / 180) * 0.5f;
@@ -367,7 +372,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				objEnemyMov[i]->Update();
 
 
-			}*/
+			}
 
 			//コアと敵のあたり判定
 			for (int i = 0; i < enemyNam; i++)
