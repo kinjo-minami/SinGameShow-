@@ -76,7 +76,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spritePlayer->SetSize({ 1280 ,720 });
 	spritePlayer->TransferVertexBuffer();
 	spriteTitle->SetSize({ 1280 ,720 });
-
+	   
 	//spriteTitle->Update();
 	spriteTitle->TransferVertexBuffer();
 	Sprite* spriteMouse = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
@@ -213,6 +213,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool viewDirty = false;
 	float distance = 20.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
+	
+	//enemy 
+	float enemyMove[10] = {};
+
+	for (int i = 0; i < 10; i++)
+	{
+		enemyMove[i] = (float)(rand() % 3 +1);
+		enemyMove[i] = enemyMove[i] / 10.0f;
+	}
 
 	// 最短距離関係
 	float earliest[10];
@@ -247,6 +256,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Audio* thunder = new Audio;
 	thunder->Initialize();
 	thunder->SoundLoadWave("Resources/BGM/thunder.wav");
+
 
 	while (true)  // ゲームループ
 	{
@@ -362,9 +372,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			for (int i = 0; i < enemyNam; i++)
 			{
 				XMFLOAT3 vel = {};
-				vel.x = sin((angle[i] * PI) / 180) * 0.5f;
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
 				vel.y = 0.0f;
-				vel.z = cos((angle[i] * PI) / 180) * 0.5f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
 				enemyMovPos[i].x -= vel.x;
 				enemyMovPos[i].y -= vel.y;
 				enemyMovPos[i].z -= vel.z;
@@ -435,6 +445,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//
 			//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
 			//}
+
+#pragma region enemy hit 
 			for (int i = 0; i < enemyNam; i++)
 			{
 				if (enemyFlag[i] == 0)
@@ -494,7 +506,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					ECount -= 1;
 				}
 			}
-
+#pragma endregion enemy hit
 			// 雷表示時間
 			if (thunderTimer != 0) { thunderTimer--; }
 
