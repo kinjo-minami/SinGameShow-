@@ -166,7 +166,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
 
 	// カメラ(プレイヤー)関係
-	XMFLOAT3 playerPos = camera->GetTarget();
+
+	XMFLOAT3 playerEye = camera->GetEye();
 
 	while (true)  // ゲームループ
 	{
@@ -219,44 +220,73 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			camera->MoveVector(move);
 		}
 
-		//dirty = true;
+		// 追加回転分の回転行列を生成
+		XMMATRIX matRotNew = XMMatrixIdentity();
+		matRotNew *= XMMatrixRotationY(-angleY);
+		// 累積の回転行列を合成
+		// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
+		// クォータニオンを使用する方が望ましい
+		matRot = matRotNew * matRot;
 
-		//if (dirty || viewDirty) 
-		{
-			// 追加回転分の回転行列を生成
-			XMMATRIX matRotNew = XMMatrixIdentity();
-			matRotNew *= XMMatrixRotationX(-angleX);
-			matRotNew *= XMMatrixRotationY(-angleY);
-			// 累積の回転行列を合成
-			// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
-			// クォータニオンを使用する方が望ましい
-			matRot = matRotNew * matRot;
+		// 注視点から視点へのベクトルと、上方向ベクトル
+		XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
+		float length = 0.0f;
+		XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
-			// 注視点から視点へのベクトルと、上方向ベクトル
-			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-			XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+		// ベクトルを回転
+		vTargetEye = XMVector3Transform(vTargetEye, matRot);
+		vUp = XMVector3Transform(vUp, matRot);
 
-			// ベクトルを回転
-			vTargetEye = XMVector3Transform(vTargetEye, matRot);
-			vUp = XMVector3Transform(vUp, matRot);
+		XMFLOAT3 playerTarget = camera->GetTarget();
+		camera->SetEye({ playerTarget.x + vTargetEye.m128_f32[0], playerTarget.y + vTargetEye.m128_f32[1], playerTarget.z + vTargetEye.m128_f32[2] });
+		camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
-			// 注視点からずらした位置に視点座標を決定
-			XMFLOAT3 target = camera->GetTarget();
-			XMFLOAT3 eye = camera->GetEye();
+		// 注視点からずらした位置に視点座標を決定
+		XMFLOAT3 target = camera->GetTarget();
+		XMFLOAT3 eye = camera->GetEye();
 
-			camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] + 15.0f });
-			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+		XMFLOAT3 vTargetEye2 = { 0.0f, 0.0f, 0.0f };
 
-			cloudPos = { target.x - vTargetEye.m128_f32[0], target.y - vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] };
-			objCloud->SetPosition(cloudPos);
-		}
+		// 大きさ計算　　　　　　　↓引き算が逆なので逆方向ベクトルが出ている
+		length = sqrtf(pow(target.x - eye.x, 2) + pow(target.y - eye.y, 2) + pow(target.z - eye.z, 2));
+		vTargetEye2.x = eye.x - target.x;
+		vTargetEye2.y = eye.y - target.y;
+		vTargetEye2.z = eye.z - target.z;
+
+		vTargetEye2.x /= length;
+		vTargetEye2.y /= length;
+		vTargetEye2.z /= length;
+
+		vTargetEye2.x *= 5;
+		vTargetEye2.y *= 5;
+		vTargetEye2.z *= 5;
+
+		//vTargetEye2.m128_f32[0] = sqrt(pow(target.x - eye.x, 2));
+		//vTargetEye2.m128_f32[1] = sqrt(pow(target.y - eye.y, 2));
+		//vTargetEye2.m128_f32[2] = sqrt(pow(target.z - eye.z, 2));
+		////                         ↓おかしい。ベクトルの大きさで割る
+		//double vTargetEyeX = 1 / vTargetEye2.m128_f32[0];
+		//double vTargetEyeY = 1 / vTargetEye2.m128_f32[1];
+		//double vTargetEyeZ = 1 / vTargetEye2.m128_f32[2];
+		//// 正規化　　　　　　　　　↓おかしい。target - eye のベクトルがただしい。
+		//vTargetEye2.m128_f32[0] = vTargetEye2.m128_f32[0] * vTargetEyeX;
+		//vTargetEye2.m128_f32[1] = vTargetEye2.m128_f32[1] * vTargetEyeY;
+		//vTargetEye2.m128_f32[2] = vTargetEye2.m128_f32[2] * vTargetEyeZ;
+
+		// 前提。この時点で大きさが1になった状態のtargetからeyeへ向かうベクトルが出ている。
+
+
+
+		objCloud->SetScale({ 0.1f, 0.1f, 0.1f });
+		cloudPos = { target.x + vTargetEye2.x, target.y + vTargetEye2.y, target.z + vTargetEye2.z };
+		objCloud->SetPosition(cloudPos);
 
 		// 最短距離を求める
 		for (int i = 0; i < enemyNam; i++)
 		{
-			Earliest.x = playerPos.x - enemyMovPos[i].x;
-			Earliest.y = playerPos.y - enemyMovPos[i].y;
-			Earliest.z = playerPos.z - enemyMovPos[i].z;
+			Earliest.x = playerTarget.x - enemyMovPos[i].x;
+			Earliest.y = playerTarget.y - enemyMovPos[i].y;
+			Earliest.z = playerTarget.z - enemyMovPos[i].z;
 
 			if (enemyFlag[i] == 0)
 			{
@@ -287,7 +317,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (input->TriggerMouseLeft() && thunderFlag == 0)
 		{
 			// 攻撃判定
-			bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
+			bool isTerritory = Collision::territory(playerTarget, enemyMovPos[earliestEnemyNum]);
 			if (isTerritory)
 			{
 				thunderFlag = 1;
