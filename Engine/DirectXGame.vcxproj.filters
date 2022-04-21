@@ -49,6 +49,27 @@
     <Filter Include="ソース ファイル\base\Main">
       <UniqueIdentifier>{49bbc401-848c-4cb9-bfcd-a79c02259274}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\Scene">
+      <UniqueIdentifier>{6826b163-8cb6-4485-ac78-cf057b8753a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game\Scene">
+      <UniqueIdentifier>{e3002e77-bd98-4767-83da-e5edc1fa6c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\GameBase">
+      <UniqueIdentifier>{351dc17a-f583-443b-9edd-de862aa1e99f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base\Main">
+      <UniqueIdentifier>{ab03dea1-3415-4056-92bc-dcd0a80c92ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base\GameBase">
+      <UniqueIdentifier>{6069a489-a2be-4b04-b302-a12c415f82bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base\GameBase\Camera">
+      <UniqueIdentifier>{47b498d6-9102-4681-b60b-b2c9e4d2ca4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\GameBase\Camera">
+      <UniqueIdentifier>{1a01dfba-aa35-480f-96d3-134ad93210ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\2D,3D\2D\SpriteCommon.cpp">
@@ -63,26 +84,44 @@
     <ClCompile Include="Game\2D,3D\3D\Model.cpp">
       <Filter>ソース ファイル\game\2D,3Dobject\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Base\WinApp.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\Input.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\DirectXCommon.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\Audio.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Framework\Framework.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\MyGame.cpp">
-      <Filter>ソース ファイル\game</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\base\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\MyGame.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\GamePlayScene.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\GameBase\WinApp.cpp">
+      <Filter>ソース ファイル\base\GameBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\GameBase\Input.cpp">
+      <Filter>ソース ファイル\base\GameBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\GameBase\DirectXCommon.cpp">
+      <Filter>ソース ファイル\base\GameBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\GameBase\Audio.cpp">
+      <Filter>ソース ファイル\base\GameBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\Main\Framework\Framework.cpp">
+      <Filter>ソース ファイル\base\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\Main\BaseScene.cpp">
+      <Filter>ソース ファイル\base\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\Main\SceneManager\SceneManager.cpp">
+      <Filter>ソース ファイル\base\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\GameBase\Camera\Camera.cpp">
+      <Filter>ソース ファイル\base\GameBase\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\GameBase\Camera\DebugCamera.cpp">
+      <Filter>ソース ファイル\base\GameBase\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,29 +165,47 @@
     <ClInclude Include="Game\2D,3D\3D\Object3d.h">
       <Filter>ヘッダー ファイル\game\2D,3Dobject\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Base\WinApp.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\PipelineSet.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Input.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\DirectXCommon.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Audio.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Framework\Framework.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\MyGame.h">
-      <Filter>ヘッダー ファイル\game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\2D,3D\2D\Sprite.h">
       <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\MyGame.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\GamePlayScene.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\PipelineSet.h">
+      <Filter>ヘッダー ファイル\base\GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\WinApp.h">
+      <Filter>ヘッダー ファイル\base\GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\Input.h">
+      <Filter>ヘッダー ファイル\base\GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\DirectXCommon.h">
+      <Filter>ヘッダー ファイル\base\GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\Audio.h">
+      <Filter>ヘッダー ファイル\base\GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Main\Framework\Framework.h">
+      <Filter>ヘッダー ファイル\base\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Main\BaseScene.h">
+      <Filter>ヘッダー ファイル\base\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Main\SceneManager\SceneManager.h">
+      <Filter>ヘッダー ファイル\base\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\Camera\DebugCamera.h">
+      <Filter>ヘッダー ファイル\base\GameBase\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\GameBase\Camera\Camera.h">
+      <Filter>ヘッダー ファイル\base\GameBase\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

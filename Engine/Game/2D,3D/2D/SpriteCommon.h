@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"PipelineSet.h"
 #include <DirectXMath.h>
 
@@ -10,6 +10,9 @@ private:
 
 public:
 	static const int SpriteSRVCount = 512;
+
+public:
+	static SpriteCommon* GetInstance();
 
 private:
 

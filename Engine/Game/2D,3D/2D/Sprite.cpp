@@ -1,72 +1,72 @@
-#include"Sprite.h"
+ï»¿#include"Sprite.h"
 #include<d3dx12.h>
 using namespace DirectX;
 using namespace Microsoft::WRL;
-Sprite* Sprite::Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+Sprite* Sprite::Create(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
     Sprite* instance = new Sprite();
 
-    instance->initialize(spriteCommon, texNumber, anchorpoint, isFlipX, isFlipY);
+    instance->initialize(texNumber, anchorpoint, isFlipX, isFlipY);
 
     return instance;
 }
-void Sprite::initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX , bool isFlipY)
+void Sprite::initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX , bool isFlipY)
 {
     HRESULT result = S_FALSE;
 
  
-    // ƒeƒNƒXƒ`ƒƒ”Ô†‚ðƒRƒs[
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·ã‚’ã‚³ãƒ”ãƒ¼
     texNumber_ = texNumber;
 
-    // ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg‚ðƒRƒs[
+    // ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆã‚’ã‚³ãƒ”ãƒ¼
     anchorpoint_ = anchorpoint;
 
-    // ”½“]ƒtƒ‰ƒO‚ðƒRƒs[
+    // åè»¢ãƒ•ãƒ©ã‚°ã‚’ã‚³ãƒ”ãƒ¼
     isFlipX_ = isFlipX;
     isFlipY_ = isFlipY;
 
-    SspriteCommon = spriteCommon;
+    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
-    // ’¸“_ƒf[ƒ^
+    // é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
     VertexPosUv vertices[4];
 
-    // Žw’è”Ô†‚Ì‰æ‘œ‚ª“Ç‚Ýž‚ÝÏ‚Ý‚È‚ç
-    if (SspriteCommon->GetTexBuff(texNumber_)) {
-        // ƒeƒNƒXƒ`ƒƒî•ñŽæ“¾
-        D3D12_RESOURCE_DESC resDesc = SspriteCommon->GetTexBuff(texNumber_)->GetDesc();
+    // æŒ‡å®šç•ªå·ã®ç”»åƒãŒèª­ã¿è¾¼ã¿æ¸ˆã¿ãªã‚‰
+    if (spriteCommon->GetTexBuff(texNumber_)) {
+        // ãƒ†ã‚¯ã‚¹ãƒãƒ£æƒ…å ±å–å¾—
+        D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber_)->GetDesc();
 
-        // ƒXƒvƒ‰ƒCƒg‚Ì‘å‚«‚³‚ð‰æ‘œ‚Ì‰ð‘œ“x‚É‡‚í‚¹‚é
+        // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®å¤§ãã•ã‚’ç”»åƒã®è§£åƒåº¦ã«åˆã‚ã›ã‚‹
         size_ = { (float)resDesc.Width, (float)resDesc.Height };
         texSize_ = { (float)resDesc.Width, (float)resDesc.Height };
     }
 
-    // ’¸“_ƒoƒbƒtƒ@¶¬
-    result = SspriteCommon->GetDevice()->CreateCommittedResource(
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
+    result = spriteCommon->GetDevice()->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
         D3D12_HEAP_FLAG_NONE,
         &CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
         D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertBuff_));
 
-    // ’¸“_ƒoƒbƒtƒ@ƒf[ƒ^“]‘—
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ‡ãƒ¼ã‚¿è»¢é€
     TransferVertexBuffer();
 
-    // ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
     vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
     vbView_.SizeInBytes = sizeof(vertices);
     vbView_.StrideInBytes = sizeof(vertices[0]);
 
-    // ’è”ƒoƒbƒtƒ@‚Ì¶¬
-    result = SspriteCommon->GetDevice()->CreateCommittedResource(
+    // å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
+    result = spriteCommon->GetDevice()->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
         D3D12_HEAP_FLAG_NONE,
         &CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
         D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
         IID_PPV_ARGS(&constBuff_));
 
-    // ’è”ƒoƒbƒtƒ@‚Éƒf[ƒ^“]‘—
+    // å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿è»¢é€
     ConstBufferData* constMap = nullptr;
     result = constBuff_->Map(0, nullptr, (void**)&constMap);
-    constMap->color = XMFLOAT4(1, 1, 1, 1); // FŽw’èiRGBAj
+    constMap->color = XMFLOAT4(1, 1, 1, 1); // è‰²æŒ‡å®šï¼ˆRGBAï¼‰
     constMap->mat = spriteCommon->GetMatProjection();
     constBuff_->Unmap(0, nullptr);
 
@@ -74,18 +74,19 @@ void Sprite::initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anc
 
 void Sprite::TransferVertexBuffer()
 {
+    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
     HRESULT result = S_FALSE;
 
-    // ’¸“_ƒf[ƒ^
+    // é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
     VertexPosUv vertices[] = {
         //     u     v
-        {{}, {0.0f, 1.0f}}, // ¶‰º
-        {{}, {0.0f, 0.0f}}, // ¶ã
-        {{}, {1.0f, 1.0f}}, // ‰E‰º
-        {{}, {1.0f, 0.0f}}, // ‰Eã
+        {{}, {0.0f, 1.0f}}, // å·¦ä¸‹
+        {{}, {0.0f, 0.0f}}, // å·¦ä¸Š
+        {{}, {1.0f, 1.0f}}, // å³ä¸‹
+        {{}, {1.0f, 0.0f}}, // å³ä¸Š
     };
 
-    // ¶‰ºA¶ãA‰E‰ºA‰Eã
+    // å·¦ä¸‹ã€å·¦ä¸Šã€å³ä¸‹ã€å³ä¸Š
     enum { LB, LT, RB, RT };
 
     float left = (0.0f - anchorpoint_.x) * size_.x;
@@ -94,39 +95,39 @@ void Sprite::TransferVertexBuffer()
     float bottom = (1.0f - anchorpoint_.y) * size_.y;
 
     if (isFlipX_)
-    {// ¶‰E“ü‚ê‘Ö‚¦
+    {// å·¦å³å…¥ã‚Œæ›¿ãˆ
         left = -left;
         right = -right;
     }
 
     if (isFlipY_)
-    {// ¶‰E“ü‚ê‘Ö‚¦
+    {// å·¦å³å…¥ã‚Œæ›¿ãˆ
         top = -top;
         bottom = -bottom;
     }
 
-    vertices[LB].pos = { left, bottom,  0.0f }; // ¶‰º
-    vertices[LT].pos = { left, top,     0.0f }; // ¶ã
-    vertices[RB].pos = { right, bottom, 0.0f }; // ‰E‰º
-    vertices[RT].pos = { right, top,    0.0f }; // ‰Eã
+    vertices[LB].pos = { left, bottom,  0.0f }; // å·¦ä¸‹
+    vertices[LT].pos = { left, top,     0.0f }; // å·¦ä¸Š
+    vertices[RB].pos = { right, bottom, 0.0f }; // å³ä¸‹
+    vertices[RT].pos = { right, top,    0.0f }; // å³ä¸Š
 
-    // Žw’è”Ô†‚Ì‰æ‘œ‚ª“Ç‚Ýž‚ÝÏ‚Ý‚È‚ç
-    if (SspriteCommon->GetTexBuff(texNumber_)) {
-        // ƒeƒNƒXƒ`ƒƒî•ñŽæ“¾
-        D3D12_RESOURCE_DESC resDesc = SspriteCommon->GetTexBuff(texNumber_)->GetDesc();
+    // æŒ‡å®šç•ªå·ã®ç”»åƒãŒèª­ã¿è¾¼ã¿æ¸ˆã¿ãªã‚‰
+    if (spriteCommon->GetTexBuff(texNumber_)) {
+        // ãƒ†ã‚¯ã‚¹ãƒãƒ£æƒ…å ±å–å¾—
+        D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber_)->GetDesc();
 
         float tex_left = texLeftTop_.x / resDesc.Width;
         float tex_right = (texLeftTop_.x + texSize_.x) / resDesc.Width;
         float tex_top = texLeftTop_.y / resDesc.Height;
         float tex_bottom = (texLeftTop_.y + texSize_.y) / resDesc.Height;
 
-        vertices[LB].uv = { tex_left,   tex_bottom }; // ¶‰º
-        vertices[LT].uv = { tex_left,   tex_top }; // ¶ã
-        vertices[RB].uv = { tex_right,  tex_bottom }; // ‰E‰º
-        vertices[RT].uv = { tex_right,  tex_top }; // ‰Eã
+        vertices[LB].uv = { tex_left,   tex_bottom }; // å·¦ä¸‹
+        vertices[LT].uv = { tex_left,   tex_top }; // å·¦ä¸Š
+        vertices[RB].uv = { tex_right,  tex_bottom }; // å³ä¸‹
+        vertices[RT].uv = { tex_right,  tex_top }; // å³ä¸Š
     }
 
-    // ’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
     VertexPosUv* vertMap = nullptr;
     result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
     memcpy(vertMap, vertices, sizeof(vertices));
@@ -135,38 +136,40 @@ void Sprite::TransferVertexBuffer()
 
 void Sprite::Update()
 {
-    // ƒ[ƒ‹ƒhs—ñ‚ÌXV
+    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+    // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ›´æ–°
     matWorld_ = XMMatrixIdentity();
-    // ZŽ²‰ñ“]
+    // Zè»¸å›žè»¢
     matWorld_ *= XMMatrixRotationZ(XMConvertToRadians(rotation_));
-    // •½sˆÚ“®
+    // å¹³è¡Œç§»å‹•
     matWorld_ *= XMMatrixTranslation(position_.x,position_.y,position_.z);
 
-    // ’è”ƒoƒbƒtƒ@‚Ì“]‘—
+    // å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®è»¢é€
     ConstBufferData* constMap = nullptr;
     HRESULT result = constBuff_->Map(0, nullptr, (void**)&constMap);
-    constMap->mat = matWorld_ * SspriteCommon->GetMatProjection();
+    constMap->mat = matWorld_ * spriteCommon->GetMatProjection();
     constMap->color = color_;
     constBuff_->Unmap(0, nullptr);
 }
 
 void Sprite::Draw()
 {
+    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
     if (isInvisible_) {
         return;
     }
 
-    ID3D12GraphicsCommandList* cmdList = SspriteCommon->GetCmd();
+    ID3D12GraphicsCommandList* cmdList = spriteCommon->GetCmd();
 
     
-    // ’¸“_ƒoƒbƒtƒ@‚ðƒZƒbƒg
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆ
     cmdList->IASetVertexBuffers(0, 1, &vbView_);
 
-    // ’è”ƒoƒbƒtƒ@‚ðƒZƒbƒg
+    // å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆ
     cmdList->SetGraphicsRootConstantBufferView(0,constBuff_->GetGPUVirtualAddress());
 
-    // ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ðƒZƒbƒg
-    SspriteCommon->SetGraphicsRootDescriptorTable(1, texNumber_);
-    // ƒ|ƒŠƒSƒ“‚Ì•`‰æi4’¸“_‚ÅŽlŠpŒ`j
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
+    spriteCommon->SetGraphicsRootDescriptorTable(1, texNumber_);
+    // ãƒãƒªã‚´ãƒ³ã®æç”»ï¼ˆ4é ‚ç‚¹ã§å››è§’å½¢ï¼‰
     cmdList->DrawInstanced(4, 1, 0, 0);
 }

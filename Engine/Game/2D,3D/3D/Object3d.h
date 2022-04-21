@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Windows.h>
 #include <wrl.h>
@@ -6,27 +6,40 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include<string>
-#include"Model.h"
 
-/// 3DƒIƒuƒWƒFƒNƒg
+#include"Model.h"
+#include"Camera.h"
+//#include"PipelineSet.h"
+
+/// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 class Object3d
 {
-private: // ƒGƒCƒŠƒAƒX
-	// Microsoft::WRL::‚ğÈ—ª
+private: // ã‚¨ã‚¤ãƒªã‚¢ã‚¹
+	// Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
-	//ƒ‚ƒfƒ‹
-	Model* model = nullptr;
-public: // ƒTƒuƒNƒ‰ƒX
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+
+public: // ã‚µãƒ–ã‚¯ãƒ©ã‚¹
+		// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚»ãƒƒãƒˆ
+	struct PipelineSet
+	{
+		// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
+		ComPtr<ID3D12RootSignature> rootsignature;
+		// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		ComPtr<ID3D12PipelineState> pipelinestate;
+	};
+
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferDataB0
 	{
-		//XMFLOAT4 color;	// F (RGBA)
-		XMMATRIX mat;	// ‚R‚c•ÏŠ·s—ñ
+		//XMMATRIX mat;	// ï¼“ï¼¤å¤‰æ›è¡Œåˆ—
+		XMMATRIX viewproj;
+		XMMATRIX world;
+		XMFLOAT3 cameraPos;
 	};
 private:
 	static const int division = 50;
@@ -34,100 +47,93 @@ private:
 	static const float prizmHeight;
 	static const int planeCount = division * 2 + division * 2;
 	static const int vertexCount = planeCount * 3;
-public: // Ã“Iƒƒ“ƒoŠÖ”
-	static bool StaticInitialize(ID3D12Device* device, int window_width, int window_height);
 
-	/// •`‰æ‘Oˆ—
+public: // é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
+	static void StaticInitialize(ID3D12Device* device, Camera* camera = nullptr);
+
+	/*static void SetCamera(Camera* camera) {
+		Object3d::camera = camera;
+	}*/
+
+	/// æç”»å‰å‡¦ç†
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
-	/// •`‰æŒãˆ—
+	/// <summary>
+	/// ã‚«ãƒ¡ãƒ©ã®ã‚»ãƒƒãƒˆ
+	/// </summary>
+	/// <param name="camera">ã‚«ãƒ¡ãƒ©</param>
+	static void SetCamera(Camera* camera) {
+		Object3d::camera = camera;
+	}
+
+	/// æç”»å¾Œå‡¦ç†
 	static void PostDraw();
 
-	/// 3DƒIƒuƒWƒFƒNƒg¶
+	Object3d* Create(Model* model);
+
+	/// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿ
 	static Object3d* Create();
-
-	/// ‹“_À•W‚Ìæ“¾
-	static const XMFLOAT3& GetEye() { return eye; }
-
-	/// ‹“_À•W‚Ìİ’è
-	static void SetEye(XMFLOAT3 eye);
-
-	/// ’‹“_À•W‚Ìæ“¾
-	static const XMFLOAT3& GetTarget() { return target; }
-
-	/// ’‹“_À•W‚Ìİ’è
-	static void SetTarget(XMFLOAT3 target);
-
-	/// ƒxƒNƒgƒ‹‚É‚æ‚éˆÚ“®
-	static void CameraMoveVector(XMFLOAT3 move);
-
 	//
 	void SetModel(Model* model) { this->model = model; }
 	//static void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
-private: // Ã“Iƒƒ“ƒo•Ï”
-	// ƒfƒoƒCƒX
+private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
+	// ãƒ‡ãƒã‚¤ã‚¹
 	static ID3D12Device* device;
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 	static ID3D12GraphicsCommandList* cmdList;
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
-	static ComPtr<ID3D12RootSignature> rootsignature;
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
-	static ComPtr<ID3D12PipelineState> pipelinestate;
-	// ƒrƒ…[s—ñ
-	static XMMATRIX matView;
-	// Ë‰es—ñ
-	static XMMATRIX matProjection;
-	// ‹“_À•W
-	static XMFLOAT3 eye;
-	// ’‹“_À•W
-	static XMFLOAT3 target;
-	// ã•ûŒüƒxƒNƒgƒ‹
-	static XMFLOAT3 up;
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³
+	static PipelineSet pipelineSet;
+	// ã‚«ãƒ¡ãƒ©
+	static Camera* camera;
 
 
-private:// Ã“Iƒƒ“ƒoŠÖ”
-	/// ƒJƒƒ‰‰Šú‰»
-	static void InitializeCamera(int window_width, int window_height);
+private:// é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
+	/// ã‚«ãƒ¡ãƒ©åˆæœŸåŒ–
+	//static void InitializeCamera(int window_width, int window_height);
 
-	/// ƒOƒ‰ƒtƒBƒbƒNƒpƒCƒvƒ‰ƒCƒ“¶¬
+	/// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
 	static bool InitializeGraphicsPipeline();
 
-	/// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
-	static bool LoadTexture(const std::string& directoryPath, const std::string& filename);
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
+	//static bool LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	static void CreateModel();
 
-	/// ƒrƒ…[s—ñ‚ğXV
-	static void UpdateViewMatrix();
 
-public: // ƒƒ“ƒoŠÖ”
-	//‰Šú‰»
+	/// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
+	//static void UpdateViewMatrix();
+
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
+	//åˆæœŸåŒ–
 	bool Initialize();
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	void Update();
-	/// •`‰æ
+	/// æç”»
 	void Draw();
 
-	/// À•W‚Ìæ“¾
+	/// åº§æ¨™ã®å–å¾—
 	const XMFLOAT3& GetPosition() { return position; }
 
-	/// À•W‚Ìİ’è
+	/// åº§æ¨™ã®è¨­å®š
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
 
-private: // ƒƒ“ƒo•Ï”
-	ComPtr<ID3D12Resource> constBuffB0; // ’è”ƒoƒbƒtƒ@
-	// F
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
+	ComPtr<ID3D12Resource> constBuffB0; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	// è‰²
 	XMFLOAT4 color = { 1,1,1,1 };
-	// ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+	// ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 	XMFLOAT3 scale = { 1.0,1.0,1.0 };
-	// X,Y,Z²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
+	// X,Y,Zè»¸å›ã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’
 	XMFLOAT3 rotation = { 0,0,0 };
-	// ƒ[ƒJƒ‹À•W
+	// ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™
 	XMFLOAT3 position = { 0,0,1 };
-	// ƒ[ƒJƒ‹ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	// ãƒ­ãƒ¼ã‚«ãƒ«ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	XMMATRIX matWorld;
-	// eƒIƒuƒWƒFƒNƒg
+	// è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	Object3d* parent = nullptr;
-};
 
+	//ãƒ¢ãƒ‡ãƒ«
+	Model* model = nullptr;
+
+};
