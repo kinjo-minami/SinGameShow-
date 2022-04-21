@@ -141,6 +141,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelEnemyMovB = nullptr;
 	Model* modelEnemyMovC = nullptr;
 	Model* modelBack = Model::LoadFromOBJ("back");
+	Model* modelCloud = Model::LoadFromOBJ("cloud");
+
 	Object3d* objEnemyMov[10] = {};
 	XMFLOAT3 enemyMovPos[10] = {};
 	for (int i = 0; i < 10; i++)
@@ -164,12 +166,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJOutCoaB = Object3d::Create();
 	Object3d* OBJBack = Object3d::Create();
 
-
 	Object3d* objChr = Object3d::Create();
 	Object3d* player = Object3d::Create();
 	Object3d* objThunder = Object3d::Create();
 	Object3d* objGround = Object3d::Create();
-
+	Object3d* objCloud = Object3d::Create();
 
 	player->SetModel(modelChr);
 	OBJInCoa->SetModel(inCoa);
@@ -178,9 +179,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	OBJBack->SetModel(modelBack);
 	objGround->SetModel(modelGround);
 
-
 	objChr->SetModel(modelChr);
 	objThunder->SetModel(modelThunder);
+	objCloud->SetModel(modelCloud);
 
 	OBJInCoa->SetPosition({ 0,4,50 });
 	OBJOutCoaA->SetPosition({ 0,4,50 });
@@ -288,7 +289,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	thunder->Initialize();
 	thunder->SoundLoadWave("Resources/BGM/thunder.wav");
 
-
+	// 雲関係
+	XMFLOAT3 cloudPos = objCloud->GetPosition();
+	XMFLOAT3 cloudRot = objCloud->GetRotation();
 
 	while (true)  // ゲームループ
 	{
@@ -378,33 +381,57 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				break;
 			}
 
+			// 追加回転分の回転行列を生成
+			XMMATRIX matRotNew = XMMatrixIdentity();
+			matRotNew *= XMMatrixRotationY(-angleY);
+			// 累積の回転行列を合成
+			// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
+			// クォータニオンを使用する方が望ましい
+			matRot = matRotNew * matRot;
 
-			dirty = true;
+			// 注視点から視点へのベクトルと、上方向ベクトル
+			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
+			XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
-			if (dirty || viewDirty)
-			{
-				// 追加回転分の回転行列を生成
-				XMMATRIX matRotNew = XMMatrixIdentity();
-				matRotNew *= XMMatrixRotationX(-angleX);
-				matRotNew *= XMMatrixRotationY(-angleY);
-				// 累積の回転行列を合成
-				// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
-				// クォータニオンを使用する方が望ましい
-				matRot = matRotNew * matRot;
+			// ベクトルを回転
+			vTargetEye = XMVector3Transform(vTargetEye, matRot);
+			vUp = XMVector3Transform(vUp, matRot);
 
-				// 注視点から視点へのベクトルと、上方向ベクトル
-				XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-				XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+			// 長さ
+			float length = 0.0f;
 
-				// ベクトルを回転
-				vTargetEye = XMVector3Transform(vTargetEye, matRot);
-				vUp = XMVector3Transform(vUp, matRot);
+			XMFLOAT3 target1 = camera->GetTarget();
+			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
+			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
-				// 注視点からずらした位置に視点座標を決定
-				const XMFLOAT3& target = camera->GetTarget();
-				camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] });
-				camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
-			}
+			// 注視点からずらした位置に視点座標を決定
+			XMFLOAT3 target2 = camera->GetTarget();
+			XMFLOAT3 eye = camera->GetEye();
+
+			XMFLOAT3 fTargetEye = { 0.0f, 0.0f, 0.0f };
+
+			// 大きさ計算
+			length = sqrtf(pow(target2.x - eye.x, 2) + pow(target2.y - eye.y, 2) + pow(target2.z - eye.z, 2));
+			fTargetEye.x = eye.x - target2.x;
+			fTargetEye.y = eye.y - target2.y;
+			fTargetEye.z = eye.z - target2.z;
+
+			fTargetEye.x /= length;
+			fTargetEye.y /= length;
+			fTargetEye.z /= length;
+
+			fTargetEye.x *= 17;
+			fTargetEye.y *= 17;
+			fTargetEye.z *= 17;
+
+			objCloud->SetScale({ 1.0f, 1.0f, 1.0f });
+			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
+			objCloud->SetPosition(cloudPos);
+
+			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+			cloudRot.y *= 180 / PI;
+			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+
 			//エネミー移動
 			for (int i = 0; i < enemyNam; i++)
 			{
@@ -574,6 +601,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		input->Update();
 
+		camera->Update();
 		OBJInCoa->Update();
 		OBJOutCoaA->Update();
 		OBJOutCoaB->Update();
@@ -582,7 +610,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		player->Update();
 		objChr->Update();
 		objThunder->Update();
-		camera->Update();
+		objCloud->Update();
+
 		spriteTitle->Update();
 		spriteClear->Update();
 		spriteOver->Update();
@@ -612,6 +641,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OBJInCoa->Draw();
 			OBJOutCoaA->Draw();
 			OBJOutCoaB->Draw();
+			objCloud->Draw();
 
 			//objChr->Draw();
 
@@ -652,7 +682,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			/*	for (auto& sprite : sprites)
 				{
 				}*/
-			spritePlayer->Draw();
+			//spritePlayer->Draw();
 			spriteReader->Draw();
 			spriteCoraRe->Draw();
 			for (int i = 0; i < enemyNam; i++)
@@ -697,9 +727,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete modelEnemyMovA;
 	delete modelEnemyMovB;
 	delete modelEnemyMovC;
+	delete modelCloud;
 	delete objChr;
 	delete OBJInCoa;
 	delete objThunder;
+	delete objCloud;
 
 	for (int i = 0; i < enemyNam; i++)
 	{
