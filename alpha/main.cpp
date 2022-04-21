@@ -164,10 +164,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 雲関係
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
-
-	// カメラ(プレイヤー)関係
-
-	XMFLOAT3 playerEye = camera->GetEye();
+	XMFLOAT3 cloudRot = objCloud->GetRotation();
 
 	while (true)  // ゲームループ
 	{
@@ -230,36 +227,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 注視点から視点へのベクトルと、上方向ベクトル
 		XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
-		float length = 0.0f;
 		XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
 		// ベクトルを回転
 		vTargetEye = XMVector3Transform(vTargetEye, matRot);
 		vUp = XMVector3Transform(vUp, matRot);
 
-		XMFLOAT3 playerTarget = camera->GetTarget();
-		camera->SetEye({ playerTarget.x + vTargetEye.m128_f32[0], playerTarget.y + vTargetEye.m128_f32[1], playerTarget.z + vTargetEye.m128_f32[2] });
+		// 長さ
+		float length = 0.0f;
+
+		XMFLOAT3 target1 = camera->GetTarget();
+		camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
 		camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
 		// 注視点からずらした位置に視点座標を決定
-		XMFLOAT3 target = camera->GetTarget();
+		XMFLOAT3 target2 = camera->GetTarget();
 		XMFLOAT3 eye = camera->GetEye();
 
-		XMFLOAT3 vTargetEye2 = { 0.0f, 0.0f, 0.0f };
+		XMFLOAT3 fTargetEye = { 0.0f, 0.0f, 0.0f };
 
-		// 大きさ計算　　　　　　　↓引き算が逆なので逆方向ベクトルが出ている
-		length = sqrtf(pow(target.x - eye.x, 2) + pow(target.y - eye.y, 2) + pow(target.z - eye.z, 2));
-		vTargetEye2.x = eye.x - target.x;
-		vTargetEye2.y = eye.y - target.y;
-		vTargetEye2.z = eye.z - target.z;
+		// 大きさ計算
+		length = sqrtf(pow(target2.x - eye.x, 2) + pow(target2.y - eye.y, 2) + pow(target2.z - eye.z, 2));
+		fTargetEye.x = eye.x - target2.x;
+		fTargetEye.y = eye.y - target2.y;
+		fTargetEye.z = eye.z - target2.z;
 
-		vTargetEye2.x /= length;
-		vTargetEye2.y /= length;
-		vTargetEye2.z /= length;
+		fTargetEye.x /= length;
+		fTargetEye.y /= length;
+		fTargetEye.z /= length;
 
-		vTargetEye2.x *= 5;
-		vTargetEye2.y *= 5;
-		vTargetEye2.z *= 5;
+		fTargetEye.x *= 17;
+		fTargetEye.y *= 17;
+		fTargetEye.z *= 17;
 
 		//vTargetEye2.m128_f32[0] = sqrt(pow(target.x - eye.x, 2));
 		//vTargetEye2.m128_f32[1] = sqrt(pow(target.y - eye.y, 2));
@@ -275,18 +274,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 前提。この時点で大きさが1になった状態のtargetからeyeへ向かうベクトルが出ている。
 
-
-
-		objCloud->SetScale({ 0.1f, 0.1f, 0.1f });
-		cloudPos = { target.x + vTargetEye2.x, target.y + vTargetEye2.y, target.z + vTargetEye2.z };
+		objCloud->SetScale({ 1.0f, 1.0f, 1.0f });
+		cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 		objCloud->SetPosition(cloudPos);
+
+		cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+		cloudRot.y *= 180 / PI;
+		objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 
 		// 最短距離を求める
 		for (int i = 0; i < enemyNam; i++)
 		{
-			Earliest.x = playerTarget.x - enemyMovPos[i].x;
-			Earliest.y = playerTarget.y - enemyMovPos[i].y;
-			Earliest.z = playerTarget.z - enemyMovPos[i].z;
+			Earliest.x = target1.x - enemyMovPos[i].x;
+			Earliest.y = target1.y - enemyMovPos[i].y;
+			Earliest.z = target1.z - enemyMovPos[i].z;
 
 			if (enemyFlag[i] == 0)
 			{
@@ -317,7 +318,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (input->TriggerMouseLeft() && thunderFlag == 0)
 		{
 			// 攻撃判定
-			bool isTerritory = Collision::territory(playerTarget, enemyMovPos[earliestEnemyNum]);
+			bool isTerritory = Collision::territory(target1, enemyMovPos[earliestEnemyNum]);
 			if (isTerritory)
 			{
 				thunderFlag = 1;

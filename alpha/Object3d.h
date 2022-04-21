@@ -156,6 +156,12 @@ public: // ƒƒ“ƒoŠÖ”
 	/// À•W‚ÌÝ’è
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
 
+	/// ‰ñ“]‚ÌŽæ“¾
+	const XMFLOAT3& GetRotation() { return rotation; }
+
+	/// ‰ñ“]‚ÌÝ’è
+	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
+
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 
 private: // ƒƒ“ƒo•Ï”
