@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d::SetCamera(camera);
 
 	// カメラ注視点をセット
-	camera->SetTarget({ 0, 1, -100 });
+	camera->SetTarget({ 0, 1, -200 });
 	camera->SetDistance(3.0f);
 
 #pragma endregion DirectX初期化処理
@@ -56,7 +56,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 描画初期化処理
 
 	SpriteCommon* spriteCommon = new SpriteCommon();
+	SpriteCommon* spriteCommon2 = new SpriteCommon();
 	spriteCommon->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
+	spriteCommon2->initialize(dxCommon->GetDev(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 
 	spriteCommon->LoadTexture(0, L"Resources/texture.png");
 	spriteCommon->LoadTexture(1, L"Resources/house.png");
@@ -66,6 +68,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->LoadTexture(5, L"Resources/title.png");
 	spriteCommon->LoadTexture(6, L"Resources/gameClear.png");
 	spriteCommon->LoadTexture(7, L"Resources/gameover.png");
+	spriteCommon->LoadTexture(8, L"Resources/coraRe.png");
+	spriteCommon->LoadTexture(9, L"Resources/enemyRe.png");
+	spriteCommon->LoadTexture(10, L"Resources/playerRe.png");
+	spriteCommon->LoadTexture(11, L"Resources/reader.png");
 
 	std::vector<Sprite*> sprites;
 	/*Sprite* sprite = Sprite::Create(spriteCommon, 0);
@@ -73,6 +79,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sprite->SetPosition({ 500,300,0 });*/
 	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
 	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
+	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0}, false, false);
+	spriteCoraRe->SetPosition({ 1280 - 256,0,0 });
+	spriteCoraRe->Update();
+	Sprite* spriteEnemyRe[10] = {};
+
+	for (int i = 0; i < 10; i++)
+	{
+		spriteEnemyRe[i] = Sprite::Create(spriteCommon, 9, { 0,0 }, false, false);
+	}
+	XMFLOAT2 sPlayer = {};
+	XMFLOAT2 sCora = {};
+	XMFLOAT2 sReader = {};
+
+	
+	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 10, { 0,0 }, false, false);
+	Sprite* spriteReader = Sprite::Create(spriteCommon, 11, { 0,0 }, false, false);
+	spriteReader->SetPosition({ 1280-256,0,0 });
+	spriteReader->Update();
 	spritePlayer->SetSize({ 1280 ,720 });
 	spritePlayer->TransferVertexBuffer();
 	spriteTitle->SetSize({ 1280 ,720 });
@@ -191,6 +215,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 		objEnemyMov[i]->Update();
 	}
+	//エネミー
+	float enemyMove[10] = {};
+	XMFLOAT2 sEnemyRe[10] = {};
+
+	for (int i = 0; i < enemyNam; i++)
+	{
+		sEnemyRe[i] = { 1280 - 256,0};
+		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+		spriteEnemyRe[i]->Update();
+		enemyMove[i] = (float)(rand() % 3 + 1);
+		enemyMove[i] = enemyMove[i] / 10.0f;
+	}
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	objThunder->SetPosition({ 0.0f,100.0f,0.0f });
 	camera->SetEye({ 0, 0, 0 });
@@ -214,14 +252,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float distance = 20.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	
-	//enemy 
-	float enemyMove[10] = {};
-
-	for (int i = 0; i < 10; i++)
-	{
-		enemyMove[i] = (float)(rand() % 3 +1);
-		enemyMove[i] = enemyMove[i] / 10.0f;
-	}
+	
 
 	// 最短距離関係
 	float earliest[10];
@@ -256,6 +287,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Audio* thunder = new Audio;
 	thunder->Initialize();
 	thunder->SoundLoadWave("Resources/BGM/thunder.wav");
+
 
 
 	while (true)  // ゲームループ
@@ -302,8 +334,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objChr->SetModel(modelChr);
 			objThunder->SetModel(modelThunder);
 
+
+
 			XMFLOAT3 playerPos = camera->GetTarget();
 			//camera->SetTarget(CameraPos);
+
+
+			//if(playerPos.x<)
 
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
@@ -313,25 +350,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
 			{
-				XMVECTOR move = { 3.0f, 0, 0, 0 };
+				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
 			}
 			if (input->PushKey(DIK_A))
 			{
-				XMVECTOR move = { -3.0f, 0, 0, 0 };
+				XMVECTOR move = { -1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
 			}
 			if (input->PushKey(DIK_W))
 			{
-				XMVECTOR move = { 0, 0, 3.0f, 0 };
+				XMVECTOR move = { 0, 0, 1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
 			}
 			if (input->PushKey(DIK_S))
 			{
-				XMVECTOR move = { 0, 0, -3.0f, 0 };
+				XMVECTOR move = { 0, 0, -1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
 			}
@@ -378,6 +415,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				enemyMovPos[i].x -= vel.x;
 				enemyMovPos[i].y -= vel.y;
 				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i]/3.90625f);
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
 				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 				objEnemyMov[i]->Update();
 
@@ -396,7 +437,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}
 
-			if (coaHit <= 0)
+		/*	if (coaHit <= 0)
 			{
 				scene = 2;
 			}
@@ -405,7 +446,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (coaHit > 0 && ECount <= 0)
 			{
 				scene = 3;
-			}
+			}*/
 
 
 			// 最短距離を求める
@@ -612,7 +653,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 				}*/
 			spritePlayer->Draw();
-
+			spriteReader->Draw();
+			spriteCoraRe->Draw();
+			for (int i = 0; i < enemyNam; i++)
+			{
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+			}
 
 		}
 		if (scene == 2)
@@ -639,6 +685,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete input;
 	delete winApp;
 	delete spriteCommon;
+	delete spriteCommon2;
 	for (auto& sprite : sprites)
 	{
 		delete sprite;
