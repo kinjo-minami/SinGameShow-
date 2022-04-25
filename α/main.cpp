@@ -79,7 +79,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sprite->SetPosition({ 500,300,0 });*/
 	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
 	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
-	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0}, false, false);
+	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0 }, false, false);
+	
 	spriteCoraRe->SetPosition({ 1280 - 256,0,0 });
 	spriteCoraRe->Update();
 	Sprite* spriteEnemyRe[10] = {};
@@ -88,12 +89,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		spriteEnemyRe[i] = Sprite::Create(spriteCommon, 9, { 0,0 }, false, false);
 	}
-	XMFLOAT2 sPlayer = {};
-	XMFLOAT2 sCora = {};
-	XMFLOAT2 sReader = {};
-
+	
 	
 	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 10, { 0,0 }, false, false);
+	spritePlayerRe->SetPosition({ 1280 - 256,200,0 });
+	spritePlayerRe->Update();
 	Sprite* spriteReader = Sprite::Create(spriteCommon, 11, { 0,0 }, false, false);
 	spriteReader->SetPosition({ 1280-256,0,0 });
 	spriteReader->Update();
@@ -349,6 +349,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			Input::MouseMove mouseMove = input->GetMouseMove();
 			float dy = mouseMove.lX * scaleY;
 			angleY = -dy * XM_PI;
+
+
+			spritePlayerRe->SetRotation(angleY);
 
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
@@ -615,6 +618,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		spriteTitle->Update();
 		spriteClear->Update();
 		spriteOver->Update();
+		spritePlayerRe->Update();
+
 		for (auto& sprite : sprites)
 		{
 			sprite->Update();
@@ -642,7 +647,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OBJOutCoaA->Draw();
 			OBJOutCoaB->Draw();
 			objCloud->Draw();
-
 			//objChr->Draw();
 
 			for (int i = 0; i < enemyNam; i++)
@@ -685,6 +689,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//spritePlayer->Draw();
 			spriteReader->Draw();
 			spriteCoraRe->Draw();
+			spritePlayerRe->Draw();
+
 			for (int i = 0; i < enemyNam; i++)
 			{
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
