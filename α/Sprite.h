@@ -75,6 +75,10 @@ public:
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }
 
+	void SetAnchorpoint(XMFLOAT2 anchorpoint) { anchorpoint_ = anchorpoint; }
+
+	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
+
 	void Draw();
 
 };

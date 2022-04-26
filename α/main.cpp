@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d::SetCamera(camera);
 
 	// カメラ注視点をセット
-	camera->SetTarget({ 0, 1, -200 });
+	camera->SetTarget({ 0, 1, -450 });
 	camera->SetDistance(3.0f);
 
 #pragma endregion DirectX初期化処理
@@ -92,7 +92,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	
 	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 10, { 0,0 }, false, false);
-	spritePlayerRe->SetPosition({ 1280 - 256,200,0 });
+	spritePlayerRe->SetPosition({ 1280 - 256-120,0,0 });
 	spritePlayerRe->Update();
 	Sprite* spriteReader = Sprite::Create(spriteCommon, 11, { 0,0 }, false, false);
 	spriteReader->SetPosition({ 1280-256,0,0 });
@@ -292,7 +292,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 雲関係
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
 	XMFLOAT3 cloudRot = objCloud->GetRotation();
-
+	XMFLOAT3 playerRe = { 1280 - 256 - 120,0,0 };
+	float rot = 0.0f;
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -322,7 +323,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			CoaRotA.y += 0.3f;
 			CoaRotB.y -= 0.3f;
-
+			//rot += 0.1f;
 			OBJInCoa->SetRotation(CoaRotA);
 			OBJOutCoaA->SetRotation(CoaRotB);
 			OBJOutCoaB->SetRotation(CoaRotA);
@@ -351,7 +352,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			angleY = -dy * XM_PI;
 
 
-			spritePlayerRe->SetRotation(angleY);
 
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
@@ -359,25 +359,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+				playerRe.x += 1.0f / 3.90625f;
 			}
 			if (input->PushKey(DIK_A))
 			{
 				XMVECTOR move = { -1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+				playerRe.x -= 1.0f / 3.90625f;
+
 			}
 			if (input->PushKey(DIK_W))
 			{
 				XMVECTOR move = { 0, 0, 1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+				playerRe.y += 1.0f / 3.90625f;
+
 			}
 			if (input->PushKey(DIK_S))
 			{
 				XMVECTOR move = { 0, 0, -1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+				playerRe.y -= 1.0f / 3.90625f;
+
 			}
+			spritePlayerRe->SetPosition(playerRe);
 
 			if (input->PushKey(DIK_ESCAPE))
 			{
@@ -435,6 +443,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cloudRot.y *= 180 / PI;
 			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 
+			rot = atan2f(-fTargetEye.x/10, -fTargetEye.z/10);
+			rot *= 180 / PI;
+		
+			spritePlayerRe->SetRotation(rot);
 			//エネミー移動
 			for (int i = 0; i < enemyNam; i++)
 			{
