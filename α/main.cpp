@@ -292,8 +292,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 雲関係
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
 	XMFLOAT3 cloudRot = objCloud->GetRotation();
-	XMFLOAT3 playerRe = { 1280 - 256 - 120,0,0 };
+	XMFLOAT3 playerRe = { 1280 - 256+8,128,0 };
 	float rot = 0.0f;
+	spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
+
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -359,7 +361,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
-				playerRe.x += 1.0f / 3.90625f;
+				XMFLOAT3 playerReMove = { 1.0f , 0, 0};
+				//playerReMove = XMVector3Transform(playerReMove, matRot);
+				spritePlayerRe->MoveVector(playerReMove);
+				
+				//playerRe.x += 1.0f / 3.90625f;
 			}
 			if (input->PushKey(DIK_A))
 			{
@@ -443,10 +449,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cloudRot.y *= 180 / PI;
 			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 
-			rot = atan2f(-fTargetEye.x/10, -fTargetEye.z/10);
-			rot *= 180 / PI;
-		
-			spritePlayerRe->SetRotation(rot);
+			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
+			rot *= 180 / PI;*/
+			spritePlayerRe->SetRotation(cloudRot.y+90);
 			//エネミー移動
 			for (int i = 0; i < enemyNam; i++)
 			{

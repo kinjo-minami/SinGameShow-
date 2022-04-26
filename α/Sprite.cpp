@@ -149,7 +149,24 @@ void Sprite::Update()
 	constMap->color = color_;
 	constBuff_->Unmap(0, nullptr);
 	//SetTexLeftTop(texLeftTop_);
-	//TransferVertexBuffer();
+	TransferVertexBuffer();
+}
+
+void Sprite::MoveVector(const XMFLOAT3& move)
+{
+	XMFLOAT3 eye_moved = GetEye();
+	XMFLOAT3 target_moved = GetTarget();
+
+	eye_moved.x += move.x;
+	eye_moved.y += move.y;
+	eye_moved.z += move.z;
+
+	target_moved.x += move.x;
+	target_moved.y += move.y;
+	target_moved.z += move.z;
+
+	SetEye(eye_moved);
+	SetTarget(target_moved);
 }
 
 void Sprite::Draw()

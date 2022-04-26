@@ -12,6 +12,7 @@ private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
+	using XMVECTOR = DirectX::XMVECTOR;
 
 public:
 	struct VertexPosUv
@@ -56,6 +57,12 @@ private:
 	XMFLOAT2 texSize_ = { 100, 100 };
 	// 非表示
 	bool isInvisible_ = false;
+	// 視点座標
+	XMFLOAT3 eye = { 0, 0, 0 };
+	// 注視点座標
+	XMFLOAT3 target = { 0, 0, 0 };
+	
+	bool viewDirty = false;
 
 	SpriteCommon* SspriteCommon = nullptr;
 
@@ -79,6 +86,20 @@ public:
 
 	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
 
+	void MoveVector(const XMFLOAT3& move);
+
+	inline void SetTarget(XMFLOAT3 target) {
+		this->target = target; viewDirty = true;
+	}
+	inline const XMFLOAT3& GetEye() {
+		return eye;
+	}
+	inline const XMFLOAT3& GetTarget() {
+		return target;
+	}
+	inline void SetEye(XMFLOAT3 eye) {
+		this->eye = eye; viewDirty = true;
+	}
 	void Draw();
 
 };
