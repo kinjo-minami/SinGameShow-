@@ -86,7 +86,10 @@ public:
 
 	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
 
-	void MoveVector(const XMFLOAT3& move);
+	void MoveVector(const XMVECTOR& move);
+
+	void UpdateViewMatrix();
+
 
 	inline void SetTarget(XMFLOAT3 target) {
 		this->target = target; viewDirty = true;
