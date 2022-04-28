@@ -53,7 +53,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// カメラ注視点をセット
 	camera->SetTarget({ 0, 20, 0 });
-	camera->SetDistance(100.0f);
+	camera->SetDistance(5.0f);
 
 	Fbx_Model* Fbx_model1 = nullptr;
 
