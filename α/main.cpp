@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d::SetCamera(camera);
 
 	// カメラ注視点をセット
-	camera->SetTarget({ 0, 1, -450 });
+	camera->SetTarget({ 0, 1, -400 });
 	camera->SetDistance(3.0f);
 
 #pragma endregion DirectX初期化処理
@@ -186,7 +186,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	OBJInCoa->SetPosition({ 0,4,50 });
 	OBJOutCoaA->SetPosition({ 0,4,50 });
 	OBJOutCoaB->SetPosition({ 0,4,50 });
-
+	
 	OBJBack->SetPosition({ 0,0,50 });
 	objGround->SetPosition({ 0,-10,50 });
 	objChr->SetPosition({ 0,-25,-75 });
@@ -254,6 +254,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 
 
+	//スカイドーム
+	XMFLOAT3 skyPos = OBJBack->GetPosition();
 
 	// 最短距離関係
 	float earliest[10];
@@ -291,6 +293,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 雲関係
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
+	XMFLOAT3 cloudPosRay = objCloud->GetPosition();
+
 	XMFLOAT3 cloudRot = objCloud->GetRotation();
 	XMFLOAT3 playerRe = { 1280 - 256 + 8,128,0 };
 	XMFLOAT2 raderP = {};
@@ -341,45 +345,71 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objChr->SetModel(modelChr);
 			objThunder->SetModel(modelThunder);
 
-
-
-			XMFLOAT3 playerPos = camera->GetTarget();
-			//camera->SetTarget(CameraPos);
-
-
-			//if(playerPos.x<)
-
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
 			float dy = mouseMove.lX * scaleY;
 			angleY = -dy * XM_PI;
 
 
+			bool skyHit = Collision::Virtualitys(cloudPosRay, skyPos);
+			bool UnSkyHit= Collision::UnVirtualitys(cloudPosRay, skyPos);
 
 			// ボタンが押されていたらカメラを並行移動させる
-			if (input->PushKey(DIK_D))
+			if (input->PushKey(DIK_D)&& (skyHit|| UnSkyHit))
 			{
-				XMVECTOR move = { 1.0f, 0, 0, 0 };
-				move = XMVector3Transform(move, matRot);
-				camera->MoveVector(move);
+				if (skyHit)
+				{
+					XMVECTOR move = { 1.0f, 0, 0, 0 };
+					move = XMVector3Transform(move, matRot);
+					camera->MoveVector(move);
+				}
+				if (UnSkyHit)
+				{
+
+				}
+				
 			}
-			if (input->PushKey(DIK_A))
+			if (input->PushKey(DIK_A) && (skyHit || UnSkyHit))
 			{
-				XMVECTOR move = { -1.0f, 0, 0, 0 };
-				move = XMVector3Transform(move, matRot);
-				camera->MoveVector(move);
+				if (skyHit)
+				{
+					XMVECTOR move = { -1.0f, 0, 0, 0 };
+					move = XMVector3Transform(move, matRot);
+					camera->MoveVector(move);
+				}
+				if (UnSkyHit)
+				{
+
+				}
+				
 			}
-			if (input->PushKey(DIK_W))
+			if (input->PushKey(DIK_W) && (skyHit || UnSkyHit))
 			{
-				XMVECTOR move = { 0, 0, 1.0f, 0 };
-				move = XMVector3Transform(move, matRot);
-				camera->MoveVector(move);
+				if (skyHit)
+				{
+					XMVECTOR move = { 0, 0, 1.0f, 0 };
+					move = XMVector3Transform(move, matRot);
+					camera->MoveVector(move);
+				}
+				if (UnSkyHit)
+				{
+
+				}
+				
 			}
-			if (input->PushKey(DIK_S))
+			if (input->PushKey(DIK_S) && (skyHit || UnSkyHit))
 			{
-				XMVECTOR move = { 0, 0, -1.0f, 0 };
-				move = XMVector3Transform(move, matRot);
-				camera->MoveVector(move);
+				if (skyHit)
+				{
+					XMVECTOR move = { 0, 0, -1.0f, 0 };
+					move = XMVector3Transform(move, matRot);
+					camera->MoveVector(move);
+				}
+				if (UnSkyHit)
+				{
+
+				}
+				
 			}
 			spritePlayerRe->SetPosition(playerRe);
 			//spritePlayerRe->SetPosition({ cloudPos.x+200,cloudPos.z+500,0});
@@ -437,7 +467,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objCloud->SetScale({ 1.0f, 1.0f, 1.0f });
 
 			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
+			cloudPosRay = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
+
 			objCloud->SetPosition(cloudPos);
+			//objCloud->SetPosition(cloudPosRay);
 
 			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			cloudRot.y *= 180 / PI;
@@ -482,8 +515,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				spriteEnemyRe[i]->Update();
 				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 				objEnemyMov[i]->Update();
-
-
 			}
 
 			//コアと敵のあたり判定
@@ -553,9 +584,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				if (enemyFlag[i] == 0)
 				{
-					Earliest.x = playerPos.x - enemyMovPos[i].x;
-					Earliest.y = playerPos.y - enemyMovPos[i].y;
-					Earliest.z = playerPos.z - enemyMovPos[i].z;
+					Earliest.x = cloudPos.x - enemyMovPos[i].x;
+					Earliest.y = cloudPos.y - enemyMovPos[i].y;
+					Earliest.z = cloudPos.z - enemyMovPos[i].z;
 					earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 					if (i == 0)
 					{
@@ -576,17 +607,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 							earliestEnemyNum = i;
 						}
 					}
-
 				}
-
-
 			}
 
 			// 攻撃処理
 			if (input->TriggerMouseLeft() && thunderFlag == 0)
 			{
 				// 攻撃判定
-				bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
+				bool isTerritory = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum]);
 				if (isTerritory)
 				{
 					thunder->SEPlayWave();

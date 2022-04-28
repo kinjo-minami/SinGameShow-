@@ -18,6 +18,9 @@ private: // エイリアス
 
 public:
 
+	static bool Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
+	static bool UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos);
+
 	static bool territory(XMFLOAT3 Player, XMFLOAT3 Enemy);
 	static bool ATKcollision(XMFLOAT3 Player, XMFLOAT3 Enemy);
 	static bool CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy,float rad);
