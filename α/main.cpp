@@ -301,10 +301,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	thunder->Initialize();
 	thunder->SoundLoadWave("Resources/BGM/thunder.wav");
 
-	Fbx_Object3d* FBX_object1 = new Fbx_Object3d;
+	Fbx_Object3d* Fbx_object1 = new Fbx_Object3d;
 
-	FBX_object1->Initialize();
-	FBX_object1->SetModel(Fbx_model1);
+	Fbx_object1->Initialize();
+	Fbx_object1->SetModel(Fbx_model1);
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
@@ -592,7 +592,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objGround->Update();
 		player->Update();
 		if (input->PushKey(DIK_0)) {
-			FBX_object1->PlayAnimation();
+			Fbx_object1->PlayAnimation();
 		}
 		objChr->Update();
 		objThunder->Update();
@@ -604,7 +604,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			sprite->Update();
 		}
-		FBX_object1->Update();
+		Fbx_object1->Update();
 		// DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 
@@ -624,7 +624,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			Object3d::PreDraw(dxCommon->GetCmdList());
 			ID3D12GraphicsCommandList* cmdList = dxCommon->GetCmdList();
 			OBJBack->Draw();
-			FBX_object1->Draw(cmdList);
+			Fbx_object1->Draw(cmdList);
 			objGround->Draw();
 			OBJInCoa->Draw();
 			OBJOutCoaA->Draw();
@@ -712,7 +712,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete objChr;
 	delete OBJInCoa;
 	delete objThunder;
-
+	delete Fbx_model1;
+	delete Fbx_object1;
 	FbxLoader::GetInstance()->Finalize();
 
 	for (int i = 0; i < enemyNam; i++)

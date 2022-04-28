@@ -338,6 +338,11 @@ void FbxLoader::ParseSkin(Fbx_Model* fbx_model, FbxMesh* fbxMesh)
 	FbxSkin* fbxSkin = static_cast<FbxSkin*>(fbxMesh->GetDeformer(0, FbxDeformer::eSkin));
 	//スキニング情報がなければ終了
 	if (fbxSkin == nullptr) {
+		//各頂点について処理
+		for (int i = 0; i < fbx_model->vertices.size(); i++) {
+			fbx_model->vertices[i].boneIndex[0] = 0;
+			fbx_model->vertices[i].boneWeight[0] = 1.0f;
+		}
 		return;
 	}
 
