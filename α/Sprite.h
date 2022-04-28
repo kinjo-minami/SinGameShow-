@@ -61,7 +61,13 @@ private:
 	XMFLOAT3 eye = { 0, 0, 0 };
 	// 注視点座標
 	XMFLOAT3 target = { 0, 0, 0 };
-	
+	// 上方向ベクトル
+	XMFLOAT3 up = { 0, 1, 0 };
+	XMMATRIX matBillboard = DirectX::XMMatrixIdentity();
+	// Y軸回りビルボード行列
+	XMMATRIX matBillboardY = DirectX::XMMatrixIdentity();
+	// ビュー行列
+	XMMATRIX matView = DirectX::XMMatrixIdentity();
 	bool viewDirty = false;
 
 	SpriteCommon* SspriteCommon = nullptr;
@@ -90,19 +96,28 @@ public:
 
 	void UpdateViewMatrix();
 
+	XMFLOAT3 GetPosition() { return position_; }
 
-	inline void SetTarget(XMFLOAT3 target) {
-		this->target = target; viewDirty = true;
-	}
+	
 	inline const XMFLOAT3& GetEye() {
 		return eye;
 	}
 	inline const XMFLOAT3& GetTarget() {
 		return target;
 	}
+	inline const XMFLOAT3& GetUp() {
+		return up;
+	}
 	inline void SetEye(XMFLOAT3 eye) {
 		this->eye = eye; viewDirty = true;
 	}
+	inline void SetTarget(XMFLOAT3 target) {
+		this->target = target; viewDirty = true;
+	}
+	inline void SetUp(XMFLOAT3 up) {
+		this->up = up; viewDirty = true;
+	}
 	void Draw();
+	
 
 };

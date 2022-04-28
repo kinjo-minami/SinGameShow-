@@ -80,7 +80,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
 	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
 	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0 }, false, false);
-	
+
 	spriteCoraRe->SetPosition({ 1280 - 256,0,0 });
 	spriteCoraRe->Update();
 	Sprite* spriteEnemyRe[10] = {};
@@ -89,18 +89,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		spriteEnemyRe[i] = Sprite::Create(spriteCommon, 9, { 0,0 }, false, false);
 	}
-	
-	
+
+
 	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 10, { 0,0 }, false, false);
-	spritePlayerRe->SetPosition({ 1280 - 256-120,0,0 });
+	spritePlayerRe->SetPosition({ 1280 - 256 - 120,0,0 });
 	spritePlayerRe->Update();
 	Sprite* spriteReader = Sprite::Create(spriteCommon, 11, { 0,0 }, false, false);
-	spriteReader->SetPosition({ 1280-256,0,0 });
+	spriteReader->SetPosition({ 1280 - 256,0,0 });
 	spriteReader->Update();
 	spritePlayer->SetSize({ 1280 ,720 });
 	spritePlayer->TransferVertexBuffer();
 	spriteTitle->SetSize({ 1280 ,720 });
-	   
+
 	//spriteTitle->Update();
 	spriteTitle->TransferVertexBuffer();
 	Sprite* spriteMouse = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
@@ -222,7 +222,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	for (int i = 0; i < enemyNam; i++)
 	{
-		sEnemyRe[i] = { 1280 - 256,0};
+		sEnemyRe[i] = { 1280 - 256,0 };
 		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
 		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
 		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
@@ -252,8 +252,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool viewDirty = false;
 	float distance = 20.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
-	
-	
+
+
 
 	// 最短距離関係
 	float earliest[10];
@@ -292,7 +292,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 雲関係
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
 	XMFLOAT3 cloudRot = objCloud->GetRotation();
-	XMFLOAT3 playerRe = { 1280 - 256+8,128,0 };
+	XMFLOAT3 playerRe = { 1280 - 256 + 8,128,0 };
+	XMFLOAT2 raderP = {};
 	float rot = 0.0f;
 	spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
 
@@ -361,44 +362,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
-				XMFLOAT3 playerReMove = { 1.0f , 0, 0};
-				//playerReMove = XMVector3Transform(playerReMove, matRot);
-				spritePlayerRe->MoveVector(playerReMove);
-				
-				//playerRe.x += 1.0f / 3.90625f;
 			}
 			if (input->PushKey(DIK_A))
 			{
 				XMVECTOR move = { -1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
-				playerRe.x -= 1.0f / 3.90625f;
-
 			}
 			if (input->PushKey(DIK_W))
 			{
 				XMVECTOR move = { 0, 0, 1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
-				playerRe.y += 1.0f / 3.90625f;
-
 			}
 			if (input->PushKey(DIK_S))
 			{
 				XMVECTOR move = { 0, 0, -1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
-				playerRe.y -= 1.0f / 3.90625f;
-
 			}
 			spritePlayerRe->SetPosition(playerRe);
+			//spritePlayerRe->SetPosition({ cloudPos.x+200,cloudPos.z+500,0});
 
 			if (input->PushKey(DIK_ESCAPE))
 			{
 				break;
 			}
-
-			// 追加回転分の回転行列を生成
+			/*	raderP.x = cloudPos.x / 3.90625f;
+				raderP.y = cloudPos.z / 3.90625f;
+				spritePlayerRe->SetPosition({ raderP.x,raderP.y + 500,0 });*/
+				// 追加回転分の回転行列を生成
 			XMMATRIX matRotNew = XMMatrixIdentity();
 			matRotNew *= XMMatrixRotationY(-angleY);
 			// 累積の回転行列を合成
@@ -442,16 +435,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			fTargetEye.z *= 17;
 
 			objCloud->SetScale({ 1.0f, 1.0f, 1.0f });
+
 			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 			objCloud->SetPosition(cloudPos);
 
 			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			cloudRot.y *= 180 / PI;
 			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+			if (input->PushKey(DIK_D))
+			{
+				playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+			}
+			if (input->PushKey(DIK_A))
+			{
+				playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+			}
+			if (input->PushKey(DIK_W))
+			{
+				playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+			}
+			if (input->PushKey(DIK_S))
+			{
+				playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+			}
 
 			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
 			rot *= 180 / PI;*/
-			spritePlayerRe->SetRotation(cloudRot.y+90);
+			spritePlayerRe->SetRotation(cloudRot.y + 90);
 			//エネミー移動
 			for (int i = 0; i < enemyNam; i++)
 			{
@@ -463,7 +477,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				enemyMovPos[i].y -= vel.y;
 				enemyMovPos[i].z -= vel.z;
 				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
-				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i]/3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
 				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
 				spriteEnemyRe[i]->Update();
 				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
@@ -484,55 +498,55 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}
 
-		/*	if (coaHit <= 0)
-			{
-				scene = 2;
-			}
+			/*	if (coaHit <= 0)
+				{
+					scene = 2;
+				}
 
 
-			if (coaHit > 0 && ECount <= 0)
-			{
-				scene = 3;
-			}*/
+				if (coaHit > 0 && ECount <= 0)
+				{
+					scene = 3;
+				}*/
 
 
-			// 最短距離を求める
-			//for (int i = 0; i < enemyNam; i++)
-			//{
-			//
+				// 最短距離を求める
+				//for (int i = 0; i < enemyNam; i++)
+				//{
+				//
 
-			//	if (enemyFlag[i] == 0)
-			//	{
-			//		
-			//		/*if (i == 0)
-			//		{
-			//			earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-			//			earliestEnemyNum = i;
-			//		}
-			//		
-			//		else if (i > 0)
-			//		{
-			//			earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+				//	if (enemyFlag[i] == 0)
+				//	{
+				//		
+				//		/*if (i == 0)
+				//		{
+				//			earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+				//			earliestEnemyNum = i;
+				//		}
+				//		
+				//		else if (i > 0)
+				//		{
+				//			earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 
-			//			if (earliest[0] > earliest[1])
-			//			{
-			//				earliestEnemyNum = i;
-			//				earliest[0] = earliest[1];
-			//			}
-			//			if (earliest[0] < earliest[1])
-			//			{
-			//				earliestEnemyNum = earliestEnemyNum;
-			//			}
-			//		}
-			//		else
-			//		{
-			//			earliestEnemyNum = earliestEnemyNum;
-			//		}*/
-			//	}
+				//			if (earliest[0] > earliest[1])
+				//			{
+				//				earliestEnemyNum = i;
+				//				earliest[0] = earliest[1];
+				//			}
+				//			if (earliest[0] < earliest[1])
+				//			{
+				//				earliestEnemyNum = earliestEnemyNum;
+				//			}
+				//		}
+				//		else
+				//		{
+				//			earliestEnemyNum = earliestEnemyNum;
+				//		}*/
+				//	}
 
-			//
-			//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
-			//}
+				//
+				//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
+				//}
 
 #pragma region enemy hit 
 			for (int i = 0; i < enemyNam; i++)
@@ -553,7 +567,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 						{
 							earliestEnemyNum = i;
 						}
-						else if(earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] ==0)
+						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
 						{
 							earliestEnemyNum = earliestEnemyNum;
 						}
@@ -703,7 +717,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			/*	for (auto& sprite : sprites)
 				{
 				}*/
-			//spritePlayer->Draw();
+				//spritePlayer->Draw();
 			spriteReader->Draw();
 			spriteCoraRe->Draw();
 			spritePlayerRe->Draw();
