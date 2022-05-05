@@ -351,9 +351,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			float dy = mouseMove.lX * scaleY;
 			angleY = -dy * XM_PI;
 
+			
 
 			bool skyHit = Collision::Virtualitys(cloudPos, skyPos);
-			/*bool UnSkyHit= Collision::UnVirtualitys(cloudPosRay, skyPos);*/
+			bool UnSkyHit= Collision::UnVirtualitys(cloudPos, skyPos);
 
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
@@ -364,6 +365,67 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					move = XMVector3Transform(move, matRot);
 					camera->MoveVector(move);
 					cameraRay = camera;
+				}
+				if(UnSkyHit)
+				{
+					XMVECTOR move = { 1.0f, 0, 0, 0 };
+					move = XMVector3Transform(move, matRot);
+					cameraRay->MoveVector(move);
+					XMMATRIX matRotNew = XMMatrixIdentity();
+					matRotNew *= XMMatrixRotationY(-angleY);
+					// 累積の回転行列を合成
+					// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
+					// クォータニオンを使用する方が望ましい
+					matRot = matRotNew * matRot;
+
+					// 注視点から視点へのベクトルと、上方向ベクトル
+					XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
+					XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+
+					// ベクトルを回転
+					vTargetEye = XMVector3Transform(vTargetEye, matRot);
+					vUp = XMVector3Transform(vUp, matRot);
+
+					// 長さ
+					float length = 0.0f;
+
+					XMFLOAT3 target1 = cameraRay->GetTarget();
+					cameraRay->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
+					cameraRay->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+
+					// 注視点からずらした位置に視点座標を決定
+					XMFLOAT3 target2 = cameraRay->GetTarget();
+					XMFLOAT3 eye = cameraRay->GetEye();
+
+					XMFLOAT3 fTargetEye = { 0.0f, 0.0f, 0.0f };
+
+					// 大きさ計算
+					length = sqrtf(pow(target2.x - eye.x, 2) + pow(target2.y - eye.y, 2) + pow(target2.z - eye.z, 2));
+					fTargetEye.x = eye.x - target2.x;
+					fTargetEye.y = eye.y - target2.y;
+					fTargetEye.z = eye.z - target2.z;
+
+					fTargetEye.x /= length;
+					fTargetEye.y /= length;
+					fTargetEye.z /= length;
+
+					fTargetEye.x *= 17;
+					fTargetEye.y *= 17;
+					fTargetEye.z *= 17;
+					XMFLOAT3 temp = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
+					cloudPosRay = temp;
+					bool skyHitRay = Collision::Virtualitys(cloudPosRay, skyPos);
+					bool UnSkyHitRay = Collision::UnVirtualitys(cloudPosRay, skyPos);
+					if (skyHitRay)
+					{
+						camera = cameraRay;
+					}
+					if (UnSkyHitRay)
+					{
+						cameraRay = camera;
+
+					}
+
 				}
 				/*else
 				{
