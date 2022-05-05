@@ -44,6 +44,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Object3d::StaticInitialize(dxCommon->GetDev());
 	DebugCamera* camera = nullptr;
+	DebugCamera* cameraRay = nullptr;
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height, input);
 	Object3d::SetCamera(camera);
 
@@ -186,7 +187,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	OBJInCoa->SetPosition({ 0,4,50 });
 	OBJOutCoaA->SetPosition({ 0,4,50 });
 	OBJOutCoaB->SetPosition({ 0,4,50 });
-	
+
 	OBJBack->SetPosition({ 0,0,50 });
 	objGround->SetPosition({ 0,-10,50 });
 	objChr->SetPosition({ 0,-25,-75 });
@@ -233,10 +234,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	objThunder->SetPosition({ 0.0f,100.0f,0.0f });
 	camera->SetEye({ 0, 0, 0 });
-
+	cameraRay = camera;
 	/*objPost->Update();
 	objChr->Update();*/
-	OBJBack->SetScale({ 5.0f,5.0f,5.0f });
+	OBJBack->SetScale({ 6.0f,6.0f,6.0f });
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
@@ -351,65 +352,132 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			angleY = -dy * XM_PI;
 
 
-			bool skyHit = Collision::Virtualitys(cloudPosRay, skyPos);
-			bool UnSkyHit= Collision::UnVirtualitys(cloudPosRay, skyPos);
+			bool skyHit = Collision::Virtualitys(cloudPos, skyPos);
+			/*bool UnSkyHit= Collision::UnVirtualitys(cloudPosRay, skyPos);*/
 
 			// ボタンが押されていたらカメラを並行移動させる
-			if (input->PushKey(DIK_D)&& (skyHit|| UnSkyHit))
+			if (input->PushKey(DIK_D))
 			{
 				if (skyHit)
 				{
 					XMVECTOR move = { 1.0f, 0, 0, 0 };
 					move = XMVector3Transform(move, matRot);
 					camera->MoveVector(move);
+					cameraRay = camera;
 				}
-				if (UnSkyHit)
+				/*else
 				{
+					XMVECTOR move = { 1.0f, 0, 0, 0 };
+					move = XMVector3Transform(move, matRot);
+					cameraRay->MoveVector(move);
+					bool skyHitRay = Collision::Virtualitys(cloudPosRay, skyPos);
+					bool UnSkyHitRay = Collision::UnVirtualitys(cloudPosRay, skyPos);
 
-				}
-				
+					if (skyHitRay)
+					{
+						camera = cameraRay;
+					}
+					if (UnSkyHitRay)
+					{
+						cameraRay = camera;
+
+					}
+
+				}*/
+
 			}
-			if (input->PushKey(DIK_A) && (skyHit || UnSkyHit))
+			if (input->PushKey(DIK_A))
 			{
 				if (skyHit)
 				{
 					XMVECTOR move = { -1.0f, 0, 0, 0 };
 					move = XMVector3Transform(move, matRot);
 					camera->MoveVector(move);
-				}
-				if (UnSkyHit)
-				{
+					cameraRay = camera;
 
 				}
+				/*else
+				{
+					XMVECTOR move = { -1.0f, 0, 0, 0 };
+					move = XMVector3Transform(move, matRot);
+					cameraRay->MoveVector(move);
 				
+					bool skyHitRay = Collision::Virtualitys(cloudPosRay, skyPos);
+					bool UnSkyHitRay = Collision::UnVirtualitys(cloudPosRay, skyPos);
+
+					if (skyHitRay)
+					{
+						camera = cameraRay;
+					}
+					if (UnSkyHitRay)
+					{
+						cameraRay = camera;
+
+					}
+
+				}*/
 			}
-			if (input->PushKey(DIK_W) && (skyHit || UnSkyHit))
+			if (input->PushKey(DIK_W))
 			{
 				if (skyHit)
 				{
 					XMVECTOR move = { 0, 0, 1.0f, 0 };
 					move = XMVector3Transform(move, matRot);
 					camera->MoveVector(move);
-				}
-				if (UnSkyHit)
-				{
+					cameraRay = camera;
 
 				}
-				
+				/*else
+				{
+					XMVECTOR move = { 0, 0, 1.0f, 0 };
+					move = XMVector3Transform(move, matRot);
+					cameraRay->MoveVector(move);
+					
+					bool skyHitRay = Collision::Virtualitys(cloudPosRay, skyPos);
+					bool UnSkyHitRay = Collision::UnVirtualitys(cloudPosRay, skyPos);
+
+					if (skyHitRay)
+					{
+						camera = cameraRay;
+					}
+					if (UnSkyHitRay)
+					{
+						cameraRay = camera;
+
+					}
+
+				}*/
 			}
-			if (input->PushKey(DIK_S) && (skyHit || UnSkyHit))
+			if (input->PushKey(DIK_S))
 			{
 				if (skyHit)
 				{
 					XMVECTOR move = { 0, 0, -1.0f, 0 };
 					move = XMVector3Transform(move, matRot);
 					camera->MoveVector(move);
-				}
-				if (UnSkyHit)
-				{
+					cameraRay = camera;
 
 				}
-				
+			/*	else
+				{
+					XMVECTOR move = { 0, 0, -1.0f, 0 };
+					move = XMVector3Transform(move, matRot);
+					cameraRay->MoveVector(move);
+					
+					bool skyHitRay = Collision::Virtualitys(cloudPosRay, skyPos);
+					bool UnSkyHitRay = Collision::UnVirtualitys(cloudPosRay, skyPos);
+
+					if (skyHitRay)
+					{
+						camera = cameraRay;
+					}
+					if (UnSkyHitRay)
+					{
+						cameraRay = camera;
+
+					}
+
+				}*/
 			}
 			spritePlayerRe->SetPosition(playerRe);
 			//spritePlayerRe->SetPosition({ cloudPos.x+200,cloudPos.z+500,0});
@@ -477,23 +545,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 			if (input->PushKey(DIK_D))
 			{
-				playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				if (skyHit)
+				{
+					playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				}
 			}
 			if (input->PushKey(DIK_A))
 			{
-				playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				if (skyHit)
+				{
+					playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				}
+
 			}
 			if (input->PushKey(DIK_W))
 			{
-				playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				if (skyHit)
+				{
+					playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				}
+
 			}
 			if (input->PushKey(DIK_S))
 			{
-				playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				if (skyHit)
+				{
+					playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				}
+
 			}
 
 			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -664,6 +747,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 
 		camera->Update();
+		cameraRay->Update();
 		OBJInCoa->Update();
 		OBJOutCoaA->Update();
 		OBJOutCoaB->Update();
