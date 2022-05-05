@@ -781,6 +781,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					ECount -= 1;
 				}
 			}
+			//hoooooooo
 #pragma endregion enemy hit
 			// 雷表示時間
 			if (thunderTimer != 0) { thunderTimer--; }
