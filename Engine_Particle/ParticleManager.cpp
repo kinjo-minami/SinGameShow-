@@ -735,6 +735,8 @@ void ParticleManager::Update()
 		}
 	);
 
+	
+
 	//全パーティクル更新
 	for (std::forward_list<Particle>::iterator it = particles.begin();
 		it != particles.end();
@@ -754,7 +756,6 @@ void ParticleManager::Update()
 		it->scale = (it->e_scale - it->s_scale)/f;
 		it->scale += it->s_scale;
 	}
-
 
 	//頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
@@ -784,8 +785,6 @@ void ParticleManager::Update()
 	constMap->mat = matView * matProjection;
 	constMap->matBillboard = matBillboard;
 	constBuff->Unmap(0, nullptr);
-
-
 }
 
 void ParticleManager::Draw()
