@@ -275,7 +275,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 CoaRotA = {};
 	XMFLOAT3 CoaRotB = {};
 	XMFLOAT3 CoaPos = { 0,4,50 };
-	int coaHit = 7;
+	int coaHit = 3;
 
 	//雨
 	XMFLOAT3 rainPos[100] = {};
