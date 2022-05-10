@@ -304,6 +304,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT2 raderP = {};
 	float rot = 0.0f;
 	spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
+	spriteCommon->LoadTexture(49, L"Resources/hud.png");
+	spriteCommon->LoadTexture(50, L"Resources/gameover.png");
+
+	Sprite* hud = Sprite::Create(spriteCommon, 49, { 0,0 }, false, false);
+	Sprite* gameover = Sprite::Create(spriteCommon, 50, { 0,0 }, false, false);
+
 
 	while (true)  // ゲームループ
 	{
@@ -1101,6 +1107,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				break;
 			}
+			if (input->TriggerMouseLeft())
+			{
+				break;
+			}
 		}
 		if (scene == 3)
 		{
@@ -1152,6 +1162,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 		input->Update();
+		hud->Update();
+		gameover->Update();
 
 		camera->Update();
 		cameraRay->Update();
@@ -1252,7 +1264,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 2)
 		{
-			spriteOver->Draw();
+			
+			
 
 		}
 		if (scene == 3)
@@ -1279,7 +1292,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			spriteReader->Draw();
 			spriteCoraRe->Draw();
 			spritePlayerRe->Draw();
-
+			hud->Draw();
 			for (int i = 0; i < enemyNam; i++)
 			{
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
@@ -1321,7 +1334,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (scene == 2)
 		{
-
+			gameover->Draw();
 		}
 		if (scene == 3)
 		{
