@@ -12,10 +12,7 @@ private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
-<<<<<<< HEAD
-=======
 	using XMVECTOR = DirectX::XMVECTOR;
->>>>>>> kinjo(sin)
 
 public:
 	struct VertexPosUv
@@ -60,8 +57,6 @@ private:
 	XMFLOAT2 texSize_ = { 100, 100 };
 	// 非表示
 	bool isInvisible_ = false;
-<<<<<<< HEAD
-=======
 	// 視点座標
 	XMFLOAT3 eye = { 0, 0, 0 };
 	// 注視点座標
@@ -74,7 +69,6 @@ private:
 	// ビュー行列
 	XMMATRIX matView = DirectX::XMMatrixIdentity();
 	bool viewDirty = false;
->>>>>>> kinjo(sin)
 
 	SpriteCommon* SspriteCommon = nullptr;
 
@@ -94,9 +88,6 @@ public:
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }
 
-<<<<<<< HEAD
-	void Draw();
-=======
 	void SetAnchorpoint(XMFLOAT2 anchorpoint) { anchorpoint_ = anchorpoint; }
 
 	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
@@ -128,6 +119,5 @@ public:
 	}
 	void Draw();
 	
->>>>>>> kinjo(sin)
 
 };

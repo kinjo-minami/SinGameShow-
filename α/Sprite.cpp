@@ -10,10 +10,7 @@ Sprite* Sprite::Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anch
 
 	return instance;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> kinjo(sin)
 void Sprite::initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	HRESULT result = S_FALSE;
@@ -152,11 +149,6 @@ void Sprite::Update()
 	constMap->mat = matWorld_ * SspriteCommon->GetMatProjection();
 	constMap->color = color_;
 	constBuff_->Unmap(0, nullptr);
-<<<<<<< HEAD
-	//TransferVertexBuffer();
-}
-
-=======
 	if (viewDirty) {
 		// ビュー行列更新
 		UpdateViewMatrix();
@@ -168,7 +160,6 @@ void Sprite::Update()
 
 
 
->>>>>>> kinjo(sin)
 void Sprite::Draw()
 {
 	if (isInvisible_) {
@@ -189,8 +180,6 @@ void Sprite::Draw()
 	// ポリゴンの描画（4頂点で四角形）
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
-<<<<<<< HEAD
-=======
 
 
 
@@ -307,4 +296,3 @@ void Sprite::UpdateViewMatrix()
 
 
 
->>>>>>> kinjo(sin)
