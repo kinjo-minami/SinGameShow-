@@ -92,6 +92,12 @@ public://静的メンバ関数
 	/// <param name="model">モデル</param>
 	void SetModel(Fbx_Model* fbx_model) { this->fbx_model = fbx_model; }
 
+	/// <summary>
+	/// セットスケール
+	/// </summary>
+	/// <param name="scale">スケール</param>
+	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
+
 private://静的メンバ変数
 	// コマンドリスト
 	ComPtr<ID3D12GraphicsCommandList> cmdList;

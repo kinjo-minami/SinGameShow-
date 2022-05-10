@@ -305,6 +305,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Fbx_object1->Initialize();
 	Fbx_object1->SetModel(Fbx_model1);
+
+	//スケール
+	Fbx_object1->SetScale({10, 10, 10});
+
 	while (true)  // ゲームループ
 	{
 #pragma region ウィンドウメッセージ処理
