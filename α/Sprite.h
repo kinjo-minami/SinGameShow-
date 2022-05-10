@@ -12,6 +12,10 @@ private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
+<<<<<<< HEAD
+=======
+	using XMVECTOR = DirectX::XMVECTOR;
+>>>>>>> kinjo(sin)
 
 public:
 	struct VertexPosUv
@@ -56,6 +60,21 @@ private:
 	XMFLOAT2 texSize_ = { 100, 100 };
 	// 非表示
 	bool isInvisible_ = false;
+<<<<<<< HEAD
+=======
+	// 視点座標
+	XMFLOAT3 eye = { 0, 0, 0 };
+	// 注視点座標
+	XMFLOAT3 target = { 0, 0, 0 };
+	// 上方向ベクトル
+	XMFLOAT3 up = { 0, 1, 0 };
+	XMMATRIX matBillboard = DirectX::XMMatrixIdentity();
+	// Y軸回りビルボード行列
+	XMMATRIX matBillboardY = DirectX::XMMatrixIdentity();
+	// ビュー行列
+	XMMATRIX matView = DirectX::XMMatrixIdentity();
+	bool viewDirty = false;
+>>>>>>> kinjo(sin)
 
 	SpriteCommon* SspriteCommon = nullptr;
 
@@ -75,6 +94,40 @@ public:
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }
 
+<<<<<<< HEAD
 	void Draw();
+=======
+	void SetAnchorpoint(XMFLOAT2 anchorpoint) { anchorpoint_ = anchorpoint; }
+
+	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
+
+	void MoveVector(const XMVECTOR& move);
+
+	void UpdateViewMatrix();
+
+	XMFLOAT3 GetPosition() { return position_; }
+
+	
+	inline const XMFLOAT3& GetEye() {
+		return eye;
+	}
+	inline const XMFLOAT3& GetTarget() {
+		return target;
+	}
+	inline const XMFLOAT3& GetUp() {
+		return up;
+	}
+	inline void SetEye(XMFLOAT3 eye) {
+		this->eye = eye; viewDirty = true;
+	}
+	inline void SetTarget(XMFLOAT3 target) {
+		this->target = target; viewDirty = true;
+	}
+	inline void SetUp(XMFLOAT3 up) {
+		this->up = up; viewDirty = true;
+	}
+	void Draw();
+	
+>>>>>>> kinjo(sin)
 
 };

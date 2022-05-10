@@ -153,14 +153,27 @@ public: // メンバ関数
 	/// 座標の取得
 	const XMFLOAT3& GetPosition() { return position; }
 
+<<<<<<< HEAD
+=======
+	/// 座標の設定
+	void SetPosition(XMFLOAT3 position) { this->position = position; }
+
+	/// 回転の取得
+	const XMFLOAT3& GetRotation() { return rotation; }
+
+	/// 回転の設定
+>>>>>>> kinjo(sin)
 	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
 
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 
 
+<<<<<<< HEAD
 	/// 座標の設定
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
 
+=======
+>>>>>>> kinjo(sin)
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	// 色

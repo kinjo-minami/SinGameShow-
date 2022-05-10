@@ -44,11 +44,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Object3d::StaticInitialize(dxCommon->GetDev());
 	DebugCamera* camera = nullptr;
+<<<<<<< HEAD
+=======
+	DebugCamera* cameraRay = nullptr;
+>>>>>>> kinjo(sin)
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height, input);
 	Object3d::SetCamera(camera);
 
 	// カメラ注視点をセット
+<<<<<<< HEAD
 	camera->SetTarget({ 0, 1, -432 });
+=======
+	camera->SetTarget({ 0, 1, -400 });
+>>>>>>> kinjo(sin)
 	camera->SetDistance(3.0f);
 
 #pragma endregion DirectX初期化処理
@@ -71,7 +79,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->LoadTexture(8, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(9, L"Resources/enemyRe.png");
 	spriteCommon->LoadTexture(10, L"Resources/playerRe.png");
+<<<<<<< HEAD
 	//spriteCommon2->LoadTexture(0, L"reader/reader.png");
+=======
+	spriteCommon->LoadTexture(11, L"Resources/reader.png");
+>>>>>>> kinjo(sin)
 
 	std::vector<Sprite*> sprites;
 	/*Sprite* sprite = Sprite::Create(spriteCommon, 0);
@@ -79,14 +91,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sprite->SetPosition({ 500,300,0 });*/
 	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
 	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
+<<<<<<< HEAD
 	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0}, false, false);
 	spriteCoraRe->SetPosition({ 1024,256,0 });
+=======
+	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0 }, false, false);
+
+	spriteCoraRe->SetPosition({ 1280 - 256,0,0 });
+	spriteCoraRe->Update();
+>>>>>>> kinjo(sin)
 	Sprite* spriteEnemyRe[10] = {};
 
 	for (int i = 0; i < 10; i++)
 	{
 		spriteEnemyRe[i] = Sprite::Create(spriteCommon, 9, { 0,0 }, false, false);
 	}
+<<<<<<< HEAD
 	XMFLOAT2 sPlayer = {};
 	XMFLOAT2 sCora = {};
 	XMFLOAT2 sEnemyRe[10] = {};
@@ -99,6 +119,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spritePlayer->TransferVertexBuffer();
 	spriteTitle->SetSize({ 1280 ,720 });
 	   
+=======
+
+
+	Sprite* spritePlayerRe = Sprite::Create(spriteCommon, 10, { 0,0 }, false, false);
+	spritePlayerRe->SetPosition({ 1280 - 256 - 120,0,0 });
+	spritePlayerRe->Update();
+	Sprite* spriteReader = Sprite::Create(spriteCommon, 11, { 0,0 }, false, false);
+	spriteReader->SetPosition({ 1280 - 256,0,0 });
+	spriteReader->Update();
+	spritePlayer->SetSize({ 1280 ,720 });
+	spritePlayer->TransferVertexBuffer();
+	spriteTitle->SetSize({ 1280 ,720 });
+
+>>>>>>> kinjo(sin)
 	//spriteTitle->Update();
 	spriteTitle->TransferVertexBuffer();
 	Sprite* spriteMouse = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
@@ -139,6 +173,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelEnemyMovB = nullptr;
 	Model* modelEnemyMovC = nullptr;
 	Model* modelBack = Model::LoadFromOBJ("back");
+<<<<<<< HEAD
+=======
+	Model* modelCloud = Model::LoadFromOBJ("cloud");
+
+>>>>>>> kinjo(sin)
 	Object3d* objEnemyMov[10] = {};
 	XMFLOAT3 enemyMovPos[10] = {};
 	for (int i = 0; i < 10; i++)
@@ -162,12 +201,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Object3d* OBJOutCoaB = Object3d::Create();
 	Object3d* OBJBack = Object3d::Create();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> kinjo(sin)
 	Object3d* objChr = Object3d::Create();
 	Object3d* player = Object3d::Create();
 	Object3d* objThunder = Object3d::Create();
 	Object3d* objGround = Object3d::Create();
+<<<<<<< HEAD
 
+=======
+	Object3d* objCloud = Object3d::Create();
+>>>>>>> kinjo(sin)
 
 	player->SetModel(modelChr);
 	OBJInCoa->SetModel(inCoa);
@@ -176,9 +222,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	OBJBack->SetModel(modelBack);
 	objGround->SetModel(modelGround);
 
+<<<<<<< HEAD
 
 	objChr->SetModel(modelChr);
 	objThunder->SetModel(modelThunder);
+=======
+	objChr->SetModel(modelChr);
+	objThunder->SetModel(modelThunder);
+	objCloud->SetModel(modelCloud);
+>>>>>>> kinjo(sin)
 
 	OBJInCoa->SetPosition({ 0,4,50 });
 	OBJOutCoaA->SetPosition({ 0,4,50 });
@@ -215,19 +267,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 	//エネミー
 	float enemyMove[10] = {};
+<<<<<<< HEAD
 
 	for (int i = 0; i < enemyNam; i++)
 	{
+=======
+	XMFLOAT2 sEnemyRe[10] = {};
+
+	for (int i = 0; i < enemyNam; i++)
+	{
+		sEnemyRe[i] = { 1280 - 256,0 };
+		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+		spriteEnemyRe[i]->Update();
+>>>>>>> kinjo(sin)
 		enemyMove[i] = (float)(rand() % 3 + 1);
 		enemyMove[i] = enemyMove[i] / 10.0f;
 	}
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	objThunder->SetPosition({ 0.0f,100.0f,0.0f });
 	camera->SetEye({ 0, 0, 0 });
+<<<<<<< HEAD
 
 	/*objPost->Update();
 	objChr->Update();*/
 	OBJBack->SetScale({ 5.0f,5.0f,5.0f });
+=======
+	cameraRay = camera;
+	/*objPost->Update();
+	objChr->Update();*/
+	OBJBack->SetScale({ 6.0f,6.0f,6.0f });
+>>>>>>> kinjo(sin)
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
@@ -243,8 +314,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool viewDirty = false;
 	float distance = 20.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
+<<<<<<< HEAD
 	
 	
+=======
+
+
+	//スカイドーム
+	XMFLOAT3 skyPos = OBJBack->GetPosition();
+>>>>>>> kinjo(sin)
 
 	// 最短距離関係
 	float earliest[10];
@@ -280,6 +358,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	thunder->Initialize();
 	thunder->SoundLoadWave("Resources/BGM/thunder.wav");
 
+<<<<<<< HEAD
+=======
+	// 雲関係
+	XMFLOAT3 cloudPos = objCloud->GetPosition();
+	XMFLOAT3 cloudPosRay = objCloud->GetPosition();
+
+	XMFLOAT3 cloudRot = objCloud->GetRotation();
+	XMFLOAT3 playerRe = { 1280 - 256 + 8,128,0 };
+	XMFLOAT2 raderP = {};
+	float rot = 0.0f;
+	spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
+>>>>>>> kinjo(sin)
 
 	while (true)  // ゲームループ
 	{
@@ -308,9 +398,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (scene == 1)
 		{
+<<<<<<< HEAD
 			CoaRotA.y += 0.3f;
 			CoaRotB.y -= 0.3f;
 
+=======
+
+			CoaRotA.y += 0.3f;
+			CoaRotB.y -= 0.3f;
+			//rot += 0.1f;
+>>>>>>> kinjo(sin)
 			OBJInCoa->SetRotation(CoaRotA);
 			OBJOutCoaA->SetRotation(CoaRotB);
 			OBJOutCoaB->SetRotation(CoaRotA);
@@ -325,6 +422,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objChr->SetModel(modelChr);
 			objThunder->SetModel(modelThunder);
 
+<<<<<<< HEAD
 
 
 			XMFLOAT3 playerPos = camera->GetTarget();
@@ -333,41 +431,77 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			//if(playerPos.x<)
 
+=======
+>>>>>>> kinjo(sin)
 			// マウスの入力を取得
 			Input::MouseMove mouseMove = input->GetMouseMove();
 			float dy = mouseMove.lX * scaleY;
 			angleY = -dy * XM_PI;
 
+<<<<<<< HEAD
+=======
+			XMFLOAT3 oldCamera = camera->GetTarget();
+			XMFLOAT3 oldCloudPos = cloudPos;
+			XMFLOAT3 oldCloudPosRay = cloudPosRay;
+			XMFLOAT3 oldCameraEye = camera->GetEye();
+
+>>>>>>> kinjo(sin)
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
 			{
 				XMVECTOR move = { 1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+<<<<<<< HEAD
+=======
+				cameraRay = camera;
+
+>>>>>>> kinjo(sin)
 			}
 			if (input->PushKey(DIK_A))
 			{
 				XMVECTOR move = { -1.0f, 0, 0, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+<<<<<<< HEAD
+=======
+				cameraRay = camera;
+
+
+>>>>>>> kinjo(sin)
 			}
 			if (input->PushKey(DIK_W))
 			{
 				XMVECTOR move = { 0, 0, 1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+<<<<<<< HEAD
+=======
+				cameraRay = camera;
+
+
+>>>>>>> kinjo(sin)
 			}
 			if (input->PushKey(DIK_S))
 			{
 				XMVECTOR move = { 0, 0, -1.0f, 0 };
 				move = XMVector3Transform(move, matRot);
 				camera->MoveVector(move);
+<<<<<<< HEAD
 			}
+=======
+				cameraRay = camera;
+
+			}
+			spritePlayerRe->SetPosition(playerRe);
+			//spritePlayerRe->SetPosition({ cloudPos.x+200,cloudPos.z+500,0});
+>>>>>>> kinjo(sin)
 
 			if (input->PushKey(DIK_ESCAPE))
 			{
 				break;
 			}
+<<<<<<< HEAD
 
 
 			dirty = true;
@@ -396,6 +530,122 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				camera->SetEye({ target.x + vTargetEye.m128_f32[0], target.y + vTargetEye.m128_f32[1], target.z + vTargetEye.m128_f32[2] });
 				camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 			}
+=======
+			/*	raderP.x = cloudPos.x / 3.90625f;
+				raderP.y = cloudPos.z / 3.90625f;
+				spritePlayerRe->SetPosition({ raderP.x,raderP.y + 500,0 });*/
+				// 追加回転分の回転行列を生成
+			XMMATRIX matRotNew = XMMatrixIdentity();
+			matRotNew *= XMMatrixRotationY(-angleY);
+			// 累積の回転行列を合成
+			// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
+			// クォータニオンを使用する方が望ましい
+			matRot = matRotNew * matRot;
+
+			// 注視点から視点へのベクトルと、上方向ベクトル
+			XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
+			XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+
+			// ベクトルを回転
+			vTargetEye = XMVector3Transform(vTargetEye, matRot);
+			vUp = XMVector3Transform(vUp, matRot);
+
+			// 長さ
+			float length = 0.0f;
+
+			XMFLOAT3 target1 = camera->GetTarget();
+			camera->SetEye({ target1.x + vTargetEye.m128_f32[0], target1.y + vTargetEye.m128_f32[1], target1.z + vTargetEye.m128_f32[2] });
+			camera->SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+
+			// 注視点からずらした位置に視点座標を決定
+			XMFLOAT3 target2 = camera->GetTarget();
+			XMFLOAT3 eye = camera->GetEye();
+
+			XMFLOAT3 fTargetEye = { 0.0f, 0.0f, 0.0f };
+			XMFLOAT3 fTargetEye2 = { 0.0f, 0.0f, 0.0f };
+
+			// 大きさ計算
+			length = sqrtf(pow(target2.x - eye.x, 2) + pow(target2.y - eye.y, 2) + pow(target2.z - eye.z, 2));
+			fTargetEye.x = eye.x - target2.x;
+			fTargetEye.y = eye.y - target2.y;
+			fTargetEye.z = eye.z - target2.z;
+
+			fTargetEye.x /= length;
+			fTargetEye.y /= length;
+			fTargetEye.z /= length;
+
+			fTargetEye2 = fTargetEye;
+
+			fTargetEye2.x *= 14;
+			fTargetEye2.y *= 14;
+			fTargetEye2.z *= 14;
+
+			fTargetEye.x *= 17;
+			fTargetEye.y *= 17;
+			fTargetEye.z *= 17;
+
+			objCloud->SetScale({ 1.0f, 1.0f, 1.0f });
+
+			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
+			cloudPosRay = { target2.x + fTargetEye2.x, target2.y + fTargetEye2.y - 1.5f, target2.z + fTargetEye2.z };
+
+			bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
+			bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
+
+			if (skyHit)
+			{
+				objCloud->SetPosition(cloudPos);
+
+			}
+			if (UnSkyHit)
+			{
+				//camera->SetEye(oldCameraEye);
+				camera->SetTarget(oldCamera);
+				objCloud->SetPosition(oldCloudPos);
+
+			}
+
+			/*	bool skyHitRayW = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
+				bool skyHitRayA = Collision::Virtualitys({ cloudPosRay.x + 100.0f,cloudPosRay.y,cloudPosRay.z }, skyPos);
+				bool skyHitRayS = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
+				bool skyHitRayD = Collision::Virtualitys({ cloudPosRay.x - 100.0f,cloudPosRay.y,cloudPosRay.z }, skyPos);*/
+
+			objCloud->SetPosition(cloudPos);
+			//objCloud->SetPosition(cloudPosRay);
+
+			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
+			cloudRot.y *= 180 / PI;
+			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+			if (skyHit)
+			{
+				if (input->PushKey(DIK_D))
+				{
+					playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				}
+				if (input->PushKey(DIK_A))
+				{
+					playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+
+				}
+				if (input->PushKey(DIK_W))
+				{
+					playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				}
+				if (input->PushKey(DIK_S))
+				{
+					playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				}
+			}
+			
+
+			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
+			rot *= 180 / PI;*/
+			spritePlayerRe->SetRotation(cloudRot.y + 90);
+>>>>>>> kinjo(sin)
 			//エネミー移動
 			for (int i = 0; i < enemyNam; i++)
 			{
@@ -406,10 +656,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				enemyMovPos[i].x -= vel.x;
 				enemyMovPos[i].y -= vel.y;
 				enemyMovPos[i].z -= vel.z;
+<<<<<<< HEAD
 				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 				objEnemyMov[i]->Update();
 
 
+=======
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+>>>>>>> kinjo(sin)
 			}
 
 			//コアと敵のあたり判定
@@ -424,6 +683,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}
 
+<<<<<<< HEAD
 		/*	if (coaHit <= 0)
 			{
 				scene = 2;
@@ -473,15 +733,72 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//
 			//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
 			//}
+=======
+			/*	if (coaHit <= 0)
+				{
+					scene = 2;
+				}
+
+
+				if (coaHit > 0 && ECount <= 0)
+				{
+					scene = 3;
+				}*/
+
+
+				// 最短距離を求める
+				//for (int i = 0; i < enemyNam; i++)
+				//{
+				//
+
+				//	if (enemyFlag[i] == 0)
+				//	{
+				//		
+				//		/*if (i == 0)
+				//		{
+				//			earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+				//			earliestEnemyNum = i;
+				//		}
+				//		
+				//		else if (i > 0)
+				//		{
+				//			earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				//			if (earliest[0] > earliest[1])
+				//			{
+				//				earliestEnemyNum = i;
+				//				earliest[0] = earliest[1];
+				//			}
+				//			if (earliest[0] < earliest[1])
+				//			{
+				//				earliestEnemyNum = earliestEnemyNum;
+				//			}
+				//		}
+				//		else
+				//		{
+				//			earliestEnemyNum = earliestEnemyNum;
+				//		}*/
+				//	}
+
+				//
+				//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
+				//}
+>>>>>>> kinjo(sin)
 
 #pragma region enemy hit 
 			for (int i = 0; i < enemyNam; i++)
 			{
 				if (enemyFlag[i] == 0)
 				{
+<<<<<<< HEAD
 					Earliest.x = playerPos.x - enemyMovPos[i].x;
 					Earliest.y = playerPos.y - enemyMovPos[i].y;
 					Earliest.z = playerPos.z - enemyMovPos[i].z;
+=======
+					Earliest.x = cloudPos.x - enemyMovPos[i].x;
+					Earliest.y = cloudPos.y - enemyMovPos[i].y;
+					Earliest.z = cloudPos.z - enemyMovPos[i].z;
+>>>>>>> kinjo(sin)
 					earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 					if (i == 0)
 					{
@@ -493,7 +810,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 						{
 							earliestEnemyNum = i;
 						}
+<<<<<<< HEAD
 						else if(earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] ==0)
+=======
+						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+>>>>>>> kinjo(sin)
 						{
 							earliestEnemyNum = earliestEnemyNum;
 						}
@@ -502,17 +823,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 							earliestEnemyNum = i;
 						}
 					}
+<<<<<<< HEAD
 
 				}
 
 
+=======
+				}
+>>>>>>> kinjo(sin)
 			}
 
 			// 攻撃処理
 			if (input->TriggerMouseLeft() && thunderFlag == 0)
 			{
 				// 攻撃判定
+<<<<<<< HEAD
 				bool isTerritory = Collision::territory(playerPos, enemyMovPos[earliestEnemyNum]);
+=======
+				bool isTerritory = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum]);
+>>>>>>> kinjo(sin)
 				if (isTerritory)
 				{
 					thunder->SEPlayWave();
@@ -534,6 +863,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					ECount -= 1;
 				}
 			}
+<<<<<<< HEAD
+=======
+			//hoooooooo
+>>>>>>> kinjo(sin)
 #pragma endregion enemy hit
 			// 雷表示時間
 			if (thunderTimer != 0) { thunderTimer--; }
@@ -561,6 +894,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		input->Update();
 
+<<<<<<< HEAD
+=======
+		camera->Update();
+		cameraRay->Update();
+>>>>>>> kinjo(sin)
 		OBJInCoa->Update();
 		OBJOutCoaA->Update();
 		OBJOutCoaB->Update();
@@ -569,10 +907,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		player->Update();
 		objChr->Update();
 		objThunder->Update();
+<<<<<<< HEAD
 		camera->Update();
 		spriteTitle->Update();
 		spriteClear->Update();
 		spriteOver->Update();
+=======
+		objCloud->Update();
+
+		spriteTitle->Update();
+		spriteClear->Update();
+		spriteOver->Update();
+		spritePlayerRe->Update();
+
+>>>>>>> kinjo(sin)
 		for (auto& sprite : sprites)
 		{
 			sprite->Update();
@@ -599,7 +947,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OBJInCoa->Draw();
 			OBJOutCoaA->Draw();
 			OBJOutCoaB->Draw();
+<<<<<<< HEAD
 
+=======
+			objCloud->Draw();
+>>>>>>> kinjo(sin)
 			//objChr->Draw();
 
 			for (int i = 0; i < enemyNam; i++)
@@ -639,9 +991,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			/*	for (auto& sprite : sprites)
 				{
 				}*/
+<<<<<<< HEAD
 			spritePlayer->Draw();
 			spriteCoraRe->Draw();
 
+=======
+				//spritePlayer->Draw();
+			spriteReader->Draw();
+			spriteCoraRe->Draw();
+			spritePlayerRe->Draw();
+
+			for (int i = 0; i < enemyNam; i++)
+			{
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+			}
+>>>>>>> kinjo(sin)
 
 		}
 		if (scene == 2)
@@ -668,6 +1032,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete input;
 	delete winApp;
 	delete spriteCommon;
+<<<<<<< HEAD
+=======
+	delete spriteCommon2;
+>>>>>>> kinjo(sin)
 	for (auto& sprite : sprites)
 	{
 		delete sprite;
@@ -679,9 +1047,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete modelEnemyMovA;
 	delete modelEnemyMovB;
 	delete modelEnemyMovC;
+<<<<<<< HEAD
 	delete objChr;
 	delete OBJInCoa;
 	delete objThunder;
+=======
+	delete modelCloud;
+	delete objChr;
+	delete OBJInCoa;
+	delete objThunder;
+	delete objCloud;
+>>>>>>> kinjo(sin)
 
 	for (int i = 0; i < enemyNam; i++)
 	{

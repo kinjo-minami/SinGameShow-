@@ -191,7 +191,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Input::MouseMove mouseMove = input->GetMouseMove();
 		float dy = mouseMove.lX * scaleY;
 		angleY = -dy * XM_PI;
-
+	
 		// ボタンが押されていたらカメラを並行移動させる
 		if (input->PushKey(DIK_D))
 		{
