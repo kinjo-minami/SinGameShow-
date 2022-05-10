@@ -84,9 +84,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	spriteCoraRe->SetPosition({ 1280 - 256,0,0 });
 	spriteCoraRe->Update();
-	Sprite* spriteEnemyRe[10] = {};
+	Sprite* spriteEnemyRe[200] = {};
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 200; i++)
 	{
 		spriteEnemyRe[i] = Sprite::Create(spriteCommon, 9, { 0,0 }, false, false);
 	}
@@ -144,9 +144,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Model* modelBack = Model::LoadFromOBJ("back");
 	Model* modelCloud = Model::LoadFromOBJ("cloud");
 
-	Object3d* objEnemyMov[10] = {};
-	XMFLOAT3 enemyMovPos[10] = {};
-	for (int i = 0; i < 10; i++)
+	Object3d* objEnemyMov[200] = {};
+	XMFLOAT3 enemyMovPos[200] = {};
+	for (int i = 0; i < 200; i++)
 	{
 		enemyMovPos[i] = { 0,4,50 };
 	}
@@ -154,7 +154,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	int ECount = 10;
 
-	int enemyFlag[10] = {};
+	int enemyFlag[200] = {};
 
 	const float PI = 3.1415926f;
 
@@ -192,7 +192,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	objGround->SetPosition({ 0,-10,50 });
 	objChr->SetPosition({ 0,-25,-75 });
 	float radius = 500.0f;
-	float angle[10] = {};
+	float angle[200] = {};
 
 	for (int i = 0; i < enemyNam; i++)
 	{
@@ -200,8 +200,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objEnemyMov[i]->SetModel(modelEnemyMovA);
 		XMFLOAT3 vel{};
 		float radY;
-		//int ran = rand() % 360 + 1;
-		int ran = 30 * i;
+		int ran = rand() % 360 + 1;
+		//int ran = 30 * i;
 		angle[i] = (float)ran;
 		//angle[i] = 60.0f;
 		const float rnd_acc = 0.0000f;
@@ -218,8 +218,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objEnemyMov[i]->Update();
 	}
 	//エネミー
-	float enemyMove[10] = {};
-	XMFLOAT2 sEnemyRe[10] = {};
+	float enemyMove[200] = {};
+	XMFLOAT2 sEnemyRe[200] = {};
+
+	int enemyMovCount = 0;
+	int enemyMovCountFlag = 0;
 
 	for (int i = 0; i < enemyNam; i++)
 	{
@@ -259,7 +262,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 skyPos = OBJBack->GetPosition();
 
 	// 最短距離関係
-	float earliest[10];
+	float earliest[200];
 	XMFLOAT3 Earliest;
 	int earliestEnemyNum;
 
@@ -272,7 +275,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 CoaRotA = {};
 	XMFLOAT3 CoaRotB = {};
 	XMFLOAT3 CoaPos = { 0,4,50 };
-	int coaHit = 10;
+	int coaHit = 7;
 
 	//雨
 	XMFLOAT3 rainPos[100] = {};
@@ -356,6 +359,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			XMFLOAT3 oldCloudPos = cloudPos;
 			XMFLOAT3 oldCloudPosRay = cloudPosRay;
 			XMFLOAT3 oldCameraEye = camera->GetEye();
+
+
+
+
 
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
@@ -508,7 +515,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
 				}
 			}
-			
+
 
 			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
 			rot *= 180 / PI;*/
@@ -530,17 +537,167 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 				objEnemyMov[i]->Update();
 			}
+			if (enemyMovCountFlag >= 2)
+			{
+				for (int i = enemyNam; i < enemyNam * 2; i++)
+				{
+					XMFLOAT3 vel = {};
+					vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+					enemyMovPos[i].x -= vel.x;
+					enemyMovPos[i].y -= vel.y;
+					enemyMovPos[i].z -= vel.z;
+					sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+				}
+
+			}
+
+			if (enemyMovCountFlag >= 4)
+			{
+				for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+				{
+					XMFLOAT3 vel = {};
+					vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+					enemyMovPos[i].x -= vel.x;
+					enemyMovPos[i].y -= vel.y;
+					enemyMovPos[i].z -= vel.z;
+					sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+				}
+
+			}
+
+			if (enemyMovCountFlag >= 6)
+			{
+				for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+				{
+					XMFLOAT3 vel = {};
+					vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+					enemyMovPos[i].x -= vel.x;
+					enemyMovPos[i].y -= vel.y;
+					enemyMovPos[i].z -= vel.z;
+					sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+				}
+
+			}
+
+			if (enemyMovCountFlag >= 8)
+			{
+				for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+				{
+					XMFLOAT3 vel = {};
+					vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+					enemyMovPos[i].x -= vel.x;
+					enemyMovPos[i].y -= vel.y;
+					enemyMovPos[i].z -= vel.z;
+					sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+				}
+
+			}
 
 			//コアと敵のあたり判定
-			for (int i = 0; i < enemyNam; i++)
+			if (enemyMovCountFlag >= 0)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
-				if (CHit && enemyFlag[i] == 0)
+				for (int i = 0; i < enemyNam; i++)
 				{
-					coaHit -= 1;
-					enemyFlag[i] = 1;
-					ECount--;
+					bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+					if (CHit && enemyFlag[i] == 0)
+					{
+						coaHit -= 1;
+						enemyFlag[i] = 1;
+						enemyMovCount++;
+						ECount--;
+					}
 				}
+			}
+
+			if (enemyMovCountFlag >= 2)
+			{
+				for (int i = enemyNam; i < enemyNam *2; i++)
+				{
+					bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+					if (CHit && enemyFlag[i] == 0)
+					{
+						coaHit -= 1;
+						enemyFlag[i] = 1;
+						enemyMovCount++;
+						ECount--;
+					}
+				}
+			}
+
+			if (enemyMovCountFlag >= 4)
+			{
+				for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+				{
+					bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+					if (CHit && enemyFlag[i] == 0)
+					{
+						coaHit -= 1;
+						enemyFlag[i] = 1;
+						enemyMovCount++;
+						ECount--;
+					}
+				}
+			}
+
+			if (enemyMovCountFlag >= 6)
+			{
+				for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+				{
+					bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+					if (CHit && enemyFlag[i] == 0)
+					{
+						coaHit -= 1;
+						enemyFlag[i] = 1;
+						enemyMovCount++;
+						ECount--;
+					}
+				}
+			}
+			if (enemyMovCountFlag >= 8)
+			{
+				for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+				{
+					bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+					if (CHit && enemyFlag[i] == 0)
+					{
+						coaHit -= 1;
+						enemyFlag[i] = 1;
+						enemyMovCount++;
+						ECount--;
+					}
+				}
+			}
+			if (coaHit <= 0)
+			{
+				scene = 2;
 			}
 
 			/*	if (coaHit <= 0)
@@ -594,35 +751,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				//}
 
 #pragma region enemy hit 
-			for (int i = 0; i < enemyNam; i++)
+			if (enemyMovCountFlag >= 0)
 			{
-				if (enemyFlag[i] == 0)
+				for (int i = 0; i < enemyNam; i++)
 				{
-					Earliest.x = cloudPos.x - enemyMovPos[i].x;
-					Earliest.y = cloudPos.y - enemyMovPos[i].y;
-					Earliest.z = cloudPos.z - enemyMovPos[i].z;
-					earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-					if (i == 0)
+					if (enemyFlag[i] == 0)
 					{
-						earliestEnemyNum = 0;
-					}
-					else
-					{
-						if (earliest[earliestEnemyNum] > earliest[i])
+						Earliest.x = cloudPos.x - enemyMovPos[i].x;
+						Earliest.y = cloudPos.y - enemyMovPos[i].y;
+						Earliest.z = cloudPos.z - enemyMovPos[i].z;
+						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+						if (i == 0)
 						{
-							earliestEnemyNum = i;
-						}
-						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
-						{
-							earliestEnemyNum = earliestEnemyNum;
+							earliestEnemyNum = 0;
 						}
 						else
 						{
-							earliestEnemyNum = i;
+							if (earliest[earliestEnemyNum] > earliest[i])
+							{
+								earliestEnemyNum = i;
+							}
+							else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+							{
+								earliestEnemyNum = earliestEnemyNum;
+							}
+							else
+							{
+								earliestEnemyNum = i;
+							}
 						}
 					}
 				}
 			}
+
 
 			// 攻撃処理
 			if (input->TriggerMouseLeft() && thunderFlag == 0)
@@ -646,9 +807,286 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				if (thunderPos.y <= 40)
 				{
 					enemyFlag[earliestEnemyNum] = 1;
+					enemyMovCount++;
+				
 					thunderFlag = 0;
 					ECount -= 1;
 				}
+			}
+			if (enemyMovCountFlag == 1)
+			{
+				for (int i = enemyNam; i < enemyNam * 2; i++)
+				{
+					objEnemyMov[i] = Object3d::Create();
+					objEnemyMov[i]->SetModel(modelEnemyMovA);
+					XMFLOAT3 vel{};
+					float radY;
+					int ran = rand() % 360 + 1;
+					//int ran = 30 * i;
+					angle[i] = (float)ran;
+					//angle[i] = 60.0f;
+					const float rnd_acc = 0.0000f;
+					//float radius = (float)(rand() % 600);
+					vel.x = sin((angle[i] * PI) / 180) * radius;
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * radius;
+					enemyMovPos[i].x += vel.x;
+					enemyMovPos[i].y += vel.y;
+					enemyMovPos[i].z += vel.z;
+
+					objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+					sEnemyRe[i] = { 1280 - 256,0 };
+					sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+					sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					enemyMove[i] = (float)(rand() % 3 + 1);
+					enemyMove[i] = enemyMove[i] / 10.0f;
+					if (i == enemyNam * 2 - 1)
+					{
+						enemyMovCountFlag = 2;
+					}
+				}
+			}
+			if (enemyMovCountFlag == 3)
+			{
+				for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+				{
+					objEnemyMov[i] = Object3d::Create();
+					objEnemyMov[i]->SetModel(modelEnemyMovA);
+					XMFLOAT3 vel{};
+					float radY;
+					int ran = rand() % 360 + 1;
+					//int ran = 30 * i;
+					angle[i] = (float)ran;
+					//angle[i] = 60.0f;
+					const float rnd_acc = 0.0000f;
+					//float radius = (float)(rand() % 600);
+					vel.x = sin((angle[i] * PI) / 180) * radius;
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * radius;
+					enemyMovPos[i].x += vel.x;
+					enemyMovPos[i].y += vel.y;
+					enemyMovPos[i].z += vel.z;
+
+					objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+					sEnemyRe[i] = { 1280 - 256,0 };
+					sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+					sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					enemyMove[i] = (float)(rand() % 3 + 1);
+					enemyMove[i] = enemyMove[i] / 10.0f;
+					if (i == enemyNam * 3 - 1)
+					{
+						enemyMovCountFlag = 4;
+					}
+				}
+			}
+			if (enemyMovCountFlag == 5)
+			{
+				for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+				{
+					objEnemyMov[i] = Object3d::Create();
+					objEnemyMov[i]->SetModel(modelEnemyMovA);
+					XMFLOAT3 vel{};
+					float radY;
+					int ran = rand() % 360 + 1;
+					//int ran = 30 * i;
+					angle[i] = (float)ran;
+					//angle[i] = 60.0f;
+					const float rnd_acc = 0.0000f;
+					//float radius = (float)(rand() % 600);
+					vel.x = sin((angle[i] * PI) / 180) * radius;
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * radius;
+					enemyMovPos[i].x += vel.x;
+					enemyMovPos[i].y += vel.y;
+					enemyMovPos[i].z += vel.z;
+
+					objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+					sEnemyRe[i] = { 1280 - 256,0 };
+					sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+					sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					enemyMove[i] = (float)(rand() % 3 + 1);
+					enemyMove[i] = enemyMove[i] / 10.0f;
+					if (i == enemyNam * 3 - 1)
+					{
+						enemyMovCountFlag = 6;
+					}
+				}
+			}
+			if (enemyMovCountFlag == 7)
+			{
+				for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+				{
+					objEnemyMov[i] = Object3d::Create();
+					objEnemyMov[i]->SetModel(modelEnemyMovA);
+					XMFLOAT3 vel{};
+					float radY;
+					int ran = rand() % 360 + 1;
+					//int ran = 30 * i;
+					angle[i] = (float)ran;
+					//angle[i] = 60.0f;
+					const float rnd_acc = 0.0000f;
+					//float radius = (float)(rand() % 600);
+					vel.x = sin((angle[i] * PI) / 180) * radius;
+					vel.y = 0.0f;
+					vel.z = cos((angle[i] * PI) / 180) * radius;
+					enemyMovPos[i].x += vel.x;
+					enemyMovPos[i].y += vel.y;
+					enemyMovPos[i].z += vel.z;
+
+					objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+					objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+					objEnemyMov[i]->Update();
+					sEnemyRe[i] = { 1280 - 256,0 };
+					sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+					sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+					spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+					spriteEnemyRe[i]->Update();
+					enemyMove[i] = (float)(rand() % 3 + 1);
+					enemyMove[i] = enemyMove[i] / 10.0f;
+					if (i == enemyNam * 3 - 1)
+					{
+						enemyMovCountFlag = 8;
+					}
+				}
+			}
+			if (enemyMovCountFlag >= 2)
+			{
+				for (int i = enemyNam; i < enemyNam * 2; i++)
+				{
+					if (enemyFlag[i] == 0)
+					{
+						Earliest.x = cloudPos.x - enemyMovPos[i].x;
+						Earliest.y = cloudPos.y - enemyMovPos[i].y;
+						Earliest.z = cloudPos.z - enemyMovPos[i].z;
+						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+						if (earliest[earliestEnemyNum] > earliest[i])
+						{
+							earliestEnemyNum = i;
+						}
+						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+						{
+							earliestEnemyNum = earliestEnemyNum;
+						}
+						else
+						{
+							earliestEnemyNum = i;
+						}
+
+					}
+				}
+			}
+
+			if (enemyMovCountFlag >= 4)
+			{
+				for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+				{
+					if (enemyFlag[i] == 0)
+					{
+						Earliest.x = cloudPos.x - enemyMovPos[i].x;
+						Earliest.y = cloudPos.y - enemyMovPos[i].y;
+						Earliest.z = cloudPos.z - enemyMovPos[i].z;
+						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+						if (earliest[earliestEnemyNum] > earliest[i])
+						{
+							earliestEnemyNum = i;
+						}
+						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+						{
+							earliestEnemyNum = earliestEnemyNum;
+						}
+						else
+						{
+							earliestEnemyNum = i;
+						}
+
+					}
+				}
+			}
+			if (enemyMovCountFlag >= 6)
+			{
+				for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+				{
+					if (enemyFlag[i] == 0)
+					{
+						Earliest.x = cloudPos.x - enemyMovPos[i].x;
+						Earliest.y = cloudPos.y - enemyMovPos[i].y;
+						Earliest.z = cloudPos.z - enemyMovPos[i].z;
+						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+						if (earliest[earliestEnemyNum] > earliest[i])
+						{
+							earliestEnemyNum = i;
+						}
+						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+						{
+							earliestEnemyNum = earliestEnemyNum;
+						}
+						else
+						{
+							earliestEnemyNum = i;
+						}
+
+					}
+				}
+			}
+
+			if (enemyMovCountFlag >= 8)
+			{
+				for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+				{
+					if (enemyFlag[i] == 0)
+					{
+						Earliest.x = cloudPos.x - enemyMovPos[i].x;
+						Earliest.y = cloudPos.y - enemyMovPos[i].y;
+						Earliest.z = cloudPos.z - enemyMovPos[i].z;
+						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+						if (earliest[earliestEnemyNum] > earliest[i])
+						{
+							earliestEnemyNum = i;
+						}
+						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+						{
+							earliestEnemyNum = earliestEnemyNum;
+						}
+						else
+						{
+							earliestEnemyNum = i;
+						}
+
+					}
+				}
+			}
+
+			if (enemyMovCount >= 7 && enemyMovCountFlag == 0)
+			{
+				enemyMovCountFlag = 1;
+			}
+			if (enemyMovCount >= 14 && enemyMovCountFlag == 2)
+			{
+				enemyMovCountFlag = 3;
+			}
+			if (enemyMovCount >= 20 && enemyMovCountFlag == 4)
+			{
+				enemyMovCountFlag = 5;
+			}
+			if (enemyMovCount >= 25 && enemyMovCountFlag == 6)
+			{
+				enemyMovCountFlag = 7;
 			}
 			//hoooooooo
 #pragma endregion enemy hit
@@ -671,11 +1109,48 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				break;
 			}
 		}
-
-		for (int i = 0; i < enemyNam; i++)
+		if (enemyMovCountFlag >= 0)
 		{
-			objEnemyMov[i]->Update();
+			for (int i = 0; i < enemyNam; i++)
+			{
+				objEnemyMov[i]->Update();
+			}
 		}
+
+		if (enemyMovCountFlag >= 2)
+		{
+			for (int i = enemyNam; i < enemyNam * 2; i++)
+			{
+				objEnemyMov[i]->Update();
+
+			}
+		}
+		if (enemyMovCountFlag >= 4)
+		{
+			for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+			{
+				objEnemyMov[i]->Update();
+
+			}
+		}
+		if (enemyMovCountFlag >= 6)
+		{
+			for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+			{
+				objEnemyMov[i]->Update();
+
+			}
+		}
+		if (enemyMovCountFlag >= 8)
+		{
+			for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+			{
+				objEnemyMov[i]->Update();
+
+			}
+		}
+
+
 		input->Update();
 
 		camera->Update();
@@ -723,10 +1198,49 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OBJOutCoaB->Draw();
 			objCloud->Draw();
 			//objChr->Draw();
-
-			for (int i = 0; i < enemyNam; i++)
+			if (enemyMovCountFlag >= 0)
 			{
-				if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+				for (int i = 0; i < enemyNam; i++)
+				{
+					if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+				}
+			}
+
+
+			if (enemyMovCountFlag >= 2)
+			{
+				for (int i = enemyNam; i < enemyNam * 2; i++)
+				{
+					if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+
+
+				}
+			}
+
+			if (enemyMovCountFlag >= 4)
+			{
+				for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+				{
+					if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+
+
+				}
+			}
+			
+			if (enemyMovCountFlag >= 6)
+			{
+				for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+				{
+					if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+
+				}
+			}
+			if (enemyMovCountFlag >= 8)
+			{
+				for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+				{
+					if (enemyFlag[i] == 0) { objEnemyMov[i]->Draw(); }
+				}
 			}
 			/*if (enemyFlag[0] == 0) { objEnemyMov[0]->Draw(); }
 			if (enemyFlag[2] == 0) { objEnemyMov[2]->Draw(); }*/
@@ -770,7 +1284,40 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 			}
+			if (enemyMovCountFlag >= 2)
+			{
+				for (int i = enemyNam; i < enemyNam * 2; i++)
+				{
+					if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
+
+				}
+			}
+
+			if (enemyMovCountFlag >= 4)
+			{
+				for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+				{
+					if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+
+				}
+			}
+			if (enemyMovCountFlag >= 6)
+			{
+				for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+				{
+					if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				}
+			}
+			if (enemyMovCountFlag >= 8)
+			{
+				for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+				{
+					if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				}
+			}
 		}
 		if (scene == 2)
 		{
@@ -801,6 +1348,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		delete sprite;
 	}
+
 	//delete sprite;
 	delete inCoa;
 	delete modelChr;
@@ -815,6 +1363,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete objCloud;
 
 	for (int i = 0; i < enemyNam; i++)
+	{
+		delete objEnemyMov[i];
+	}
+	for (int i = enemyNam; i < enemyNam * 2; i++)
 	{
 		delete objEnemyMov[i];
 	}
