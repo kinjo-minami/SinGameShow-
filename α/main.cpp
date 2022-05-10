@@ -329,6 +329,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (scene == 1)
 		{
+
 			CoaRotA.y += 0.3f;
 			CoaRotB.y -= 0.3f;
 			//rot += 0.1f;
@@ -351,64 +352,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			float dy = mouseMove.lX * scaleY;
 			angleY = -dy * XM_PI;
 
-
-
-			bool skyHit = Collision::Virtualitys(cloudPos, skyPos);
-			bool UnSkyHit = Collision::UnVirtualitys(cloudPos, skyPos);
-
-			bool skyHitRayW = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
-			bool skyHitRayA = Collision::Virtualitys({ cloudPosRay.x + 100.0f,cloudPosRay.y,cloudPosRay.z }, skyPos);
-			bool skyHitRayS = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
-			bool skyHitRayD = Collision::Virtualitys({ cloudPosRay.x - 100.0f,cloudPosRay.y,cloudPosRay.z }, skyPos);
+			XMFLOAT3 oldCamera = camera->GetTarget();
+			XMFLOAT3 oldCloudPos = cloudPos;
+			XMFLOAT3 oldCloudPosRay = cloudPosRay;
+			XMFLOAT3 oldCameraEye = camera->GetEye();
 
 			// ボタンが押されていたらカメラを並行移動させる
 			if (input->PushKey(DIK_D))
 			{
-				if (skyHit && skyHitRayD)
-				{
-					XMVECTOR move = { 1.0f, 0, 0, 0 };
-					move = XMVector3Transform(move, matRot);
-					camera->MoveVector(move);
-					cameraRay = camera;
-				}
-
+				XMVECTOR move = { 1.0f, 0, 0, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+				cameraRay = camera;
 
 			}
 			if (input->PushKey(DIK_A))
 			{
-				if (skyHit && skyHitRayA)
-				{
-					XMVECTOR move = { -1.0f, 0, 0, 0 };
-					move = XMVector3Transform(move, matRot);
-					camera->MoveVector(move);
-					cameraRay = camera;
+				XMVECTOR move = { -1.0f, 0, 0, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+				cameraRay = camera;
 
-				}
-			
+
 			}
 			if (input->PushKey(DIK_W))
 			{
-				if (skyHit && skyHitRayW)
-				{
-					XMVECTOR move = { 0, 0, 1.0f, 0 };
-					move = XMVector3Transform(move, matRot);
-					camera->MoveVector(move);
-					cameraRay = camera;
+				XMVECTOR move = { 0, 0, 1.0f, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+				cameraRay = camera;
 
-				}
-				
+
 			}
 			if (input->PushKey(DIK_S))
 			{
-				if (skyHit && skyHitRayS)
-				{
-					XMVECTOR move = { 0, 0, -1.0f, 0 };
-					move = XMVector3Transform(move, matRot);
-					camera->MoveVector(move);
-					cameraRay = camera;
+				XMVECTOR move = { 0, 0, -1.0f, 0 };
+				move = XMVector3Transform(move, matRot);
+				camera->MoveVector(move);
+				cameraRay = camera;
 
-				}
-				
 			}
 			spritePlayerRe->SetPosition(playerRe);
 			//spritePlayerRe->SetPosition({ cloudPos.x+200,cloudPos.z+500,0});
@@ -475,6 +457,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 			cloudPosRay = { target2.x + fTargetEye2.x, target2.y + fTargetEye2.y - 1.5f, target2.z + fTargetEye2.z };
 
+			bool skyHit = Collision::Virtualitys(cloudPos, skyPos);
+			bool UnSkyHit = Collision::UnVirtualitys(cloudPos, skyPos);
+
+			if (skyHit)
+			{
+				objCloud->SetPosition(cloudPos);
+
+			}
+			if (UnSkyHit)
+			{
+				//camera->SetEye(oldCameraEye);
+				camera->SetTarget(oldCamera);
+			
+			}
+
+			/*	bool skyHitRayW = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
+				bool skyHitRayA = Collision::Virtualitys({ cloudPosRay.x + 100.0f,cloudPosRay.y,cloudPosRay.z }, skyPos);
+				bool skyHitRayS = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
+				bool skyHitRayD = Collision::Virtualitys({ cloudPosRay.x - 100.0f,cloudPosRay.y,cloudPosRay.z }, skyPos);*/
+
 			objCloud->SetPosition(cloudPos);
 			//objCloud->SetPosition(cloudPosRay);
 
@@ -483,38 +485,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
 			if (input->PushKey(DIK_D))
 			{
-				if (skyHit && skyHitRayD)
-				{
-					playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-					playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				}
+				playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 			}
 			if (input->PushKey(DIK_A))
 			{
-				if (skyHit && skyHitRayA)
-				{
-					playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-					playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				}
+				playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 
 			}
 			if (input->PushKey(DIK_W))
 			{
-				if (skyHit && skyHitRayW)
-				{
-					playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-					playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-				}
-
+				playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
 			}
 			if (input->PushKey(DIK_S))
 			{
-				if (skyHit && skyHitRayS)
-				{
-					playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-					playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-				}
-
+				playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
 			}
 
 			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
