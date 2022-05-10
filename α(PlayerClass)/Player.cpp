@@ -45,7 +45,7 @@ DebugCamera* Player::PlayerMove(DebugCamera* camera, Input* input)
 	return camera;
 }
 
-void Player::PlayerVector(DebugCamera* camera, Object3d* objPlayer, XMFLOAT3 playerPos, XMFLOAT3 playerRot)
+DebugCamera* Player::PlayerVector(DebugCamera* camera, Object3d* objPlayer, XMFLOAT3 playerPos, XMFLOAT3 playerRot)
 {
 	// ’Ç‰Á‰ñ“]•ª‚Ì‰ñ“]s—ñ‚ð¶¬
 	XMMATRIX matRotNew = DirectX::XMMatrixIdentity();
@@ -96,4 +96,6 @@ void Player::PlayerVector(DebugCamera* camera, Object3d* objPlayer, XMFLOAT3 pla
 	playerRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 	playerRot.y *= 180 / PI;
 	objPlayer->SetRotation({ 0.0f, playerRot.y, 0.0f });
+
+	return camera;
 }

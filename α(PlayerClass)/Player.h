@@ -18,5 +18,5 @@ private: // エイリアス
 public:
 	static void PlayerMouse(Input* input);
 	static DebugCamera* PlayerMove(DebugCamera* camera, Input* input);
-	static void PlayerVector(DebugCamera* camera, Object3d* objPlayer, XMFLOAT3 playerPos, XMFLOAT3 playerRot);
+	static DebugCamera* PlayerVector(DebugCamera* camera, Object3d* objPlayer, XMFLOAT3 playerPos, XMFLOAT3 playerRot);
 };
