@@ -457,8 +457,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
 			cloudPosRay = { target2.x + fTargetEye2.x, target2.y + fTargetEye2.y - 1.5f, target2.z + fTargetEye2.z };
 
-			bool skyHit = Collision::Virtualitys(cloudPos, skyPos);
-			bool UnSkyHit = Collision::UnVirtualitys(cloudPos, skyPos);
+			bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
+			bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
 
 			if (skyHit)
 			{
@@ -469,7 +469,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				//camera->SetEye(oldCameraEye);
 				camera->SetTarget(oldCamera);
-			
+				objCloud->SetPosition(oldCloudPos);
+
 			}
 
 			/*	bool skyHitRayW = Collision::Virtualitys({ cloudPosRay.x,cloudPosRay.y,cloudPosRay.z }, skyPos);
@@ -483,27 +484,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 			cloudRot.y *= 180 / PI;
 			objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
-			if (input->PushKey(DIK_D))
+			if (skyHit)
 			{
-				playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-			}
-			if (input->PushKey(DIK_A))
-			{
-				playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				if (input->PushKey(DIK_D))
+				{
+					playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+				}
+				if (input->PushKey(DIK_A))
+				{
+					playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
 
+				}
+				if (input->PushKey(DIK_W))
+				{
+					playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				}
+				if (input->PushKey(DIK_S))
+				{
+					playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+					playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+				}
 			}
-			if (input->PushKey(DIK_W))
-			{
-				playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-			}
-			if (input->PushKey(DIK_S))
-			{
-				playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-				playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
-			}
+			
 
 			/*rot = atan2f(-fTargetEye.x, -fTargetEye.z);
 			rot *= 180 / PI;*/
