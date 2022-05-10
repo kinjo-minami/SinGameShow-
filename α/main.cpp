@@ -11,7 +11,7 @@
 #include "Sprite.h"
 #include "DebugCamera.h"
 #include "Collision.h"
-#include"Audio.h"
+#include "Audio.h"
 #include "FbxLoader.h"
 #include "Fbx_Object3d.h"
 
@@ -67,10 +67,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Fbx_Object3d::SetCamera(camera);
 	//グラフィックスパイプライン生成
 	Fbx_Object3d::CreateGraphicsPipeline();
-
-	//3Dオブジェクト生成とモデルのセット
-	//Fbx_Object3d* Fbx_object1 = nullptr;
-	
 
 #pragma endregion DirectX初期化処理
 
@@ -130,23 +126,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteClear->SetSize({ 1280 ,720 });
 	spriteOver->TransferVertexBuffer();
 	spriteClear->TransferVertexBuffer();
-
-	//for (int i = 0; i < 20; i++)
-	//{
-	//	int texNum = rand() % 2;
-
-
-	//	//sprite->SetPosition({ (float)(rand() % 1280),(float)(rand() % 720),0 });
-
-	//	//sprite->SetRotation((float)(rand() % 360));
-
-	//	//sprite->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-
-	//	sprite->TransferVertexBuffer();
-
-	//	sprites.push_back(sprite);
-	//	//sprite->SetPosition({ 500,300,0 });
-	//}
 
 	Model* inCoa = Model::LoadFromOBJ("core_in");
 	Model* outCoa1 = Model::LoadFromOBJ("core_out1");
@@ -451,56 +430,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					ECount--;
 				}
 			}
-
-		/*	if (coaHit <= 0)
-			{
-				scene = 2;
-			}
-
-
-			if (coaHit > 0 && ECount <= 0)
-			{
-				scene = 3;
-			}*/
-
-
-			// 最短距離を求める
-			//for (int i = 0; i < enemyNam; i++)
-			//{
-			//
-
-			//	if (enemyFlag[i] == 0)
-			//	{
-			//		
-			//		/*if (i == 0)
-			//		{
-			//			earliest[0] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-			//			earliestEnemyNum = i;
-			//		}
-			//		
-			//		else if (i > 0)
-			//		{
-			//			earliest[1] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-
-			//			if (earliest[0] > earliest[1])
-			//			{
-			//				earliestEnemyNum = i;
-			//				earliest[0] = earliest[1];
-			//			}
-			//			if (earliest[0] < earliest[1])
-			//			{
-			//				earliestEnemyNum = earliestEnemyNum;
-			//			}
-			//		}
-			//		else
-			//		{
-			//			earliestEnemyNum = earliestEnemyNum;
-			//		}*/
-			//	}
-
-			//
-			//	// earliest[0]が最短距離 earliestEnemyNumがenemyMovのナンバー
-			//}
 
 #pragma region enemy hit 
 			for (int i = 0; i < enemyNam; i++)
