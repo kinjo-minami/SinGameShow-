@@ -277,16 +277,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 CoaPos = { 0,4,50 };
 	int coaHit = 3;
 
-	//雨
+	//雨w
 	XMFLOAT3 rainPos[100] = {};
 	float fallRainSpeed[100] = {};
-
 	int rainFlag[100] = {};
-
 	//雪
-	XMFLOAT3 snowPos[100] = {};
-	float snowXSpeed[100] = {};
-
 	float fallSnowSpeed[100] = {};
 	int snowFlag[100] = {};
 
