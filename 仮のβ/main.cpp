@@ -66,13 +66,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->LoadTexture(2, L"Resources/player.png");
 	spriteCommon->LoadTexture(3, L"Resources/hp_bar.png");
 	spriteCommon->LoadTexture(4, L"Resources/mouse.png");
-	spriteCommon->LoadTexture(5, L"Resources/title.png");
+	spriteCommon->LoadTexture(5, L"Resources/title2.png");
 	spriteCommon->LoadTexture(6, L"Resources/gameClear.png");
 	spriteCommon->LoadTexture(7, L"Resources/gameover.png");
 	spriteCommon->LoadTexture(8, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(9, L"Resources/enemyRe.png");
 	spriteCommon->LoadTexture(10, L"Resources/playerRe.png");
 	spriteCommon->LoadTexture(11, L"Resources/reader.png");
+	spriteCommon->LoadTexture(12, L"Resources/rain2.png");
 
 	std::vector<Sprite*> sprites;
 	/*Sprite* sprite = Sprite::Create(spriteCommon, 0);
@@ -80,6 +81,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sprite->SetPosition({ 500,300,0 });*/
 	Sprite* spritePlayer = Sprite::Create(spriteCommon, 2, { 0,0 }, false, false);
 	Sprite* spriteTitle = Sprite::Create(spriteCommon, 5, { 0,0 }, false, false);
+	Sprite* spriteRain = Sprite::Create(spriteCommon, 12, { 0,0 }, false, false);
 	Sprite* spriteCoraRe = Sprite::Create(spriteCommon, 8, { 0,0 }, false, false);
 
 	spriteCoraRe->SetPosition({ 1280 - 256,0,0 });
@@ -254,6 +256,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float distance = 20.0f;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 
+	// タイトル
+	XMFLOAT3 titleRainPos = { 0, -1280, 0 };
 
 	//スカイドーム
 	XMFLOAT3 skyPos = OBJBack->GetPosition();
@@ -312,10 +316,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理　ここから
-		SetCursorPos(860, 440);
 
 		if (scene == 0)
 		{
+			// 雨の動き
+			titleRainPos.x -= 4;
+			titleRainPos.y += 4;
+
+			if (titleRainPos.x == -1280) {
+				titleRainPos.x = 0;
+			}
+			if (titleRainPos.y == 0) {
+				titleRainPos.y = -1280;
+			}
+
+			spriteRain->SetPosition(titleRainPos);
+
 			if (input->TriggerMouseLeft())
 			{
 				scene = 1;
@@ -329,6 +345,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (scene == 1)
 		{
+			SetCursorPos(860, 440);
 
 			CoaRotA.y += 0.3f;
 			CoaRotB.y -= 0.3f;
@@ -691,6 +708,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		objCloud->Update();
 
 		spriteTitle->Update();
+		spriteRain->Update();
 		spriteClear->Update();
 		spriteOver->Update();
 		spritePlayerRe->Update();
@@ -710,8 +728,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (scene == 0)
 		{
+			spriteRain->Draw();
 			spriteTitle->Draw();
-
 		}
 		if (scene == 1)
 		{
@@ -797,6 +815,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete winApp;
 	delete spriteCommon;
 	delete spriteCommon2;
+	delete spriteTitle;
+	delete spriteRain;
 	for (auto& sprite : sprites)
 	{
 		delete sprite;
