@@ -38,6 +38,7 @@ public:
 	void CameraCreateSet();
 private:
 	
+	// Sprite
 	Sprite* sprite = nullptr;
 	Sprite* spriteClear = nullptr;
 	Sprite* spriteOver = nullptr;
@@ -45,6 +46,10 @@ private:
 	std::vector<Sprite*> sprites;
 	std::vector<Sprite*> spritesEnemy;
 	std::vector<Sprite*> spritesRader;
+
+	// Object3d
+	Model* modelGround = Model::LoadFromOBJ("ground");
+	Object3d* objGround = Object3d::Create();
 
 	DebugCamera* camera = nullptr;
 
