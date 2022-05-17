@@ -2,6 +2,7 @@
 #include<d3dx12.h>
 using namespace DirectX;
 using namespace Microsoft::WRL;
+
 Sprite* Sprite::Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	Sprite* instance = new Sprite();
@@ -158,8 +159,6 @@ void Sprite::Update()
 	TransferVertexBuffer();
 }
 
-
-
 void Sprite::Draw()
 {
 	if (isInvisible_) {
@@ -180,8 +179,6 @@ void Sprite::Draw()
 	// ƒ|ƒŠƒSƒ“‚Ì•`‰æi4’¸“_‚ÅŽlŠpŒ`j
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
-
-
 
 void Sprite::MoveVector(const XMVECTOR& move)
 {
@@ -210,7 +207,6 @@ void Sprite::MoveVector(const XMVECTOR& move)
 	SetEye(eye_moved);
 	SetTarget(target_moved);
 }
-
 
 void Sprite::UpdateViewMatrix()
 {
@@ -293,6 +289,3 @@ void Sprite::UpdateViewMatrix()
 	matBillboardY.r[3] = XMVectorSet(0, 0, 0, 1);
 #pragma endregion
 }
-
-
-
