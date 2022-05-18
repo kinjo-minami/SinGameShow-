@@ -42,7 +42,7 @@ void GamePlayScene::Finalize() {
 	for (auto& sprite : sprites) {
 		delete sprite;
 	}
-
+	delete spritePlayer;
 	for (int i = 0; i < enemyNam; i++) {
 		delete objEnemyMov[i];
 	}
@@ -170,6 +170,7 @@ void GamePlayScene::PlayerMove() {
 		//cameraRay = camera;
 
 	}
+	spritePlayer->SetPosition(playerRe);
 
 	XMMATRIX matRotNew = XMMatrixIdentity();
 	matRotNew *= XMMatrixRotationY(-angleY);
@@ -244,6 +245,32 @@ void GamePlayScene::PlayerMove() {
 	cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 	cloudRot.y *= 180 / PI;
 	objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
+	if (skyHit)
+	{
+		if (input->PushKey(DIK_D))
+		{
+			playerRe.y += sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+			playerRe.x += cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+		}
+		if (input->PushKey(DIK_A))
+		{
+			playerRe.y -= sin(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+			playerRe.x -= cos(((cloudRot.y + 90) * PI) / 180) * (1.0f / 3.90625f);
+
+		}
+		if (input->PushKey(DIK_W))
+		{
+			playerRe.y += sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+			playerRe.x += cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+		}
+		if (input->PushKey(DIK_S))
+		{
+			playerRe.y -= sin((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+			playerRe.x -= cos((cloudRot.y * PI) / 180) * (1.0f / 3.90625f);
+		}
+	}
+	spritePlayer->SetRotation(cloudRot.y + 90);
+
 }
 
 void GamePlayScene::Draw() {
@@ -274,6 +301,7 @@ void GamePlayScene::Draw() {
 		for (auto& sprite : spritesRader) {
 			sprite->Draw();
 		}
+		spritePlayer->Draw();
 		for (auto& sprite : spritesEnemy) {
 			sprite->Draw();
 		}
@@ -298,9 +326,8 @@ void GamePlayScene::Create2D_object() {
 	sprite->SetPosition({ 1280 - 256,0,0 });
 	spritesRader.push_back(sprite);
 
-	sprite = Sprite::Create(4, { 0,0 }, false, false);
-	sprite->SetPosition({ 1280 - 256 - 120,0,0 });
-	spritesRader.push_back(sprite);
+	spritePlayer = Sprite::Create(4, { 0.5,0.5 }, false, false);
+	spritePlayer->SetPosition({ 1280 - 256 - 120,0,0 });
 
 	sprite = Sprite::Create(5, { 0,0 }, false, false);
 	sprite->SetPosition({ 1280 - 256,0,0 });
@@ -335,6 +362,7 @@ void GamePlayScene::ClassUpdate() {
 	for (auto& sprite : spritesRader) {
 		sprite->Update();
 	}
+	spritePlayer->Update();
 	for (int i = 0; i < enemyNam; i++) {
 		objEnemyMov[i]->Update();
 	}

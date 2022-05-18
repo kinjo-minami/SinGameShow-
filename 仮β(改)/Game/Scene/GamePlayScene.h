@@ -48,6 +48,7 @@ private:
 	Sprite* sprite = nullptr;
 	Sprite* spriteClear = nullptr;
 	Sprite* spriteOver = nullptr;
+	Sprite* spritePlayer = nullptr;
 
 	std::vector<Sprite*> sprites;
 	std::vector<Sprite*> spritesEnemy;
