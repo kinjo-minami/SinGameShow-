@@ -123,6 +123,9 @@
     <ClCompile Include="Base\GameBase\Camera\DebugCamera.cpp">
       <Filter>ソース ファイル\base\GameBase\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル\game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -206,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="Base\GameBase\Camera\Camera.h">
       <Filter>ヘッダー ファイル\base\GameBase\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ヘッダー ファイル\game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

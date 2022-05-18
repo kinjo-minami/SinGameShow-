@@ -249,7 +249,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	int scene = 0;
 
-	// カメラ関係
+	// カメラ関係 camera
 	bool dirty = false;
 	float angleX = 0;
 	float angleY = 0;
