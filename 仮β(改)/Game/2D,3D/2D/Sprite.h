@@ -74,6 +74,9 @@ public:
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }
 
+	XMFLOAT3 GetPosition() { return position_; }
+
+
 	void Draw();
 
 };

@@ -65,15 +65,15 @@ void GamePlayScene::Create3D_object() {
 	//プレイヤー
 	objCloud->SetModel(modelCloud);
 	cloudPos = objCloud->GetPosition();
-	cloudPosRay = objCloud->GetPosition();
 	cloudRot = objCloud->GetRotation();
 
 	//enemy複製
-	for (int i = 0; i < 200; i++) {
+	for (int i = 0; i < 800; i++) {
 		enemyMovPos[i] = { 0,4,50 };
+		objEnemyMov[i] = Object3d::Create();
+
 	}
 	for (int i = 0; i < enemyNam; i++) {
-		objEnemyMov[i] = Object3d::Create();
 		objEnemyMov[i]->SetModel(modelEnemyRat);
 		XMFLOAT3 vel{};
 		//angle[i] = 60.0f;
@@ -101,7 +101,7 @@ void GamePlayScene::Update() {
 	ClassUpdate();
 	if (gameFlag == 0) {
 		PlayerMove();
-
+		Enemymove(enemyWave);
 
 	}
 	if (gameFlag == 1) {
@@ -113,74 +113,51 @@ void GamePlayScene::Update() {
 
 	}
 
-	if (input->TriggerKey(DIK_RETURN)) {
+	/*if (input->TriggerKey(DIK_RETURN)) {
 		ChangeScene();
-
-	}
+	}*/
 }
 
 void GamePlayScene::PlayerMove() {
 	Input* input = Input::GetInstance();
-	const int cycle = 540; // 繰り返しの周期
-	counter++;
-	counter %= cycle; // 周期を超えたら0に戻る
-	float scale = (float)counter / cycle; // [0,1]の数値
 
-	scale *= 360.0f;
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
 	float dy = mouseMove.lX * scaleY;
 	angleY = -dy * XM_PI;
 	XMFLOAT3 oldCamera = camera->GetTarget();
 	XMFLOAT3 oldCloudPos = cloudPos;
-	XMFLOAT3 oldCloudPosRay = cloudPosRay;
 	XMFLOAT3 oldCameraEye = camera->GetEye();
 
-	if (input->PushKey(DIK_D))
-	{
+	if (input->PushKey(DIK_D)) {
 		XMVECTOR move = { 1.0f, 0, 0, 0 };
 		move = XMVector3Transform(move, matRot);
 		camera->MoveVector(move);
-		//cameraRay = camera;
-
 	}
-	if (input->PushKey(DIK_A))
-	{
+	if (input->PushKey(DIK_A)) {
 		XMVECTOR move = { -1.0f, 0, 0, 0 };
 		move = XMVector3Transform(move, matRot);
 		camera->MoveVector(move);
-		//cameraRay = camera;
-
-
 	}
-	if (input->PushKey(DIK_W))
-	{
+	if (input->PushKey(DIK_W)) {
 		XMVECTOR move = { 0, 0, 1.0f, 0 };
 		move = XMVector3Transform(move, matRot);
 		camera->MoveVector(move);
-		//cameraRay = camera;
-
-
 	}
-	if (input->PushKey(DIK_S))
-	{
+	if (input->PushKey(DIK_S)) {
 		XMVECTOR move = { 0, 0, -1.0f, 0 };
 		move = XMVector3Transform(move, matRot);
 		camera->MoveVector(move);
-		//cameraRay = camera;
-
 	}
 	spritePlayer->SetPosition(playerRe);
 
 	XMMATRIX matRotNew = XMMatrixIdentity();
 	matRotNew *= XMMatrixRotationY(-angleY);
 	// 累積の回転行列を合成
-	// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
-	// クォータニオンを使用する方が望ましい
 	matRot = matRotNew * matRot;
 
 	// 注視点から視点へのベクトルと、上方向ベクトル
-	XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
+	XMVECTOR vTargetEye = { 0.0f, 0.0f, -20, 1.0f };
 	XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
 	// ベクトルを回転
@@ -199,7 +176,6 @@ void GamePlayScene::PlayerMove() {
 	XMFLOAT3 eye = camera->GetEye();
 
 	XMFLOAT3 fTargetEye = { 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 fTargetEye2 = { 0.0f, 0.0f, 0.0f };
 
 	// 大きさ計算
 	length = sqrtf(pow(target2.x - eye.x, 2) + pow(target2.y - eye.y, 2) + pow(target2.z - eye.z, 2));
@@ -211,12 +187,6 @@ void GamePlayScene::PlayerMove() {
 	fTargetEye.y /= length;
 	fTargetEye.z /= length;
 
-	fTargetEye2 = fTargetEye;
-
-	fTargetEye2.x *= 14;
-	fTargetEye2.y *= 14;
-	fTargetEye2.z *= 14;
-
 	fTargetEye.x *= 17;
 	fTargetEye.y *= 17;
 	fTargetEye.z *= 17;
@@ -224,22 +194,16 @@ void GamePlayScene::PlayerMove() {
 	objCloud->SetScale({ 1.0f, 1.0f, 1.0f });
 
 	cloudPos = { target2.x + fTargetEye.x, target2.y + fTargetEye.y - 1.5f, target2.z + fTargetEye.z };
-	cloudPosRay = { target2.x + fTargetEye2.x, target2.y + fTargetEye2.y - 1.5f, target2.z + fTargetEye2.z };
 
 	bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
 	bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
 
-	if (skyHit)
-	{
+	if (skyHit) {
 		objCloud->SetPosition(cloudPos);
-
 	}
-	if (UnSkyHit)
-	{
-		//camera->SetEye(oldCameraEye);
+	if (UnSkyHit) {
 		camera->SetTarget(oldCamera);
 		objCloud->SetPosition(oldCloudPos);
-
 	}
 	objCloud->SetPosition(cloudPos);
 	cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -271,7 +235,10 @@ void GamePlayScene::PlayerMove() {
 	}
 	spritePlayer->SetRotation(cloudRot.y + 90);
 
+
 }
+
+
 
 void GamePlayScene::Draw() {
 
@@ -284,7 +251,7 @@ void GamePlayScene::Draw() {
 		objCloud->Draw();
 
 		for (int i = 0; i < enemyNam; i++) {
-			objEnemyMov[i]->Draw();
+			if (enemyFlag[i] == 0)objEnemyMov[i]->Draw();
 		}
 	}
 	if (gameFlag == 1) {
@@ -302,8 +269,8 @@ void GamePlayScene::Draw() {
 			sprite->Draw();
 		}
 		spritePlayer->Draw();
-		for (auto& sprite : spritesEnemy) {
-			sprite->Draw();
+		for (int i = 0; i < enemyNam; i++) {
+			if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 		}
 	}
 	if (gameFlag == 1) {
@@ -332,17 +299,19 @@ void GamePlayScene::Create2D_object() {
 	sprite = Sprite::Create(5, { 0,0 }, false, false);
 	sprite->SetPosition({ 1280 - 256,0,0 });
 	spritesRader.push_back(sprite);
-
-	for (int i = 0; i < enemyNam; i++) {
-		sprite = Sprite::Create(6, { 0,0 }, false, false);
+	for (int i = 0; i < enemyNam * 80; i++)
+	{
+		spriteEnemyRe[i] = Sprite::Create(6, { 0,0 }, false, false);
 		int ran = rand() % 360 + 1;
 		angle[i] = (float)ran;
+	}
+	for (int i = 0; i < enemyNam; i++) {
 		sEnemyRe[i] = { 1280 - 256,0 };
 		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
 		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
-		sprite->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
-		sprite->Update();
-		spritesEnemy.push_back(sprite);
+		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+		spriteEnemyRe[i]->Update();
+
 		enemyMove[i] = (float)(rand() % 3 + 1);
 		enemyMove[i] = enemyMove[i] / 10.0f;
 	}
@@ -362,11 +331,13 @@ void GamePlayScene::ClassUpdate() {
 	for (auto& sprite : spritesRader) {
 		sprite->Update();
 	}
+	for (int i = 0; i < enemyNam; i++) {
+		if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Update(); }
+	}
 	spritePlayer->Update();
 	for (int i = 0; i < enemyNam; i++) {
 		objEnemyMov[i]->Update();
 	}
-
 }
 
 void GamePlayScene::SpriteLoadTex() {
@@ -388,4 +359,74 @@ void GamePlayScene::CameraCreateSet() {
 	camera->SetTarget({ 0,20,0 });
 	camera->SetDistance(100.0f);
 	camera->SetEye({ 0, 0, 0 });
+}
+
+void GamePlayScene::Enemymove(int enemyWave)
+{
+	if (enemyWave >= 0) {
+		//エネミー移動
+		for (int i = 0; i < enemyNam; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+
+		}
+	}
+
+	if (enemyWave >= 1) {
+
+	}
+
+	if (enemyWave >= 2) {
+
+	}
+
+	if (enemyWave >= 3) {
+
+	}
+
+	if (enemyWave >= 4) {
+
+	}
+
+	if (enemyWave >= 5) {
+
+	}
+
+	if (enemyWave >= 6) {
+
+	}
+
+	if (enemyWave >= 7) {
+
+	}
+
+	if (enemyWave >= 8) {
+
+	}
+
+	if (enemyWave >= 9) {
+
+	}
+
+	if (enemyWave >= 10) {
+
+	}
 }
