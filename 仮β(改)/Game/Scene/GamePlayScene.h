@@ -75,11 +75,12 @@ private:
 	int enemyNam = 10;
 	int enemyWave = 0;
 	int enemyFlag[800] = {};
+	int enemyCount = 0;
 
 	Model* modelEnemyRat = Model::LoadFromOBJ("rat");
-	Model* modelEnemyRat = Model::LoadFromOBJ("Frog");
-	Model* modelEnemyRat = Model::LoadFromOBJ("spider");
-	Model* modelEnemyRat = Model::LoadFromOBJ("rat");
+	Model* modelEnemyFrog = Model::LoadFromOBJ("Frog");
+	Model* modelEnemySpider = Model::LoadFromOBJ("spider");
+	//Model* modelEnemyRat = Model::LoadFromOBJ("rat");
 	Object3d* objEnemyMov[800] = {};
 	XMFLOAT3 enemyMovPos[800] = {};
 	
@@ -105,6 +106,7 @@ private:
 	int gameFlag = 0;
 
 	
+	int score = 0;
 
 	const float PI = 3.1415926f;
 

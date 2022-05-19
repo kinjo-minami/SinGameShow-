@@ -43,9 +43,7 @@ void GamePlayScene::Finalize() {
 		delete sprite;
 	}
 	delete spritePlayer;
-	for (int i = 0; i < enemyNam; i++) {
-		delete objEnemyMov[i];
-	}
+
 
 
 	delete camera;
@@ -249,147 +247,12 @@ void GamePlayScene::Draw() {
 		objGround->Draw();
 		objSky->Draw();
 		objCloud->Draw();
-
-		for (int i = 0; i < enemyNam; i++) {
-			if (enemyFlag[i] == 0)objEnemyMov[i]->Draw();
-		}
-	}
-	if (gameFlag == 1) {
-
-	}
-	if (gameFlag == 2) {
-
-	}
-	Object3d::PostDraw();
-
-	SpriteCommon::GetInstance()->PreDraw();
-
-	if (gameFlag == 0) {
-		for (auto& sprite : spritesRader) {
-			sprite->Draw();
-		}
-		spritePlayer->Draw();
-		for (int i = 0; i < enemyNam; i++) {
-			if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
-		}
-	}
-	if (gameFlag == 1) {
-		spriteClear->Draw();
-	}
-	if (gameFlag == 2) {
-		spriteOver->Draw();
-	}
-}
-
-
-
-void GamePlayScene::Create2D_object() {
-	sprite = Sprite::Create(0, { 0,0 }, false, false);
-	spritesRader.push_back(sprite);
-	spriteClear = Sprite::Create(1, { 0,0 }, false, false);
-	spriteOver = Sprite::Create(2, { 0,0 }, false, false);
-
-	sprite = Sprite::Create(3, { 0,0 }, false, false);
-	sprite->SetPosition({ 1280 - 256,0,0 });
-	spritesRader.push_back(sprite);
-
-	spritePlayer = Sprite::Create(4, { 0.5,0.5 }, false, false);
-	spritePlayer->SetPosition({ 1280 - 256 - 120,0,0 });
-
-	sprite = Sprite::Create(5, { 0,0 }, false, false);
-	sprite->SetPosition({ 1280 - 256,0,0 });
-	spritesRader.push_back(sprite);
-	for (int i = 0; i < enemyNam * 80; i++)
-	{
-		spriteEnemyRe[i] = Sprite::Create(6, { 0,0 }, false, false);
-		int ran = rand() % 360 + 1;
-		angle[i] = (float)ran;
-	}
-	for (int i = 0; i < enemyNam; i++) {
-		sEnemyRe[i] = { 1280 - 256,0 };
-		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
-		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
-		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
-		spriteEnemyRe[i]->Update();
-
-		enemyMove[i] = (float)(rand() % 3 + 1);
-		enemyMove[i] = enemyMove[i] / 10.0f;
-	}
-}
-
-void GamePlayScene::ChangeScene() {
-	BaseScene* scene = new TitleScene(sceneManager_);
-	sceneManager_->SetNextScene(scene);
-}
-
-void GamePlayScene::ClassUpdate() {
-	camera->Update();
-	objGround->Update();
-	objSky->Update();
-	objCloud->Update();
-
-	for (auto& sprite : spritesRader) {
-		sprite->Update();
-	}
-	for (int i = 0; i < enemyNam; i++) {
-		if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Update(); }
-	}
-	spritePlayer->Update();
-	for (int i = 0; i < enemyNam; i++) {
-		objEnemyMov[i]->Update();
-	}
-}
-
-void GamePlayScene::SpriteLoadTex() {
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->LoadTexture(0, L"Resources/hud.png");
-	spriteCommon->LoadTexture(1, L"Resources/gameClear.png");
-	spriteCommon->LoadTexture(2, L"Resources/gameover.png");
-	spriteCommon->LoadTexture(3, L"Resources/reader.png");
-	spriteCommon->LoadTexture(4, L"Resources/playerRe.png");
-	spriteCommon->LoadTexture(5, L"Resources/coraRe.png");
-	spriteCommon->LoadTexture(6, L"Resources/enemyRe.png");
-}
-
-void GamePlayScene::CameraCreateSet() {
-	camera = new DebugCamera(WinApp::window_width, WinApp::window_height);
-
-	Object3d::SetCamera(camera);
-
-	camera->SetTarget({ 0,20,0 });
-	camera->SetDistance(100.0f);
-	camera->SetEye({ 0, 0, 0 });
-}
-
-void GamePlayScene::Enemymove(int enemyWave)
-{
-	if (enemyWave >= 0) {
-		//エネミー移動
-		for (int i = 0; i < enemyNam; i++)
-		{
-			if (enemyFlag[i] == 0)
-			{
-				XMFLOAT3 vel = {};
-				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
-				vel.y = 0.0f;
-				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
-				enemyMovPos[i].x -= vel.x;
-				enemyMovPos[i].y -= vel.y;
-				enemyMovPos[i].z -= vel.z;
-				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
-				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
-				//spritesEnemy.get_allocator();
-				//spriteEnemyRe->GetPosition();
-				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
-				spriteEnemyRe[i]->Update();
-
-				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
-				objEnemyMov[i]->Update();
+		if (enemyWave >= 0) {
+			for (int i = 0; i < enemyNam; i++) {
+				if (enemyFlag[i] == 0)objEnemyMov[i]->Draw();
 			}
-
 		}
 	}
-
 	if (enemyWave >= 1) {
 
 	}
@@ -428,5 +291,564 @@ void GamePlayScene::Enemymove(int enemyWave)
 
 	if (enemyWave >= 10) {
 
+	}
+	if (gameFlag == 1) {
+
+	}
+	if (gameFlag == 2) {
+
+	}
+	Object3d::PostDraw();
+
+	SpriteCommon::GetInstance()->PreDraw();
+
+	if (gameFlag == 0) {
+		for (auto& sprite : spritesRader) {
+			sprite->Draw();
+		}
+		spritePlayer->Draw();
+
+		for (int i = 0; i < enemyNam*80; i++) {
+			if (enemyWave >= 0) {
+
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+			}
+	/*		if (enemyWave >= 1) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 2) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 3) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 4) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 5) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 6) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 7) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 8) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 9) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}
+
+			if (enemyWave >= 10) {
+				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			}*/
+		}
+	}
+	
+	if (gameFlag == 1) {
+		spriteClear->Draw();
+	}
+	if (gameFlag == 2) {
+		spriteOver->Draw();
+	}
+}
+
+
+
+void GamePlayScene::Create2D_object() {
+	sprite = Sprite::Create(0, { 0,0 }, false, false);
+	spritesRader.push_back(sprite);
+	spriteClear = Sprite::Create(1, { 0,0 }, false, false);
+	spriteOver = Sprite::Create(2, { 0,0 }, false, false);
+
+	sprite = Sprite::Create(3, { 0,0 }, false, false);
+	sprite->SetPosition({ 1280 - 256,0,0 });
+	spritesRader.push_back(sprite);
+
+	spritePlayer = Sprite::Create(4, { 0.5,0.5 }, false, false);
+	spritePlayer->SetPosition({ 1280 - 256 - 120,0,0 });
+
+	sprite = Sprite::Create(5, { 0,0 }, false, false);
+	sprite->SetPosition({ 1280 - 256,0,0 });
+	spritesRader.push_back(sprite);
+	for (int i = 0; i < enemyNam * 80; i++)
+	{
+		spriteEnemyRe[i] = Sprite::Create(6, { 0,0 }, false, false);
+		int ran = rand() % 360 + 1;
+		angle[i] = (float)ran;
+	}
+	for (int i = 0; i < enemyNam * 80; i++) {
+		sEnemyRe[i] = { 1280 - 256,0 };
+		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
+		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
+		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+		spriteEnemyRe[i]->Update();
+
+		enemyMove[i] = (float)(rand() % 3 + 1);
+		enemyMove[i] = enemyMove[i] / 10.0f;
+	}
+
+}
+
+void GamePlayScene::ChangeScene() {
+	BaseScene* scene = new TitleScene(sceneManager_);
+	sceneManager_->SetNextScene(scene);
+}
+
+void GamePlayScene::ClassUpdate() {
+	camera->Update();
+	objGround->Update();
+	objSky->Update();
+	objCloud->Update();
+
+	for (auto& sprite : spritesRader) {
+		sprite->Update();
+	}
+	if (enemyWave >= 0) {
+		for (int i = 0; i < enemyNam*80; i++) {
+			if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Update(); }
+		}
+		for (int i = 0; i < enemyNam; i++) {
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+		}
+	}
+	if (enemyWave >= 1) {
+
+	}
+
+	if (enemyWave >= 2) {
+
+	}
+
+	if (enemyWave >= 3) {
+
+	}
+
+	if (enemyWave >= 4) {
+
+	}
+
+	if (enemyWave >= 5) {
+
+	}
+
+	if (enemyWave >= 6) {
+
+	}
+
+	if (enemyWave >= 7) {
+
+	}
+
+	if (enemyWave >= 8) {
+
+	}
+
+	if (enemyWave >= 9) {
+
+	}
+
+	if (enemyWave >= 10) {
+
+	}
+	spritePlayer->Update();
+
+}
+
+void GamePlayScene::SpriteLoadTex() {
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	spriteCommon->LoadTexture(0, L"Resources/hud.png");
+	spriteCommon->LoadTexture(1, L"Resources/gameClear.png");
+	spriteCommon->LoadTexture(2, L"Resources/gameover.png");
+	spriteCommon->LoadTexture(3, L"Resources/reader.png");
+	spriteCommon->LoadTexture(4, L"Resources/playerRe.png");
+	spriteCommon->LoadTexture(5, L"Resources/coraRe.png");
+	spriteCommon->LoadTexture(6, L"Resources/enemyRe.png");
+}
+
+void GamePlayScene::CameraCreateSet() {
+	camera = new DebugCamera(WinApp::window_width, WinApp::window_height);
+
+	Object3d::SetCamera(camera);
+
+	camera->SetTarget({ 0,20,0 });
+	camera->SetDistance(100.0f);
+	camera->SetEye({ 0, 0, 0 });
+}
+
+void GamePlayScene::Enemymove(int enemyWave)
+{
+	if (enemyWave >= 0) {
+		//エネミー移動
+		for (int i = 0; i < enemyNam*80; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+
+	}
+
+	if (enemyWave >= 1) {
+		for (int i = enemyNam; i < enemyNam * 3; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 2) {
+		for (int i = enemyNam * 3; i < enemyNam * 5; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 3) {
+		for (int i = enemyNam * 5; i < enemyNam * 8; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 4) {
+		for (int i = enemyNam * 8; i < enemyNam * 11; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 5) {
+		for (int i = enemyNam * 11; i < enemyNam * 14; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 6) {
+		for (int i = enemyNam * 14; i < enemyNam * 18; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 7) {
+		for (int i = enemyNam * 18; i < enemyNam * 23; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 8) {
+		for (int i = enemyNam * 23; i < enemyNam * 28; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 9) {
+		for (int i = enemyNam * 28; i < enemyNam * 34; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 10) {
+		for (int i = enemyNam * 34; i < enemyNam * 40; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				score += 1000;
+			}
+
+		}
 	}
 }
