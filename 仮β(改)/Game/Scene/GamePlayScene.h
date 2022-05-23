@@ -4,7 +4,7 @@
 #include"Sprite.h"
 #include"Object3d.h"
 #include"DebugCamera.h"
-
+#include"Collision.h"
 
 class DirectXCommon;
 
@@ -38,7 +38,11 @@ public:
 	void CameraCreateSet();
 
 	//エネミー
-	void Enemymove(int enemyWave);
+	void Enemymove();
+
+	//最短距離
+	void EnemyPlayerDistance();
+
 
 	//プレイヤー操作
 	void PlayerMove();
@@ -74,6 +78,7 @@ private:
 	float angle[800] = {};
 	int enemyNam = 10;
 	int enemyWave = 0;
+	int enemyWaveFlag = 0;
 	int enemyFlag[800] = {};
 	int enemyCount = 0;
 
@@ -102,6 +107,10 @@ private:
 	XMFLOAT3 playerRe = { 1280 - 256 + 8,128,0 };
 	XMFLOAT2 raderP = {};
 
+	// 最短距離関係
+	float earliest[800];
+	XMFLOAT3 Earliest;
+	int earliestEnemyNum;
 
 	int gameFlag = 0;
 

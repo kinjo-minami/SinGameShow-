@@ -99,7 +99,8 @@ void GamePlayScene::Update() {
 	ClassUpdate();
 	if (gameFlag == 0) {
 		PlayerMove();
-		Enemymove(enemyWave);
+		Enemymove();
+		EnemyPlayerDistance();
 
 	}
 	if (gameFlag == 1) {
@@ -292,6 +293,307 @@ void GamePlayScene::Draw() {
 	if (enemyWave >= 10) {
 
 	}
+	if (enemyWave >= 11) {
+		for (int i = (enemyNam * 11) + 7; i < (enemyNam * 12) + 9; i++)
+		{
+			
+		}
+	}
+
+	if (enemyWave >= 12) {
+		for (int i = (enemyNam * 12) + 9; i < (enemyNam * 13) + (enemyNam + 2); i++)
+		{
+			
+		}
+	}
+	if (enemyWave >= 13) {
+
+		for (int i = (enemyNam * 13) + (enemyNam + 2); i < (enemyNam * 14) + (enemyNam + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 14) {
+		for (int i = (enemyNam * 14) + (enemyNam + 5); i < (enemyNam * 15) + (enemyNam + 8); i++)
+		{
+
+		}
+
+	}
+
+	if (enemyWave >= 15) {
+		for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam * 2) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 16) {
+		for (int i = (enemyNam * 16) + ((enemyNam * 2) + 1); i < (enemyNam * 17) + ((enemyNam * 2) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 17) {
+		for (int i = (enemyNam * 17) + ((enemyNam * 2) + 4); i < (enemyNam * 18) + ((enemyNam * 2) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 18) {
+		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 18) + ((enemyNam * 3) + 2); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 19) {
+		for (int i = (enemyNam * 19) + ((enemyNam * 3) + 2); i < (enemyNam * 20) + ((enemyNam * 3) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 20) {
+		for (int i = (enemyNam * 20) + ((enemyNam * 3) + 6); i < (enemyNam * 21) + ((enemyNam * 4) + 0); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 21) {
+		for (int i = (enemyNam * 21) + ((enemyNam * 4) + 0); i < (enemyNam * 22) + ((enemyNam * 4) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 22) {
+		for (int i = (enemyNam * 22) + ((enemyNam * 4) + 4); i < (enemyNam * 23) + ((enemyNam * 4) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 23) {
+		for (int i = (enemyNam * 23) + ((enemyNam * 4) + 8); i < (enemyNam * 24) + ((enemyNam * 5) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 24) {
+		for (int i = (enemyNam * 24) + ((enemyNam * 5) + 3); i < (enemyNam * 25) + ((enemyNam * 5) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 25) {
+		for (int i = (enemyNam * 25) + ((enemyNam * 5) + 8); i < (enemyNam * 26) + ((enemyNam * 6) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 26) {
+		for (int i = (enemyNam * 26) + ((enemyNam * 6) + 3); i < (enemyNam * 27) + ((enemyNam * 6) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 27) {
+		for (int i = (enemyNam * 27) + ((enemyNam * 6) + 8); i < (enemyNam * 28) + ((enemyNam * 7) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 28) {
+		for (int i = (enemyNam * 28) + ((enemyNam * 7) + 3); i < (enemyNam * 29) + ((enemyNam * 7) + 9); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 29) {
+		for (int i = (enemyNam * 29) + ((enemyNam * 7) + 9); i < (enemyNam * 30) + ((enemyNam * 8) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 30) {
+		for (int i = (enemyNam * 30) + ((enemyNam * 8) + 5); i < (enemyNam * 31) + ((enemyNam * 9) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 31) {
+		for (int i = (enemyNam * 31) + ((enemyNam * 9) + 1); i < (enemyNam * 32) + ((enemyNam * 9) + 7); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 32) {
+		for (int i = (enemyNam * 32) + ((enemyNam * 9) + 7); i < (enemyNam * 33) + ((enemyNam * 10) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 33) {
+		for (int i = (enemyNam * 33) + ((enemyNam * 10) + 3); i < (enemyNam * 34) + ((enemyNam * 10) + 9); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 34) {
+		for (int i = (enemyNam * 34) + ((enemyNam * 10) + 9); i < (enemyNam * 35) + ((enemyNam * 11) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 35) {
+		for (int i = (enemyNam * 35) + ((enemyNam * 11) + 5); i < (enemyNam * 36) + ((enemyNam * 12) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 36) {
+		for (int i = (enemyNam * 36) + ((enemyNam * 12) + 1); i < (enemyNam * 37) + ((enemyNam * 12) + 7); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 37) {
+		for (int i = (enemyNam * 37) + ((enemyNam * 12) + 7); i < (enemyNam * 38) + ((enemyNam * 13) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 38) {
+		for (int i = (enemyNam * 38) + ((enemyNam * 13) + 4); i < (enemyNam * 39) + ((enemyNam * 14) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 39) {
+		for (int i = (enemyNam * 39) + ((enemyNam * 14) + 1); i < (enemyNam * 40) + ((enemyNam * 14) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 40) {
+		for (int i = (enemyNam * 40) + ((enemyNam * 14) + 8); i < (enemyNam * 41) + ((enemyNam * 15) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 41) {
+		for (int i = (enemyNam * 41) + ((enemyNam * 15) + 5); i < (enemyNam * 42) + ((enemyNam * 16) + 2); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 42) {
+		for (int i = (enemyNam * 42) + ((enemyNam * 16) + 2); i < (enemyNam * 43) + ((enemyNam * 17) + 0); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 43) {
+		for (int i = (enemyNam * 43) + ((enemyNam * 17) + 0); i < (enemyNam * 44) + ((enemyNam * 17) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 44) {
+		for (int i = (enemyNam * 44) + ((enemyNam * 17) + 8); i < (enemyNam * 45) + ((enemyNam * 18) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 45) {
+		for (int i = (enemyNam * 45) + ((enemyNam * 18) + 6); i < (enemyNam * 46) + ((enemyNam * 19) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 46) {
+		for (int i = (enemyNam * 46) + ((enemyNam * 19) + 4); i < (enemyNam * 47) + ((enemyNam * 20) + 2); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 47) {
+		for (int i = (enemyNam * 47) + ((enemyNam * 20) + 2); i < (enemyNam * 48) + ((enemyNam * 21) + 0); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 48) {
+		for (int i = (enemyNam * 48) + ((enemyNam * 21) + 0); i < (enemyNam * 49) + ((enemyNam * 21) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 49) {
+		for (int i = (enemyNam * 49) + ((enemyNam * 21) + 8); i < (enemyNam * 50) + ((enemyNam * 22) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 50) {
+		for (int i = (enemyNam * 50) + ((enemyNam * 22) + 6); i < (enemyNam * 51) + ((enemyNam * 23) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 51) {
+		for (int i = (enemyNam * 51) + ((enemyNam * 23) + 5); i < (enemyNam * 52) + ((enemyNam * 24) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 52) {
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 53) {
+		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
+		{
+
+		}
+	}
 	if (gameFlag == 1) {
 
 	}
@@ -312,8 +614,9 @@ void GamePlayScene::Draw() {
 			if (enemyWave >= 0) {
 
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (enemyWave == 0&&i == enemyNam) { break; }
 			}
-	/*		if (enemyWave >= 1) {
+			if (enemyWave >= 1) {
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
@@ -361,7 +664,7 @@ void GamePlayScene::Draw() {
 			if (enemyWave >= 10) {
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			}*/
+			}
 		}
 	}
 	
@@ -420,56 +723,438 @@ void GamePlayScene::ClassUpdate() {
 	objGround->Update();
 	objSky->Update();
 	objCloud->Update();
-
+	
 	for (auto& sprite : spritesRader) {
 		sprite->Update();
 	}
 	if (enemyWave >= 0) {
-		for (int i = 0; i < enemyNam*80; i++) {
-			if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Update(); }
-		}
+		
 		for (int i = 0; i < enemyNam; i++) {
 			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 		}
 	}
 	if (enemyWave >= 1) {
+		for (int i = enemyNam; i < enemyNam * 2; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 2) {
+		for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 3) {
+		for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+
+		}
 	}
 
 	if (enemyWave >= 4) {
+		for (int i = enemyNam * 4; i < enemyNam * 5; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 5) {
+		for (int i = enemyNam * 5; i < enemyNam * 6; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 6) {
+		for (int i = enemyNam * 6; i < (enemyNam * 7) + 1; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 7) {
+		for (int i = (enemyNam * 7) + 1; i < (enemyNam * 8) + 2; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 8) {
+		for (int i = (enemyNam * 8) + 2; i < (enemyNam * 9) + 3; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 9) {
+		for (int i = (enemyNam * 9) + 3; i < (enemyNam * 10) + 5; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
 	}
 
 	if (enemyWave >= 10) {
+		for (int i = (enemyNam * 10) + 5; i < (enemyNam * 11) + 7; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
+		}
+	}
+	if (enemyWave >= 11) {
+		for (int i = (enemyNam * 11) + 7; i < (enemyNam * 12) + 9; i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 12) {
+		for (int i = (enemyNam * 12) + 9; i < (enemyNam * 13) + (enemyNam + 2); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+	if (enemyWave >= 13) {
+
+		for (int i = (enemyNam * 13) + (enemyNam + 2); i < (enemyNam * 14) + (enemyNam + 5); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 14) {
+		for (int i = (enemyNam * 14) + (enemyNam + 5); i < (enemyNam * 15) + (enemyNam + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+
+	}
+
+	if (enemyWave >= 15) {
+		for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam * 2) + 1); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 16) {
+		for (int i = (enemyNam * 16) + ((enemyNam * 2) + 1); i < (enemyNam * 17) + ((enemyNam * 2) + 4); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 17) {
+		for (int i = (enemyNam * 17) + ((enemyNam * 2) + 4); i < (enemyNam * 18) + ((enemyNam * 2) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 18) {
+		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 18) + ((enemyNam * 3) + 2); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 19) {
+		for (int i = (enemyNam * 19) + ((enemyNam * 3) + 2); i < (enemyNam * 20) + ((enemyNam * 3) + 6); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 20) {
+		for (int i = (enemyNam * 20) + ((enemyNam * 3) + 6); i < (enemyNam * 21) + ((enemyNam * 4) + 0); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 21) {
+		for (int i = (enemyNam * 21) + ((enemyNam * 4) + 0); i < (enemyNam * 22) + ((enemyNam * 4) + 4); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 22) {
+		for (int i = (enemyNam * 22) + ((enemyNam * 4) + 4); i < (enemyNam * 23) + ((enemyNam * 4) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 23) {
+		for (int i = (enemyNam * 23) + ((enemyNam * 4) + 8); i < (enemyNam * 24) + ((enemyNam * 5) + 3); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 24) {
+		for (int i = (enemyNam * 24) + ((enemyNam * 5) + 3); i < (enemyNam * 25) + ((enemyNam * 5) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 25) {
+		for (int i = (enemyNam * 25) + ((enemyNam * 5) + 8); i < (enemyNam * 26) + ((enemyNam * 6) + 3); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 26) {
+		for (int i = (enemyNam * 26) + ((enemyNam * 6) + 3); i < (enemyNam * 27) + ((enemyNam * 6) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 27) {
+		for (int i = (enemyNam * 27) + ((enemyNam * 6) + 8); i < (enemyNam * 28) + ((enemyNam * 7) + 3); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 28) {
+		for (int i = (enemyNam * 28) + ((enemyNam * 7) + 3); i < (enemyNam * 29) + ((enemyNam * 7) + 9); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 29) {
+		for (int i = (enemyNam * 29) + ((enemyNam * 7) + 9); i < (enemyNam * 30) + ((enemyNam * 8) + 5); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 30) {
+		for (int i = (enemyNam * 30) + ((enemyNam * 8) + 5); i < (enemyNam * 31) + ((enemyNam * 9) + 1); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 31) {
+		for (int i = (enemyNam * 31) + ((enemyNam * 9) + 1); i < (enemyNam * 32) + ((enemyNam * 9) + 7); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 32) {
+		for (int i = (enemyNam * 32) + ((enemyNam * 9) + 7); i < (enemyNam * 33) + ((enemyNam * 10) + 3); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 33) {
+		for (int i = (enemyNam * 33) + ((enemyNam * 10) + 3); i < (enemyNam * 34) + ((enemyNam * 10) + 9); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 34) {
+		for (int i = (enemyNam * 34) + ((enemyNam * 10) + 9); i < (enemyNam * 35) + ((enemyNam * 11) + 5); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 35) {
+		for (int i = (enemyNam * 35) + ((enemyNam * 11) + 5); i < (enemyNam * 36) + ((enemyNam * 12) + 1); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 36) {
+		for (int i = (enemyNam * 36) + ((enemyNam * 12) + 1); i < (enemyNam * 37) + ((enemyNam * 12) + 7); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 37) {
+		for (int i = (enemyNam * 37) + ((enemyNam * 12) + 7); i < (enemyNam * 38) + ((enemyNam * 13) + 4); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 38) {
+		for (int i = (enemyNam * 38) + ((enemyNam * 13) + 4); i < (enemyNam * 39) + ((enemyNam * 14) + 1); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 39) {
+		for (int i = (enemyNam * 39) + ((enemyNam * 14) + 1); i < (enemyNam * 40) + ((enemyNam * 14) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 40) {
+		for (int i = (enemyNam * 40) + ((enemyNam * 14) + 8); i < (enemyNam * 41) + ((enemyNam * 15) + 5); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 41) {
+		for (int i = (enemyNam * 41) + ((enemyNam * 15) + 5); i < (enemyNam * 42) + ((enemyNam * 16) + 2); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 42) {
+		for (int i = (enemyNam * 42) + ((enemyNam * 16) + 2); i < (enemyNam * 43) + ((enemyNam * 17) + 0); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 43) {
+		for (int i = (enemyNam * 43) + ((enemyNam * 17) + 0); i < (enemyNam * 44) + ((enemyNam * 17) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 44) {
+		for (int i = (enemyNam * 44) + ((enemyNam * 17) + 8); i < (enemyNam * 45) + ((enemyNam * 18) + 6); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 45) {
+		for (int i = (enemyNam * 45) + ((enemyNam * 18) + 6); i < (enemyNam * 46) + ((enemyNam * 19) + 4); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 46) {
+		for (int i = (enemyNam * 46) + ((enemyNam * 19) + 4); i < (enemyNam * 47) + ((enemyNam * 20) + 2); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 47) {
+		for (int i = (enemyNam * 47) + ((enemyNam * 20) + 2); i < (enemyNam * 48) + ((enemyNam * 21) + 0); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 48) {
+		for (int i = (enemyNam * 48) + ((enemyNam * 21) + 0); i < (enemyNam * 49) + ((enemyNam * 21) + 8); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 49) {
+		for (int i = (enemyNam * 49) + ((enemyNam * 21) + 8); i < (enemyNam * 50) + ((enemyNam * 22) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 50) {
+		for (int i = (enemyNam * 50) + ((enemyNam * 22) + 6); i < (enemyNam * 51) + ((enemyNam * 23) + 5); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 51) {
+		for (int i = (enemyNam * 51) + ((enemyNam * 23) + 5); i < (enemyNam * 52) + ((enemyNam * 24) + 4); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 52) {
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
+	}
+
+	if (enemyWave >= 53) {
+		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
+		{
+			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
+
+		}
 	}
 	spritePlayer->Update();
 
@@ -496,11 +1181,1480 @@ void GamePlayScene::CameraCreateSet() {
 	camera->SetEye({ 0, 0, 0 });
 }
 
-void GamePlayScene::Enemymove(int enemyWave)
+void GamePlayScene::EnemyPlayerDistance()
 {
+	if (enemyWave >= 0)
+	{
+		for (int i = 0; i < enemyNam; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+				if (i == 0)
+				{
+					earliestEnemyNum = 0;
+				}
+				else
+				{
+					if (earliest[earliestEnemyNum] > earliest[i])
+					{
+						earliestEnemyNum = i;
+					}
+					else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+					{
+						earliestEnemyNum = earliestEnemyNum;
+					}
+					else
+					{
+						earliestEnemyNum = i;
+					}
+				}
+			}
+		}
+	}
+	if (enemyWave >= 1) {
+		for (int i = enemyNam; i < enemyNam * 2; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 2) {
+		for (int i = enemyNam * 2; i < enemyNam * 3; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 3) {
+		for (int i = enemyNam * 3; i < enemyNam * 4; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 4) {
+		for (int i = enemyNam*4; i < enemyNam * 5; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 5) {
+		for (int i = enemyNam*5; i < enemyNam * 6; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 6) {
+		for (int i = enemyNam*6; i < (enemyNam * 7) + 1; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 7) {
+		for (int i = (enemyNam * 7) + 1; i < (enemyNam * 8) + 2; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 8) {
+		for (int i = (enemyNam * 8) + 2; i < (enemyNam * 9) + 3; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 9) {
+		for (int i = (enemyNam * 9) + 3; i < (enemyNam * 10) + 5; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 10) {
+		for (int i = (enemyNam * 10) + 5; i < (enemyNam * 11) + 7; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+	if (enemyWave >= 11) {
+		for (int i = (enemyNam * 11) + 7; i < (enemyNam * 12) + 9; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 12) {
+		for (int i = (enemyNam * 12) + 9; i < (enemyNam * 13) + (enemyNam + 2); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+			
+		}
+	}
+
+	if (enemyWave >= 13) {
+
+		for (int i = (enemyNam * 13) + (enemyNam + 2); i < (enemyNam * 14) + (enemyNam + 5); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 14) {
+		for (int i = (enemyNam * 14) + (enemyNam + 5); i < (enemyNam * 15) + (enemyNam + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+
+	}
+
+	if (enemyWave >= 15) {
+		for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam * 2) + 1); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 16) {
+		for (int i = (enemyNam * 16) + ((enemyNam * 2) + 1); i < (enemyNam * 17) + ((enemyNam * 2) + 4); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 17) {
+		for (int i = (enemyNam * 17) + ((enemyNam * 2) + 4); i < (enemyNam * 18) + ((enemyNam * 2) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 18) {
+		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 18) + ((enemyNam * 3) + 2); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 19) {
+		for (int i = (enemyNam * 19) + ((enemyNam * 3) + 2); i < (enemyNam * 20) + ((enemyNam * 3) + 6); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 20) {
+		for (int i = (enemyNam * 20) + ((enemyNam * 3) + 6); i < (enemyNam * 21) + ((enemyNam * 4) + 0); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 21) {
+		for (int i = (enemyNam * 21) + ((enemyNam * 4) + 0); i < (enemyNam * 22) + ((enemyNam * 4) + 4); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 22) {
+		for (int i = (enemyNam * 22) + ((enemyNam * 4) + 4); i < (enemyNam * 23) + ((enemyNam * 4) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 23) {
+		for (int i = (enemyNam * 23) + ((enemyNam * 4) + 8); i < (enemyNam * 24) + ((enemyNam * 5) + 3); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 24) {
+		for (int i = (enemyNam * 24) + ((enemyNam * 5) + 3); i < (enemyNam * 25) + ((enemyNam * 5) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 25) {
+		for (int i = (enemyNam * 25) + ((enemyNam * 5) + 8); i < (enemyNam * 26) + ((enemyNam * 6) + 3); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 26) {
+		for (int i = (enemyNam * 26) + ((enemyNam * 6) + 3); i < (enemyNam * 27) + ((enemyNam * 6) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 27) {
+		for (int i = (enemyNam * 27) + ((enemyNam * 6) + 8); i < (enemyNam * 28) + ((enemyNam * 7) + 3); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 28) {
+		for (int i = (enemyNam * 28) + ((enemyNam * 7) + 3); i < (enemyNam * 29) + ((enemyNam * 7) + 9); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 29) {
+		for (int i = (enemyNam * 29) + ((enemyNam * 7) + 9); i < (enemyNam * 30) + ((enemyNam * 8) + 5); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 30) {
+		for (int i = (enemyNam * 30) + ((enemyNam * 8) + 5); i < (enemyNam * 31) + ((enemyNam * 9) + 1); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 31) {
+		for (int i = (enemyNam * 31) + ((enemyNam * 9) + 1); i < (enemyNam * 32) + ((enemyNam * 9) + 7); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 32) {
+		for (int i = (enemyNam * 32) + ((enemyNam * 9) + 7); i < (enemyNam * 33) + ((enemyNam * 10) + 3); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 33) {
+		for (int i = (enemyNam * 33) + ((enemyNam * 10) + 3); i < (enemyNam * 34) + ((enemyNam * 10) + 9); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 34) {
+		for (int i = (enemyNam * 34) + ((enemyNam * 10) + 9); i < (enemyNam * 35) + ((enemyNam * 11) + 5); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 35) {
+		for (int i = (enemyNam * 35) + ((enemyNam * 11) + 5); i < (enemyNam * 36) + ((enemyNam * 12) + 1); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 36) {
+		for (int i = (enemyNam * 36) + ((enemyNam * 12) + 1); i < (enemyNam * 37) + ((enemyNam * 12) + 7); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 37) {
+		for (int i = (enemyNam * 37) + ((enemyNam * 12) + 7); i < (enemyNam * 38) + ((enemyNam * 13) + 4); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 38) {
+		for (int i = (enemyNam * 38) + ((enemyNam * 13) + 4); i < (enemyNam * 39) + ((enemyNam * 14) + 1); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 39) {
+		for (int i = (enemyNam * 39) + ((enemyNam * 14) + 1); i < (enemyNam * 40) + ((enemyNam * 14) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 40) {
+		for (int i = (enemyNam * 40) + ((enemyNam * 14) + 8); i < (enemyNam * 41) + ((enemyNam * 15) + 5); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 41) {
+		for (int i = (enemyNam * 41) + ((enemyNam * 15) + 5); i < (enemyNam * 42) + ((enemyNam * 16) + 2); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 42) {
+		for (int i = (enemyNam * 42) + ((enemyNam * 16) + 2); i < (enemyNam * 43) + ((enemyNam * 17) + 0); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 43) {
+		for (int i = (enemyNam * 43) + ((enemyNam * 17) + 0); i < (enemyNam * 44) + ((enemyNam * 17) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 44) {
+		for (int i = (enemyNam * 44) + ((enemyNam * 17) + 8); i < (enemyNam * 45) + ((enemyNam * 18) + 6); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 45) {
+		for (int i = (enemyNam * 45) + ((enemyNam * 18) + 6); i < (enemyNam * 46) + ((enemyNam * 19) + 4); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 46) {
+		for (int i = (enemyNam * 46) + ((enemyNam * 19) + 4); i < (enemyNam * 47) + ((enemyNam * 20) + 2); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 47) {
+		for (int i = (enemyNam * 47) + ((enemyNam * 20) + 2); i < (enemyNam * 48) + ((enemyNam * 21) + 0); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 48) {
+		for (int i = (enemyNam * 48) + ((enemyNam * 21) + 0); i < (enemyNam * 49) + ((enemyNam * 21) + 8); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 49) {
+		for (int i = (enemyNam * 49) + ((enemyNam * 21) + 8); i < (enemyNam * 50) + ((enemyNam * 22) + 6); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 50) {
+		for (int i = (enemyNam * 50) + ((enemyNam * 22) + 6); i < (enemyNam * 51) + ((enemyNam * 23) + 5); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 51) {
+		for (int i = (enemyNam * 51) + ((enemyNam * 23) + 5); i < (enemyNam * 52) + ((enemyNam * 24) + 4); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 52) {
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+	if (enemyWave >= 53) {
+		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				Earliest.x = cloudPos.x - enemyMovPos[i].x;
+				Earliest.y = cloudPos.y - enemyMovPos[i].y;
+				Earliest.z = cloudPos.z - enemyMovPos[i].z;
+				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+
+				if (earliest[earliestEnemyNum] > earliest[i])
+				{
+					earliestEnemyNum = i;
+				}
+				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+				{
+					earliestEnemyNum = earliestEnemyNum;
+				}
+				else
+				{
+					earliestEnemyNum = i;
+				}
+
+			}
+		}
+	}
+
+}
+void GamePlayScene::Enemymove()
+{
+	bool isHit = Collision::territory(cloudPos, enemyMovPos[0]);
 	if (enemyWave >= 0) {
 		//エネミー移動
-		for (int i = 0; i < enemyNam*80; i++)
+		for (int i = 0; i < enemyNam; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -525,6 +2679,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 7&& enemyWaveFlag == 0)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -532,8 +2691,10 @@ void GamePlayScene::Enemymove(int enemyWave)
 
 	}
 
+	
+
 	if (enemyWave >= 1) {
-		for (int i = enemyNam; i < enemyNam * 3; i++)
+		for (int i = enemyNam; i < enemyNam * 2; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -558,6 +2719,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 16 && enemyWaveFlag == 1)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -565,7 +2731,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 2) {
-		for (int i = enemyNam * 3; i < enemyNam * 5; i++)
+		for (int i = enemyNam * 2; i < enemyNam * 3; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -590,6 +2756,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 26 && enemyWaveFlag == 2)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -597,7 +2768,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 3) {
-		for (int i = enemyNam * 5; i < enemyNam * 8; i++)
+		for (int i = enemyNam * 3; i < enemyNam * 4; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -622,6 +2793,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 36 && enemyWaveFlag == 3)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -629,7 +2805,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 4) {
-		for (int i = enemyNam * 8; i < enemyNam * 11; i++)
+		for (int i = enemyNam * 4; i < enemyNam * 5; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -654,6 +2830,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 46 && enemyWaveFlag == 4)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -661,7 +2842,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 5) {
-		for (int i = enemyNam * 11; i < enemyNam * 14; i++)
+		for (int i = enemyNam * 5; i < enemyNam * 6; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -686,6 +2867,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 56 && enemyWaveFlag == 5)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -693,7 +2879,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 6) {
-		for (int i = enemyNam * 14; i < enemyNam * 18; i++)
+		for (int i = enemyNam * 6; i < (enemyNam *7)+1; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -718,6 +2904,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 66 && enemyWaveFlag == 6)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -725,7 +2916,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 7) {
-		for (int i = enemyNam * 18; i < enemyNam * 23; i++)
+		for (int i = (enemyNam * 7) + 1; i < (enemyNam * 8) + 2; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -750,6 +2941,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 76 && enemyWaveFlag == 7)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -757,7 +2953,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 8) {
-		for (int i = enemyNam * 23; i < enemyNam * 28; i++)
+		for (int i = (enemyNam * 8) + 2; i < (enemyNam * 9) + 3; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -782,6 +2978,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 86 && enemyWaveFlag == 8)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -789,7 +2990,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 9) {
-		for (int i = enemyNam * 28; i < enemyNam * 34; i++)
+		for (int i = (enemyNam * 9) + 3; i < (enemyNam * 10) + 5; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -814,6 +3015,11 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 96 && enemyWaveFlag == 9)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
 
@@ -821,7 +3027,7 @@ void GamePlayScene::Enemymove(int enemyWave)
 	}
 
 	if (enemyWave >= 10) {
-		for (int i = enemyNam * 34; i < enemyNam * 40; i++)
+		for (int i = (enemyNam * 10) + 5; i < (enemyNam * 11) + 7; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -846,8 +3052,376 @@ void GamePlayScene::Enemymove(int enemyWave)
 				delete spriteEnemyRe[i];
 				delete objEnemyMov[i];
 				enemyCount++;
+				if (enemyCount >= 110 && enemyWaveFlag == 10)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
 				score += 1000;
 			}
+
+		}
+	}
+
+	if (enemyWave >= 11) {
+		for (int i = (enemyNam * 11) + 7; i < (enemyNam * 12) + 9; i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				if (enemyCount >= 120 && enemyWaveFlag == 11)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 12) {
+		for (int i = (enemyNam * 12) + 9; i < (enemyNam * 13) + (enemyNam + 2); i++)
+		{
+			if (enemyFlag[i] == 0)
+			{
+				XMFLOAT3 vel = {};
+				vel.x = sin((angle[i] * PI) / 180) * enemyMove[i];
+				vel.y = 0.0f;
+				vel.z = cos((angle[i] * PI) / 180) * enemyMove[i];
+				enemyMovPos[i].x -= vel.x;
+				enemyMovPos[i].y -= vel.y;
+				enemyMovPos[i].z -= vel.z;
+				sEnemyRe[i].x -= cos((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				sEnemyRe[i].y -= sin((angle[i] * PI) / 180) * (enemyMove[i] / 3.90625f);
+				//spritesEnemy.get_allocator();
+				//spriteEnemyRe->GetPosition();
+				spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
+				spriteEnemyRe[i]->Update();
+
+				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+				objEnemyMov[i]->Update();
+			}
+			if (enemyFlag[i] == 1) {
+				delete spriteEnemyRe[i];
+				delete objEnemyMov[i];
+				enemyCount++;
+				if (enemyCount >= 139 && enemyWaveFlag == 11)
+				{
+					enemyWaveFlag++;
+					enemyWave++;
+				}
+				score += 1000;
+			}
+
+		}
+	}
+
+	if (enemyWave >= 13) {
+		
+		for (int i = (enemyNam * 13) + (enemyNam + 2); i < (enemyNam * 14) + (enemyNam + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 14) {
+		for (int i = (enemyNam * 14) + (enemyNam + 5); i < (enemyNam * 15) + (enemyNam + 8); i++)
+		{
+
+		}
+
+	}
+
+	if (enemyWave >= 15) {
+		for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam*2) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 16) {
+		for (int i = (enemyNam * 16) + ((enemyNam * 2) + 1); i < (enemyNam * 17) + ((enemyNam * 2) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 17) {
+		for (int i = (enemyNam * 17) + ((enemyNam * 2) + 4); i < (enemyNam * 18) + ((enemyNam * 2) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 18) {
+		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 18) + ((enemyNam * 3) + 2); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 19) {
+		for (int i = (enemyNam * 19) + ((enemyNam * 3) + 2); i < (enemyNam * 20) + ((enemyNam * 3) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 20) {
+		for (int i = (enemyNam * 20) + ((enemyNam * 3) + 6); i < (enemyNam * 21) + ((enemyNam * 4) + 0); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 21) {
+		for (int i = (enemyNam * 21) + ((enemyNam * 4) + 0); i < (enemyNam * 22) + ((enemyNam * 4) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 22) {
+		for (int i = (enemyNam * 22) + ((enemyNam * 4) + 4); i < (enemyNam * 23) + ((enemyNam * 4) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 23) {
+		for (int i = (enemyNam * 23) + ((enemyNam * 4) + 8); i < (enemyNam * 24) + ((enemyNam * 5) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 24) {
+		for (int i = (enemyNam * 24) + ((enemyNam * 5) + 3); i < (enemyNam * 25) + ((enemyNam * 5) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 25) {
+		for (int i = (enemyNam * 25) + ((enemyNam * 5) + 8); i < (enemyNam * 26) + ((enemyNam * 6) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 26) {
+		for (int i = (enemyNam * 26) + ((enemyNam * 6) + 3); i < (enemyNam * 27) + ((enemyNam * 6) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 27) {
+		for (int i = (enemyNam * 27) + ((enemyNam * 6) + 8); i < (enemyNam * 28) + ((enemyNam * 7) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 28) {
+		for (int i = (enemyNam * 28) + ((enemyNam * 7) + 3); i < (enemyNam * 29) + ((enemyNam * 7) + 9); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 29) {
+		for (int i = (enemyNam * 29) + ((enemyNam * 7) + 9); i < (enemyNam * 30) + ((enemyNam * 8) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 30) {
+		for (int i = (enemyNam * 30) + ((enemyNam * 8) + 5); i < (enemyNam * 31) + ((enemyNam * 9) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 31) {
+		for (int i = (enemyNam * 31) + ((enemyNam * 9) + 1); i < (enemyNam * 32) + ((enemyNam * 9) + 7); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 32) {
+		for (int i = (enemyNam * 32) + ((enemyNam * 9) + 7); i < (enemyNam * 33) + ((enemyNam * 10) + 3); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 33) {
+		for (int i = (enemyNam * 33) + ((enemyNam * 10) + 3); i < (enemyNam * 34) + ((enemyNam * 10) + 9); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 34) {
+		for (int i = (enemyNam * 34) + ((enemyNam * 10) + 9); i < (enemyNam * 35) + ((enemyNam * 11) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 35) {
+		for (int i = (enemyNam * 35) + ((enemyNam * 11) + 5); i < (enemyNam * 36) + ((enemyNam * 12) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 36) {
+		for (int i = (enemyNam * 36) + ((enemyNam * 12) + 1); i < (enemyNam * 37) + ((enemyNam * 12) + 7); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 37) {
+		for (int i = (enemyNam * 37) + ((enemyNam * 12) + 7); i < (enemyNam * 38) + ((enemyNam * 13) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 38) {
+		for (int i = (enemyNam * 38) + ((enemyNam * 13) + 4); i < (enemyNam * 39) + ((enemyNam * 14) + 1); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 39) {
+		for (int i = (enemyNam * 39) + ((enemyNam * 14) + 1); i < (enemyNam * 40) + ((enemyNam * 14) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 40) {
+		for (int i = (enemyNam * 40) + ((enemyNam * 14) + 8); i < (enemyNam * 41) + ((enemyNam * 15) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 41) {
+		for (int i = (enemyNam * 41) + ((enemyNam * 15) + 5); i < (enemyNam * 42) + ((enemyNam * 16) + 2); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 42) {
+		for (int i = (enemyNam * 42) + ((enemyNam * 16) + 2); i < (enemyNam * 43) + ((enemyNam * 17) + 0); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 43) {
+		for (int i = (enemyNam * 43) + ((enemyNam * 17) + 0); i < (enemyNam * 44) + ((enemyNam * 17) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 44) {
+		for (int i = (enemyNam * 44) + ((enemyNam * 17) + 8); i < (enemyNam * 45) + ((enemyNam * 18) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 45) {
+		for (int i = (enemyNam * 45) + ((enemyNam * 18) + 6); i < (enemyNam * 46) + ((enemyNam * 19) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 46) {
+		for (int i = (enemyNam * 46) + ((enemyNam * 19) + 4); i < (enemyNam * 47) + ((enemyNam * 20) + 2); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 47) {
+		for (int i = (enemyNam * 47) + ((enemyNam * 20) + 2); i < (enemyNam * 48) + ((enemyNam * 21) + 0); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 48) {
+		for (int i = (enemyNam * 48) + ((enemyNam * 21) + 0); i < (enemyNam * 49) + ((enemyNam * 21) + 8); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 49) {
+		for (int i = (enemyNam * 49) + ((enemyNam * 21) + 8); i < (enemyNam * 50) + ((enemyNam * 22) + 6); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 50) {
+		for (int i = (enemyNam * 50) + ((enemyNam * 22) + 6); i < (enemyNam * 51) + ((enemyNam * 23) + 5); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 51) {
+		for (int i = (enemyNam * 51) + ((enemyNam * 23) + 5); i < (enemyNam * 52) + ((enemyNam * 24) + 4); i++)
+		{
+
+		}
+	}
+
+	if (enemyWave >= 52) {
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		{
+
+		}
+	}
+	
+	if (enemyWave >= 53) {
+		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
+		{
 
 		}
 	}
