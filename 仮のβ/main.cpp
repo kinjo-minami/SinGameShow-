@@ -266,7 +266,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 skyPos = OBJBack->GetPosition();
 
 	// 最短距離関係
-	float earliest[200];
+	float earliest = 0;
+	float oldEarliest = 0;
 	XMFLOAT3 Earliest;
 	int earliestEnemyNum;
 
@@ -775,28 +776,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					if (enemyFlag[i] == 0)
 					{
+						oldEarliest = earliest;
 						Earliest.x = cloudPos.x - enemyMovPos[i].x;
 						Earliest.y = cloudPos.y - enemyMovPos[i].y;
 						Earliest.z = cloudPos.z - enemyMovPos[i].z;
-						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+						earliest = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 						if (i == 0)
 						{
 							earliestEnemyNum = 0;
 						}
 						else
 						{
-							if (earliest[earliestEnemyNum] > earliest[i])
+
+							if (oldEarliest > earliest)
 							{
 								earliestEnemyNum = i;
 							}
-							else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+							else if (oldEarliest < earliest && enemyFlag[earliestEnemyNum] == 0)
 							{
+								earliest = oldEarliest;
+
 								earliestEnemyNum = earliestEnemyNum;
 							}
-							else
-							{
-								earliestEnemyNum = i;
-							}
+						
 						}
 					}
 				}
@@ -985,16 +987,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					if (enemyFlag[i] == 0)
 					{
+						oldEarliest = earliest;
 						Earliest.x = cloudPos.x - enemyMovPos[i].x;
 						Earliest.y = cloudPos.y - enemyMovPos[i].y;
 						Earliest.z = cloudPos.z - enemyMovPos[i].z;
-						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+						earliest = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 
-						if (earliest[earliestEnemyNum] > earliest[i])
+
+						if (oldEarliest > earliest)
 						{
 							earliestEnemyNum = i;
 						}
-						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
+						else if (oldEarliest < earliest && enemyFlag[earliestEnemyNum] == 0)
 						{
 							earliestEnemyNum = earliestEnemyNum;
 						}
@@ -1013,22 +1017,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					if (enemyFlag[i] == 0)
 					{
-						Earliest.x = cloudPos.x - enemyMovPos[i].x;
-						Earliest.y = cloudPos.y - enemyMovPos[i].y;
-						Earliest.z = cloudPos.z - enemyMovPos[i].z;
-						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+						if (enemyFlag[i] == 0)
+						{
+							oldEarliest = earliest;
+							Earliest.x = cloudPos.x - enemyMovPos[i].x;
+							Earliest.y = cloudPos.y - enemyMovPos[i].y;
+							Earliest.z = cloudPos.z - enemyMovPos[i].z;
+							earliest = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 
-						if (earliest[earliestEnemyNum] > earliest[i])
-						{
-							earliestEnemyNum = i;
-						}
-						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
-						{
-							earliestEnemyNum = earliestEnemyNum;
-						}
-						else
-						{
-							earliestEnemyNum = i;
+
+							if (oldEarliest > earliest)
+							{
+								earliestEnemyNum = i;
+							}
+							else if (oldEarliest < earliest && enemyFlag[earliestEnemyNum] == 0)
+							{
+								earliest = oldEarliest;
+
+								earliestEnemyNum = earliestEnemyNum;
+							}
+							else
+							{
+								earliestEnemyNum = i;
+							}
+
 						}
 
 					}
@@ -1040,22 +1052,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					if (enemyFlag[i] == 0)
 					{
-						Earliest.x = cloudPos.x - enemyMovPos[i].x;
-						Earliest.y = cloudPos.y - enemyMovPos[i].y;
-						Earliest.z = cloudPos.z - enemyMovPos[i].z;
-						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+						if (enemyFlag[i] == 0)
+						{
+							oldEarliest = earliest;
+							Earliest.x = cloudPos.x - enemyMovPos[i].x;
+							Earliest.y = cloudPos.y - enemyMovPos[i].y;
+							Earliest.z = cloudPos.z - enemyMovPos[i].z;
+							earliest = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 
-						if (earliest[earliestEnemyNum] > earliest[i])
-						{
-							earliestEnemyNum = i;
-						}
-						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
-						{
-							earliestEnemyNum = earliestEnemyNum;
-						}
-						else
-						{
-							earliestEnemyNum = i;
+
+							if (oldEarliest > earliest)
+							{
+								earliestEnemyNum = i;
+							}
+							else if (oldEarliest < earliest && enemyFlag[earliestEnemyNum] == 0)
+							{
+								earliest = oldEarliest;
+
+								earliestEnemyNum = earliestEnemyNum;
+							}
+							else
+							{
+								earliestEnemyNum = i;
+							}
+
 						}
 
 					}
@@ -1068,22 +1088,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					if (enemyFlag[i] == 0)
 					{
-						Earliest.x = cloudPos.x - enemyMovPos[i].x;
-						Earliest.y = cloudPos.y - enemyMovPos[i].y;
-						Earliest.z = cloudPos.z - enemyMovPos[i].z;
-						earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
+						if (enemyFlag[i] == 0)
+						{
+							oldEarliest = earliest;
+							Earliest.x = cloudPos.x - enemyMovPos[i].x;
+							Earliest.y = cloudPos.y - enemyMovPos[i].y;
+							Earliest.z = cloudPos.z - enemyMovPos[i].z;
+							earliest = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
 
-						if (earliest[earliestEnemyNum] > earliest[i])
-						{
-							earliestEnemyNum = i;
-						}
-						else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
-						{
-							earliestEnemyNum = earliestEnemyNum;
-						}
-						else
-						{
-							earliestEnemyNum = i;
+
+							if (oldEarliest > earliest)
+							{
+								earliestEnemyNum = i;
+							}
+							else if (oldEarliest < earliest && enemyFlag[earliestEnemyNum] == 0)
+							{
+								earliest = oldEarliest;
+
+								earliestEnemyNum = earliestEnemyNum;
+							}
+							else
+							{
+								earliestEnemyNum = i;
+							}
+
 						}
 
 					}

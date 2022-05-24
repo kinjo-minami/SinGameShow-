@@ -65,13 +65,17 @@ void GamePlayScene::Create3D_object() {
 	cloudPos = objCloud->GetPosition();
 	cloudRot = objCloud->GetRotation();
 
+	//雷
+	objThunder->SetModel(modelThunder);
+
+
 	//enemy複製
 	for (int i = 0; i < 800; i++) {
 		enemyMovPos[i] = { 0,4,50 };
 		objEnemyMov[i] = Object3d::Create();
 
 	}
-	for (int i = 0; i < enemyNam; i++) {
+	for (int i = 0; i < enemyNam * 80; i++) {
 		objEnemyMov[i]->SetModel(modelEnemyRat);
 		XMFLOAT3 vel{};
 		//angle[i] = 60.0f;
@@ -101,7 +105,7 @@ void GamePlayScene::Update() {
 		PlayerMove();
 		Enemymove();
 		EnemyPlayerDistance();
-
+		PlayerAtk();
 	}
 	if (gameFlag == 1) {
 
@@ -237,6 +241,44 @@ void GamePlayScene::PlayerMove() {
 
 }
 
+void GamePlayScene::PlayerAtk()
+{
+	Input* input = Input::GetInstance();
+
+	if (input->TriggerMouseLeft() && thunderFlag == 0)
+	{
+		// 攻撃判定
+		bool isTerritory = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum]);
+		if (isTerritory)
+		{
+			//thunder->SEPlayWave();
+
+			thunderFlag = 1;
+			thunderPos = enemyMovPos[earliestEnemyNum];
+			thunderPos.y += 100.0;
+			thunderTimer = 10;
+			objThunder->SetPosition(thunderPos);
+		}
+	}
+	if (thunderFlag == 1)
+	{
+		thunderPos.y -= 20.0f;
+		objThunder->SetPosition(thunderPos);
+
+		if (thunderPos.y <= 40)
+		{
+			enemyFlag[earliestEnemyNum] = 1;
+			enemyCount++;
+
+			thunderFlag = 0;
+
+		}
+	}
+
+
+
+}
+
 
 
 void GamePlayScene::Draw() {
@@ -248,6 +290,10 @@ void GamePlayScene::Draw() {
 		objGround->Draw();
 		objSky->Draw();
 		objCloud->Draw();
+		if (thunderFlag == 1)
+		{
+			objThunder->Draw();
+		}
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
 				if (enemyFlag[i] == 0)objEnemyMov[i]->Draw();
@@ -296,14 +342,14 @@ void GamePlayScene::Draw() {
 	if (enemyWave >= 11) {
 		for (int i = (enemyNam * 11) + 7; i < (enemyNam * 12) + 9; i++)
 		{
-			
+
 		}
 	}
 
 	if (enemyWave >= 12) {
 		for (int i = (enemyNam * 12) + 9; i < (enemyNam * 13) + (enemyNam + 2); i++)
 		{
-			
+
 		}
 	}
 	if (enemyWave >= 13) {
@@ -344,7 +390,7 @@ void GamePlayScene::Draw() {
 	}
 
 	if (enemyWave >= 18) {
-		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 18) + ((enemyNam * 3) + 2); i++)
+		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 19) + ((enemyNam * 3) + 2); i++)
 		{
 
 		}
@@ -582,18 +628,13 @@ void GamePlayScene::Draw() {
 	}
 
 	if (enemyWave >= 52) {
-		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
 		{
 
 		}
 	}
 
-	if (enemyWave >= 53) {
-		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
-		{
 
-		}
-	}
 	if (gameFlag == 1) {
 
 	}
@@ -610,72 +651,285 @@ void GamePlayScene::Draw() {
 		}
 		spritePlayer->Draw();
 
-		for (int i = 0; i < enemyNam*80; i++) {
+		for (int i = 0; i < enemyNam * 80; i++) {
 			if (enemyWave >= 0) {
+				if (enemyWave == 0 && i == enemyNam) { break; }
 
 				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
-				if (enemyWave == 0&&i == enemyNam) { break; }
 			}
 			if (enemyWave >= 1) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (enemyWave == 1 && i == enemyNam * 2) { break; }
+				if (i >= enemyNam && i < enemyNam * 2 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 2) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (enemyWave == 2 && i == enemyNam * 3) { break; }
+
+				if (i >= enemyNam * 2 && i < enemyNam * 3 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 3) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= enemyNam * 3 && i < enemyNam * 4 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 4) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= enemyNam * 4 && i < enemyNam * 5 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 5) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= enemyNam * 5 && i < enemyNam * 6 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 6) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= enemyNam * 6 && i < (enemyNam * 7) + 1 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 7) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= (enemyNam * 7) + 1 && i < (enemyNam * 8) + 2 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 8) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= (enemyNam * 8) + 2 && i < (enemyNam * 9) + 3 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 9) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= (enemyNam * 9) + 3 && i < (enemyNam * 10) + 5 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
 
 			if (enemyWave >= 10) {
-				if (enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= (enemyNam * 10) + 5 && i < (enemyNam * 11) + 7 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
 			}
+			if (enemyWave >= 11) {
+				
+				if (i >= (enemyNam * 11) + 7 && i < (enemyNam * 12) + 9 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				
+			}
+			if (enemyWave >= 12) {
+				if (i >= (enemyNam * 12) + 9 && i < (enemyNam * 13) + (enemyNam + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+
+			}
+			if (enemyWave >= 13) {
+				if (i >= (enemyNam * 13) + (enemyNam + 2) && i < (enemyNam * 14) + (enemyNam + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 14) {
+				if (i >= (enemyNam * 14) + (enemyNam + 5) && i < (enemyNam * 15) + (enemyNam + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 15) {
+				if (i >= (enemyNam * 15) + (enemyNam + 8) && i < (enemyNam * 16) + ((enemyNam * 2) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 16) {
+				if (i >= (enemyNam * 16) + ((enemyNam * 2) + 1) && i < (enemyNam * 17) + ((enemyNam * 2) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 17) {
+				if (i >= (enemyNam * 17) + ((enemyNam * 2) + 4) && i < (enemyNam * 18) + ((enemyNam * 2) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 18) {
+				if (i >= (enemyNam * 18) + ((enemyNam * 2) + 8) && i < (enemyNam * 19) + ((enemyNam * 3) + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 19) {
+				if (i >= (enemyNam * 19) + ((enemyNam * 3) + 2) && i < (enemyNam * 20) + ((enemyNam * 3) + 6) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 20) {
+				if (i >= (enemyNam * 20) + ((enemyNam * 3) + 6) && i < (enemyNam * 21) + ((enemyNam * 4)+0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 21) {
+				if (i >= (enemyNam * 21) + ((enemyNam * 4) + 0) && i < (enemyNam * 22) + ((enemyNam * 4) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 22) {
+				if (i >= (enemyNam * 22) + ((enemyNam * 4) + 4) && i < (enemyNam * 23) + ((enemyNam * 4) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 23) {
+				if (i >= (enemyNam * 23) + ((enemyNam * 4) + 8) && i < (enemyNam * 24) + ((enemyNam * 5) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 24) {
+				if (i >= (enemyNam * 24) + ((enemyNam * 5) + 3) && i < (enemyNam * 25) + ((enemyNam * 5) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 25) {
+				if (i >= (enemyNam * 25) + ((enemyNam * 5) + 8) && i < (enemyNam * 26) + ((enemyNam * 6) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 26) {
+				if (i >= (enemyNam * 26) + ((enemyNam * 6) + 3) && i < (enemyNam * 27) + ((enemyNam * 6) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+
+			}
+			if (enemyWave >= 27) {
+				if (i >= (enemyNam * 27) + ((enemyNam * 6) + 8) && i < (enemyNam * 28) + ((enemyNam * 7) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 28) {
+				if (i >= (enemyNam * 28) + ((enemyNam * 7) + 3) && i < (enemyNam * 29) + ((enemyNam * 7) + 9) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+
+			}
+			if (enemyWave >= 29) {
+				if (i >= (enemyNam * 29) + ((enemyNam * 7) + 9) && i < (enemyNam * 30) + ((enemyNam * 8) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 30) {
+				if (i >= (enemyNam * 30) + ((enemyNam * 8) + 5) && i < (enemyNam * 31) + ((enemyNam * 9) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 31) {
+				if (i >= (enemyNam * 31) + ((enemyNam * 9) + 1) && i < (enemyNam * 32) + ((enemyNam * 9) + 7) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 32) {
+				if (i >= (enemyNam * 32) + ((enemyNam * 9) + 7) && i < (enemyNam * 33) + ((enemyNam * 10) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 33) {
+				if (i >= (enemyNam * 33) + ((enemyNam * 10) + 3) && i < (enemyNam * 34) + ((enemyNam * 10) + 9) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 34) {
+				if (i >= (enemyNam * 34) + ((enemyNam * 10) + 9) && i < (enemyNam * 35) + ((enemyNam * 11) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 35) {
+				if (i >= (enemyNam * 35) + ((enemyNam * 11) + 5) && i < (enemyNam * 36) + ((enemyNam * 12) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 36) {
+				if (i >= (enemyNam * 36) + ((enemyNam * 12) + 1) && i < (enemyNam * 37) + ((enemyNam * 12) + 7) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 37) {
+				if (i >= (enemyNam * 37) + ((enemyNam * 12) + 7) && i < (enemyNam * 38) + ((enemyNam * 13) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 38) {
+				if (i >= (enemyNam * 38) + ((enemyNam * 13) + 4) && i < (enemyNam * 39) + ((enemyNam * 14) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 39) {
+				if (i >= (enemyNam * 39) + ((enemyNam * 14) + 1) && i < (enemyNam * 40) + ((enemyNam * 14) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 40) {
+				if (i >= (enemyNam * 40) + ((enemyNam * 14) + 8) && i < (enemyNam * 41) + ((enemyNam * 15) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 41) {
+				if (i >= (enemyNam * 41) + ((enemyNam * 15) + 5) && i < (enemyNam * 42) + ((enemyNam * 16) + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 42) {
+				if (i >= (enemyNam * 42) + ((enemyNam * 16) + 2) && i < (enemyNam * 43) + ((enemyNam * 17) + 0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+
+			}
+			if (enemyWave >= 43) {
+				if (i >= (enemyNam * 43) + ((enemyNam * 17) + 0) && i < (enemyNam * 44) + ((enemyNam * 17) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 44) {
+				if (i >= (enemyNam * 44) + ((enemyNam * 17) + 8) && i < (enemyNam * 45) + ((enemyNam * 18) + 6) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 45) {
+				if (i >= (enemyNam * 45) + ((enemyNam * 18) + 6) && i < (enemyNam * 46) + ((enemyNam * 19) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 46) {
+				if (i >= (enemyNam * 46) + ((enemyNam * 19) + 4) && i < (enemyNam * 47) + ((enemyNam * 20) + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 47) {
+				if (i >= (enemyNam * 47) + ((enemyNam * 20) + 2) && i < (enemyNam * 48) + ((enemyNam * 21) + 0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 48) {
+				if (i >= (enemyNam * 48) + ((enemyNam * 21) + 0) && i < (enemyNam * 49) + ((enemyNam * 21) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 49) {
+				if (i >= (enemyNam * 49) + ((enemyNam * 21) + 8) && i < (enemyNam * 50) + ((enemyNam * 22) + 6) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 50) {
+				if (i >= (enemyNam * 50) + ((enemyNam * 22) + 6) && i < (enemyNam * 51) + ((enemyNam * 23) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+			if (enemyWave >= 51) {
+				if (i >= (enemyNam * 51) + ((enemyNam * 23) + 5) && i < (enemyNam * 52) + ((enemyNam * 24) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+				
+			}
+			if (enemyWave >= 52) {
+				if (i >= (enemyNam * 52) + ((enemyNam * 24) + 4) && i < (enemyNam * 54) + (enemyNam * 26) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+
+			
+			}
+		
+		}
+
+		if (gameFlag == 1) {
+			spriteClear->Draw();
+		}
+		if (gameFlag == 2) {
+			spriteOver->Draw();
 		}
 	}
-	
-	if (gameFlag == 1) {
-		spriteClear->Draw();
-	}
-	if (gameFlag == 2) {
-		spriteOver->Draw();
-	}
 }
-
 
 
 void GamePlayScene::Create2D_object() {
@@ -699,8 +953,6 @@ void GamePlayScene::Create2D_object() {
 		spriteEnemyRe[i] = Sprite::Create(6, { 0,0 }, false, false);
 		int ran = rand() % 360 + 1;
 		angle[i] = (float)ran;
-	}
-	for (int i = 0; i < enemyNam * 80; i++) {
 		sEnemyRe[i] = { 1280 - 256,0 };
 		sEnemyRe[i].x += cos((angle[i] * PI) / 180) * 128;
 		sEnemyRe[i].y += sin((angle[i] * PI) / 180) * 128;
@@ -710,6 +962,7 @@ void GamePlayScene::Create2D_object() {
 		enemyMove[i] = (float)(rand() % 3 + 1);
 		enemyMove[i] = enemyMove[i] / 10.0f;
 	}
+
 
 }
 
@@ -723,12 +976,12 @@ void GamePlayScene::ClassUpdate() {
 	objGround->Update();
 	objSky->Update();
 	objCloud->Update();
-	
+	objThunder->Update();
 	for (auto& sprite : spritesRader) {
 		sprite->Update();
 	}
 	if (enemyWave >= 0) {
-		
+
 		for (int i = 0; i < enemyNam; i++) {
 			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 		}
@@ -1142,20 +1395,14 @@ void GamePlayScene::ClassUpdate() {
 	}
 
 	if (enemyWave >= 52) {
-		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
 		{
 			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
 
 		}
 	}
 
-	if (enemyWave >= 53) {
-		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
-		{
-			if (enemyFlag[i] == 0) { objEnemyMov[i]->Update(); }
-
-		}
-	}
+	
 	spritePlayer->Update();
 
 }
@@ -1185,7 +1432,7 @@ void GamePlayScene::EnemyPlayerDistance()
 {
 	if (enemyWave >= 0)
 	{
-		for (int i = 0; i < enemyNam; i++)
+		for (int i = 0; i < enemyNam * 80; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -1297,7 +1544,7 @@ void GamePlayScene::EnemyPlayerDistance()
 	}
 
 	if (enemyWave >= 4) {
-		for (int i = enemyNam*4; i < enemyNam * 5; i++)
+		for (int i = enemyNam * 4; i < enemyNam * 5; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -1324,7 +1571,7 @@ void GamePlayScene::EnemyPlayerDistance()
 	}
 
 	if (enemyWave >= 5) {
-		for (int i = enemyNam*5; i < enemyNam * 6; i++)
+		for (int i = enemyNam * 5; i < enemyNam * 6; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -1351,7 +1598,7 @@ void GamePlayScene::EnemyPlayerDistance()
 	}
 
 	if (enemyWave >= 6) {
-		for (int i = enemyNam*6; i < (enemyNam * 7) + 1; i++)
+		for (int i = enemyNam * 6; i < (enemyNam * 7) + 1; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -1535,7 +1782,7 @@ void GamePlayScene::EnemyPlayerDistance()
 				}
 
 			}
-			
+
 		}
 	}
 
@@ -2595,34 +2842,7 @@ void GamePlayScene::EnemyPlayerDistance()
 	}
 
 	if (enemyWave >= 52) {
-		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
-		{
-			if (enemyFlag[i] == 0)
-			{
-				Earliest.x = cloudPos.x - enemyMovPos[i].x;
-				Earliest.y = cloudPos.y - enemyMovPos[i].y;
-				Earliest.z = cloudPos.z - enemyMovPos[i].z;
-				earliest[i] = sqrtf((Earliest.x * Earliest.x) + (Earliest.y * Earliest.y) + (Earliest.z * Earliest.z));
-
-				if (earliest[earliestEnemyNum] > earliest[i])
-				{
-					earliestEnemyNum = i;
-				}
-				else if (earliest[earliestEnemyNum] < earliest[i] && enemyFlag[earliestEnemyNum] == 0)
-				{
-					earliestEnemyNum = earliestEnemyNum;
-				}
-				else
-				{
-					earliestEnemyNum = i;
-				}
-
-			}
-		}
-	}
-
-	if (enemyWave >= 53) {
-		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -2649,6 +2869,7 @@ void GamePlayScene::EnemyPlayerDistance()
 	}
 
 }
+
 void GamePlayScene::Enemymove()
 {
 	bool isHit = Collision::territory(cloudPos, enemyMovPos[0]);
@@ -2656,6 +2877,7 @@ void GamePlayScene::Enemymove()
 		//エネミー移動
 		for (int i = 0; i < enemyNam; i++)
 		{
+
 			if (enemyFlag[i] == 0)
 			{
 				XMFLOAT3 vel = {};
@@ -2676,10 +2898,10 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
-				if (enemyCount >= 7&& enemyWaveFlag == 0)
+				/*delete spriteEnemyRe[i];
+				delete objEnemyMov[i];*/
+
+				if (enemyCount >= 7 && enemyWaveFlag == 0 && enemyWave == 0)
 				{
 					enemyWaveFlag++;
 					enemyWave++;
@@ -2691,7 +2913,7 @@ void GamePlayScene::Enemymove()
 
 	}
 
-	
+
 
 	if (enemyWave >= 1) {
 		for (int i = enemyNam; i < enemyNam * 2; i++)
@@ -2716,10 +2938,8 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
-				if (enemyCount >= 16 && enemyWaveFlag == 1)
+
+				if (enemyCount >= 16 && enemyWaveFlag == 1 && enemyWave == 1)
 				{
 					enemyWaveFlag++;
 					enemyWave++;
@@ -2753,9 +2973,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 26 && enemyWaveFlag == 2)
 				{
 					enemyWaveFlag++;
@@ -2790,9 +3008,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 36 && enemyWaveFlag == 3)
 				{
 					enemyWaveFlag++;
@@ -2827,9 +3043,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 46 && enemyWaveFlag == 4)
 				{
 					enemyWaveFlag++;
@@ -2864,9 +3078,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 56 && enemyWaveFlag == 5)
 				{
 					enemyWaveFlag++;
@@ -2879,7 +3091,7 @@ void GamePlayScene::Enemymove()
 	}
 
 	if (enemyWave >= 6) {
-		for (int i = enemyNam * 6; i < (enemyNam *7)+1; i++)
+		for (int i = enemyNam * 6; i < (enemyNam * 7) + 1; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -2901,9 +3113,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 66 && enemyWaveFlag == 6)
 				{
 					enemyWaveFlag++;
@@ -2938,9 +3148,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 76 && enemyWaveFlag == 7)
 				{
 					enemyWaveFlag++;
@@ -2975,9 +3183,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 86 && enemyWaveFlag == 8)
 				{
 					enemyWaveFlag++;
@@ -3012,9 +3218,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 96 && enemyWaveFlag == 9)
 				{
 					enemyWaveFlag++;
@@ -3049,9 +3253,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 110 && enemyWaveFlag == 10)
 				{
 					enemyWaveFlag++;
@@ -3086,9 +3288,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 120 && enemyWaveFlag == 11)
 				{
 					enemyWaveFlag++;
@@ -3123,9 +3323,7 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->Update();
 			}
 			if (enemyFlag[i] == 1) {
-				delete spriteEnemyRe[i];
-				delete objEnemyMov[i];
-				enemyCount++;
+
 				if (enemyCount >= 139 && enemyWaveFlag == 11)
 				{
 					enemyWaveFlag++;
@@ -3138,7 +3336,7 @@ void GamePlayScene::Enemymove()
 	}
 
 	if (enemyWave >= 13) {
-		
+
 		for (int i = (enemyNam * 13) + (enemyNam + 2); i < (enemyNam * 14) + (enemyNam + 5); i++)
 		{
 
@@ -3154,7 +3352,7 @@ void GamePlayScene::Enemymove()
 	}
 
 	if (enemyWave >= 15) {
-		for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam*2) + 1); i++)
+		for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam * 2) + 1); i++)
 		{
 
 		}
@@ -3175,7 +3373,7 @@ void GamePlayScene::Enemymove()
 	}
 
 	if (enemyWave >= 18) {
-		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 18) + ((enemyNam * 3) + 2); i++)
+		for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 19) + ((enemyNam * 3) + 2); i++)
 		{
 
 		}
@@ -3413,16 +3611,10 @@ void GamePlayScene::Enemymove()
 	}
 
 	if (enemyWave >= 52) {
-		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 53) + ((enemyNam * 25) + 3); i++)
+		for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
 		{
 
 		}
 	}
-	
-	if (enemyWave >= 53) {
-		for (int i = (enemyNam * 53) + ((enemyNam * 25) + 3); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
-		{
 
-		}
-	}
 }

@@ -40,12 +40,17 @@ public:
 	//エネミー
 	void Enemymove();
 
+	//エネミーとコアのあたり判定
+	void EnemyHitCoa();
+
 	//最短距離
 	void EnemyPlayerDistance();
 
 
 	//プレイヤー操作
 	void PlayerMove();
+
+	void PlayerAtk();
 
 
 private:
@@ -81,6 +86,7 @@ private:
 	int enemyWaveFlag = 0;
 	int enemyFlag[800] = {};
 	int enemyCount = 0;
+	int enemyDeleteFlag[53] = {};
 
 	Model* modelEnemyRat = Model::LoadFromOBJ("rat");
 	Model* modelEnemyFrog = Model::LoadFromOBJ("Frog");
@@ -106,6 +112,17 @@ private:
 	XMFLOAT3 cloudRot = {};
 	XMFLOAT3 playerRe = { 1280 - 256 + 8,128,0 };
 	XMFLOAT2 raderP = {};
+	
+	//攻撃関連
+	int atkFlag = 0;
+	//雷
+	//int thunderFlag = 0;
+	Object3d* objThunder = Object3d::Create();
+	Model* modelThunder = Model::LoadFromOBJ("solothunder");
+
+	XMFLOAT3 thunderPos = objThunder->GetPosition();
+	int thunderFlag = 0;
+	int thunderTimer = 0;
 
 	// 最短距離関係
 	float earliest[800];
