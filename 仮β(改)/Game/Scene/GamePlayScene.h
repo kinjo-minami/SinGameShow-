@@ -79,6 +79,8 @@ private:
 	//エネミー関連
 	float radius = 500.0f;
 	float enemyMove[800] = {};
+	float enemyOriginMove[800] = {};
+
 	XMFLOAT2 sEnemyRe[800] = {};
 	float angle[800] = {};
 	int enemyNam = 10;
