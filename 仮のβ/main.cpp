@@ -279,7 +279,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 CoaRotA = {};
 	XMFLOAT3 CoaRotB = {};
 	XMFLOAT3 CoaPos = { 0,4,50 };
-	int coaHit = 3;
+	int coaHit = 300000;
 
 	//雨w
 	XMFLOAT3 rainPos[100] = {};
@@ -303,7 +303,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT2 raderP = {};
 	float rot = 0.0f;
 	spritePlayerRe->SetAnchorpoint({ 0.5f,0.5f });
-	spriteCommon->LoadTexture(49, L"Resources/hud.png");
+	spriteCommon->LoadTexture(49, L"Resources/hud2.png");
 	spriteCommon->LoadTexture(50, L"Resources/gameover.png");
 
 	Sprite* hud = Sprite::Create(spriteCommon, 49, { 0,0 }, false, false);
