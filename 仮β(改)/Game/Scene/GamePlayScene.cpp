@@ -68,6 +68,21 @@ void GamePlayScene::Create3D_object() {
 	//雷
 	objThunder->SetModel(modelThunder);
 
+	//雪and雨
+
+	for (int i = 0; i < 10; i++)
+	{
+		objSnow[i] = Object3d::Create();
+		objSnow[i]->SetModel(modelSnow);
+		snowTimer[i] = 500;
+
+		objRain[i] = Object3d::Create();
+		objRain[i]->SetModel(modelRain);
+		rainTimer[i] = 500;
+	}
+
+
+
 
 	//enemy複製
 	for (int i = 0; i < 800; i++) {
@@ -200,7 +215,8 @@ void GamePlayScene::PlayerMove() {
 
 	bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
 	bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
-
+	bool coaPHit = Collision::CoaPlayerHit(CoaPos, camera->GetTarget());
+	bool unCoaPHit = Collision::UnCoaPlayerHit(CoaPos, camera->GetTarget());
 	if (skyHit) {
 		objCloud->SetPosition(cloudPos);
 	}
@@ -208,11 +224,21 @@ void GamePlayScene::PlayerMove() {
 		camera->SetTarget(oldCamera);
 		objCloud->SetPosition(oldCloudPos);
 	}
+	if (coaPHit) {
+		camera->SetTarget(oldCamera);
+		objCloud->SetPosition(oldCloudPos);
+	}
+	if (unCoaPHit) {
+		objCloud->SetPosition(cloudPos);
+
+	}
+
+
 	objCloud->SetPosition(cloudPos);
 	cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
 	cloudRot.y *= 180 / PI;
 	objCloud->SetRotation({ 0.0f, cloudRot.y, 0.0f });
-	if (skyHit)
+	if (skyHit && unCoaPHit)
 	{
 		if (input->PushKey(DIK_D))
 		{
@@ -245,7 +271,16 @@ void GamePlayScene::PlayerAtk()
 {
 	Input* input = Input::GetInstance();
 
-	if (input->TriggerMouseLeft() && thunderFlag == 0)
+	if (input->TriggerMouseRight())
+	{
+		atkFlag++;
+		if (atkFlag >= 3)
+		{
+			atkFlag = 0;
+		}
+	}
+
+	if (input->TriggerMouseLeft() && thunderFlag == 0 && atkFlag == 0)
 	{
 		// 攻撃判定
 		bool isTerritory = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum]);
@@ -272,6 +307,100 @@ void GamePlayScene::PlayerAtk()
 
 			thunderFlag = 0;
 
+		}
+	}
+
+	if (atkFlag == 1)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			if (input->TriggerMouseLeft() && snowFlag[i] == 0)
+			{
+				snowPos[i] = cloudPos;
+				snowFlag[i] = 1;
+
+			}
+
+			
+		}
+	}
+
+
+
+	if (atkFlag == 2)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			if (input->TriggerMouseLeft() && rainFlag[i] == 0)
+			{
+				rainPos[i] = cloudPos;
+				rainFlag[i] = 1;
+
+			}
+
+			
+		}
+
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (snowFlag[i] == 1)
+		{
+			for (int j = 0; j < 800; j++)
+			{
+				if (enemyFlag[j] == 0)
+				{
+					bool snowHit = Collision::SnoOrRainHit(snowPos[i], enemyMovPos[j]);
+
+					if (snowHit)
+					{
+						enemyMove[j] = 0.0f;
+					}
+					bool unSnowHit = Collision::UnSnoOrRainHit(snowPos[i], enemyMovPos[j]);
+					if (unSnowHit)
+					{
+						enemyMove[j] = enemyOriginMove[j];
+					}
+				}
+
+			}
+			snowTimer[i]--;
+
+			if (snowTimer[i] <= 0)
+			{
+				snowFlag[i] = 0;
+			}
+		}
+		if (rainFlag[i] == 1)
+		{
+			for (int j = 0; j < 800; j++)
+			{
+				if (enemyFlag[j] == 0)
+				{
+					bool rainHit = Collision::SnoOrRainHit(rainPos[i], enemyMovPos[j]);
+
+					if (rainHit)
+					{
+						enemyMove[j] = enemyOriginMove[j]/10.0f;
+					}
+					bool unRainHit = Collision::UnSnoOrRainHit(rainPos[i], enemyMovPos[j]);
+					if (unRainHit)
+					{
+						enemyMove[j] = enemyOriginMove[j];
+					}
+
+				}
+			
+
+			}
+			rainTimer[i]--;
+
+			if (rainTimer[i] <= 0)
+			{
+				rainTimer[i] = 500;
+				rainFlag[i] = 0;
+			}
 		}
 	}
 
@@ -710,9 +839,9 @@ void GamePlayScene::Draw() {
 
 			}
 			if (enemyWave >= 11) {
-				
+
 				if (i >= (enemyNam * 11) + 7 && i < (enemyNam * 12) + 9 && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
-				
+
 			}
 			if (enemyWave >= 12) {
 				if (i >= (enemyNam * 12) + 9 && i < (enemyNam * 13) + (enemyNam + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
@@ -722,67 +851,67 @@ void GamePlayScene::Draw() {
 			if (enemyWave >= 13) {
 				if (i >= (enemyNam * 13) + (enemyNam + 2) && i < (enemyNam * 14) + (enemyNam + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 14) {
 				if (i >= (enemyNam * 14) + (enemyNam + 5) && i < (enemyNam * 15) + (enemyNam + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 15) {
 				if (i >= (enemyNam * 15) + (enemyNam + 8) && i < (enemyNam * 16) + ((enemyNam * 2) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 16) {
 				if (i >= (enemyNam * 16) + ((enemyNam * 2) + 1) && i < (enemyNam * 17) + ((enemyNam * 2) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 17) {
 				if (i >= (enemyNam * 17) + ((enemyNam * 2) + 4) && i < (enemyNam * 18) + ((enemyNam * 2) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 18) {
 				if (i >= (enemyNam * 18) + ((enemyNam * 2) + 8) && i < (enemyNam * 19) + ((enemyNam * 3) + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 19) {
 				if (i >= (enemyNam * 19) + ((enemyNam * 3) + 2) && i < (enemyNam * 20) + ((enemyNam * 3) + 6) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 20) {
-				if (i >= (enemyNam * 20) + ((enemyNam * 3) + 6) && i < (enemyNam * 21) + ((enemyNam * 4)+0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
+				if (i >= (enemyNam * 20) + ((enemyNam * 3) + 6) && i < (enemyNam * 21) + ((enemyNam * 4) + 0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 21) {
 				if (i >= (enemyNam * 21) + ((enemyNam * 4) + 0) && i < (enemyNam * 22) + ((enemyNam * 4) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 22) {
 				if (i >= (enemyNam * 22) + ((enemyNam * 4) + 4) && i < (enemyNam * 23) + ((enemyNam * 4) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 23) {
 				if (i >= (enemyNam * 23) + ((enemyNam * 4) + 8) && i < (enemyNam * 24) + ((enemyNam * 5) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 24) {
 				if (i >= (enemyNam * 24) + ((enemyNam * 5) + 3) && i < (enemyNam * 25) + ((enemyNam * 5) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 25) {
 				if (i >= (enemyNam * 25) + ((enemyNam * 5) + 8) && i < (enemyNam * 26) + ((enemyNam * 6) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 26) {
 				if (i >= (enemyNam * 26) + ((enemyNam * 6) + 3) && i < (enemyNam * 27) + ((enemyNam * 6) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
@@ -792,7 +921,7 @@ void GamePlayScene::Draw() {
 			if (enemyWave >= 27) {
 				if (i >= (enemyNam * 27) + ((enemyNam * 6) + 8) && i < (enemyNam * 28) + ((enemyNam * 7) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 28) {
 				if (i >= (enemyNam * 28) + ((enemyNam * 7) + 3) && i < (enemyNam * 29) + ((enemyNam * 7) + 9) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
@@ -802,67 +931,67 @@ void GamePlayScene::Draw() {
 			if (enemyWave >= 29) {
 				if (i >= (enemyNam * 29) + ((enemyNam * 7) + 9) && i < (enemyNam * 30) + ((enemyNam * 8) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 30) {
 				if (i >= (enemyNam * 30) + ((enemyNam * 8) + 5) && i < (enemyNam * 31) + ((enemyNam * 9) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 31) {
 				if (i >= (enemyNam * 31) + ((enemyNam * 9) + 1) && i < (enemyNam * 32) + ((enemyNam * 9) + 7) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 32) {
 				if (i >= (enemyNam * 32) + ((enemyNam * 9) + 7) && i < (enemyNam * 33) + ((enemyNam * 10) + 3) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 33) {
 				if (i >= (enemyNam * 33) + ((enemyNam * 10) + 3) && i < (enemyNam * 34) + ((enemyNam * 10) + 9) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 34) {
 				if (i >= (enemyNam * 34) + ((enemyNam * 10) + 9) && i < (enemyNam * 35) + ((enemyNam * 11) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 35) {
 				if (i >= (enemyNam * 35) + ((enemyNam * 11) + 5) && i < (enemyNam * 36) + ((enemyNam * 12) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 36) {
 				if (i >= (enemyNam * 36) + ((enemyNam * 12) + 1) && i < (enemyNam * 37) + ((enemyNam * 12) + 7) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 37) {
 				if (i >= (enemyNam * 37) + ((enemyNam * 12) + 7) && i < (enemyNam * 38) + ((enemyNam * 13) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 38) {
 				if (i >= (enemyNam * 38) + ((enemyNam * 13) + 4) && i < (enemyNam * 39) + ((enemyNam * 14) + 1) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 39) {
 				if (i >= (enemyNam * 39) + ((enemyNam * 14) + 1) && i < (enemyNam * 40) + ((enemyNam * 14) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 40) {
 				if (i >= (enemyNam * 40) + ((enemyNam * 14) + 8) && i < (enemyNam * 41) + ((enemyNam * 15) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 41) {
 				if (i >= (enemyNam * 41) + ((enemyNam * 15) + 5) && i < (enemyNam * 42) + ((enemyNam * 16) + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 42) {
 				if (i >= (enemyNam * 42) + ((enemyNam * 16) + 2) && i < (enemyNam * 43) + ((enemyNam * 17) + 0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
@@ -872,54 +1001,54 @@ void GamePlayScene::Draw() {
 			if (enemyWave >= 43) {
 				if (i >= (enemyNam * 43) + ((enemyNam * 17) + 0) && i < (enemyNam * 44) + ((enemyNam * 17) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 44) {
 				if (i >= (enemyNam * 44) + ((enemyNam * 17) + 8) && i < (enemyNam * 45) + ((enemyNam * 18) + 6) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 45) {
 				if (i >= (enemyNam * 45) + ((enemyNam * 18) + 6) && i < (enemyNam * 46) + ((enemyNam * 19) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 46) {
 				if (i >= (enemyNam * 46) + ((enemyNam * 19) + 4) && i < (enemyNam * 47) + ((enemyNam * 20) + 2) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 47) {
 				if (i >= (enemyNam * 47) + ((enemyNam * 20) + 2) && i < (enemyNam * 48) + ((enemyNam * 21) + 0) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 48) {
 				if (i >= (enemyNam * 48) + ((enemyNam * 21) + 0) && i < (enemyNam * 49) + ((enemyNam * 21) + 8) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 49) {
 				if (i >= (enemyNam * 49) + ((enemyNam * 21) + 8) && i < (enemyNam * 50) + ((enemyNam * 22) + 6) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 50) {
 				if (i >= (enemyNam * 50) + ((enemyNam * 22) + 6) && i < (enemyNam * 51) + ((enemyNam * 23) + 5) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
 			if (enemyWave >= 51) {
 				if (i >= (enemyNam * 51) + ((enemyNam * 23) + 5) && i < (enemyNam * 52) + ((enemyNam * 24) + 4) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-				
+
 			}
 			if (enemyWave >= 52) {
 				if (i >= (enemyNam * 52) + ((enemyNam * 24) + 4) && i < (enemyNam * 54) + (enemyNam * 26) && enemyFlag[i] == 0) { spriteEnemyRe[i]->Draw(); }
 
-			
+
 			}
-		
+
 		}
 
 		if (gameFlag == 1) {
@@ -959,8 +1088,9 @@ void GamePlayScene::Create2D_object() {
 		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
 		spriteEnemyRe[i]->Update();
 
-		enemyMove[i] = (float)(rand() % 3 + 1);
+		enemyMove[i] = (float)(rand() % 4 + 1);
 		enemyMove[i] = enemyMove[i] / 10.0f;
+		enemyOriginMove[i] = enemyMove[i];
 	}
 
 
@@ -1402,7 +1532,7 @@ void GamePlayScene::ClassUpdate() {
 		}
 	}
 
-	
+
 	spritePlayer->Update();
 
 }

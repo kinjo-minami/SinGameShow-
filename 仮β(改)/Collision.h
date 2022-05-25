@@ -25,4 +25,9 @@ public:
 	static bool ATKcollision(XMFLOAT3 Player, XMFLOAT3 Enemy);
 	static bool CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy, float rad);
 
+	static bool CoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player);
+	static bool UnCoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player);
+
+	static bool SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy);
+
 };

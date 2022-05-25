@@ -51,3 +51,23 @@ bool Collision::CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy, float rad)
 
 	return rad * 2 > temp[3];
 }
+
+bool Collision::CoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player)
+{
+	float temp = sqrtf(pow(coa.x - player.x, 2) + pow(coa.z - player.y, 2) + pow(coa.z - player.z, 2));
+
+	return 100 - 17 > temp;
+}
+
+bool Collision::UnCoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player)
+{
+	float temp = sqrtf(pow(coa.x - player.x, 2) + pow(coa.z - player.y, 2) + pow(coa.z - player.z, 2));
+
+	return 100 - 17 < temp;
+}
+
+bool Collision::SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy)
+{
+	
+	return 0;
+}

@@ -91,6 +91,7 @@ private:
 	Model* modelEnemyRat = Model::LoadFromOBJ("rat");
 	Model* modelEnemyFrog = Model::LoadFromOBJ("Frog");
 	Model* modelEnemySpider = Model::LoadFromOBJ("spider");
+	Model* modelEnemyWani = Model::LoadFromOBJ("wani");
 	//Model* modelEnemyRat = Model::LoadFromOBJ("rat");
 	Object3d* objEnemyMov[800] = {};
 	XMFLOAT3 enemyMovPos[800] = {};
@@ -102,6 +103,20 @@ private:
 	float scaleY = 1.0f / (float)WinApp::window_height;
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	int counter = 0; // アニメーションの経過時間カウンター
+
+
+	//コア関連
+	Model* inCoa = Model::LoadFromOBJ("core_in");
+	Model* outCoa1 = Model::LoadFromOBJ("core_out1");
+	Model* outCoa2 = Model::LoadFromOBJ("core_out2");
+	Object3d* OBJInCoa = Object3d::Create();
+	Object3d* OBJOutCoaA = Object3d::Create();
+	Object3d* OBJOutCoaB = Object3d::Create();
+
+	XMFLOAT3 CoaRotA = {};
+	XMFLOAT3 CoaRotB = {};
+	XMFLOAT3 CoaPos = { 0,4,50 };
+	int coaHit = 7;
 
 
 	//プレイヤー関連
@@ -123,6 +138,23 @@ private:
 	XMFLOAT3 thunderPos = objThunder->GetPosition();
 	int thunderFlag = 0;
 	int thunderTimer = 0;
+
+	//雪
+	Object3d* objSnow[10] = {};
+	Model* modelSnow = Model::LoadFromOBJ("solothunder");
+
+	XMFLOAT3 snowPos[10] = {};
+	int snowFlag[10] = {};
+	int snowTimer[10] = {};
+	
+	//雨
+	Object3d* objRain[10] = {};
+	Model* modelRain = Model::LoadFromOBJ("solothunder");
+
+	XMFLOAT3 rainPos[10] = {};
+	int rainFlag[10] = {};
+	int rainTimer[10] = {};
+
 
 	// 最短距離関係
 	float earliest[800];
