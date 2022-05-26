@@ -108,8 +108,21 @@ void GamePlayScene::Create3D_object() {
 		objEnemyMov[i]->Update();
 	}
 
-
-
+	// コア
+	OBJInCore->SetModel(inCore);
+	OBJGreenOutCore1->SetModel(greenOutCore1);
+	OBJGreenOutCore2->SetModel(greenOutCore2);
+	OBJYellowOutCore1->SetModel(yellowOutCore1);
+	OBJYellowOutCore2->SetModel(yellowOutCore2);
+	OBJRedOutCore1->SetModel(redOutCore1);
+	OBJRedOutCore2->SetModel(redOutCore2);
+	OBJInCore->SetPosition(CorePos);
+	OBJGreenOutCore1->SetPosition(CorePos);
+	OBJGreenOutCore2->SetPosition(CorePos);
+	OBJYellowOutCore1->SetPosition(CorePos);
+	OBJYellowOutCore2->SetPosition(CorePos);
+	OBJRedOutCore1->SetPosition(CorePos);
+	OBJRedOutCore2->SetPosition(CorePos);
 }
 
 void GamePlayScene::Update() {
@@ -121,6 +134,7 @@ void GamePlayScene::Update() {
 		Enemymove();
 		EnemyPlayerDistance();
 		PlayerAtk();
+		CoreMove();
 	}
 	if (gameFlag == 1) {
 
@@ -215,8 +229,8 @@ void GamePlayScene::PlayerMove() {
 
 	bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
 	bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
-	bool coaPHit = Collision::CoaPlayerHit(CoaPos, camera->GetTarget());
-	bool unCoaPHit = Collision::UnCoaPlayerHit(CoaPos, camera->GetTarget());
+	bool coaPHit = Collision::CoaPlayerHit(CorePos, camera->GetTarget());
+	bool unCoaPHit = Collision::UnCoaPlayerHit(CorePos, camera->GetTarget());
 	if (skyHit) {
 		objCloud->SetPosition(cloudPos);
 	}
@@ -321,7 +335,7 @@ void GamePlayScene::PlayerAtk()
 
 			}
 
-			
+
 		}
 	}
 
@@ -338,7 +352,7 @@ void GamePlayScene::PlayerAtk()
 
 			}
 
-			
+
 		}
 
 	}
@@ -382,7 +396,7 @@ void GamePlayScene::PlayerAtk()
 
 					if (rainHit)
 					{
-						enemyMove[j] = enemyOriginMove[j]/10.0f;
+						enemyMove[j] = enemyOriginMove[j] / 10.0f;
 					}
 					bool unRainHit = Collision::UnSnoOrRainHit(rainPos[i], enemyMovPos[j]);
 					if (unRainHit)
@@ -391,7 +405,7 @@ void GamePlayScene::PlayerAtk()
 					}
 
 				}
-			
+
 
 			}
 			rainTimer[i]--;
@@ -419,6 +433,16 @@ void GamePlayScene::Draw() {
 		objGround->Draw();
 		objSky->Draw();
 		objCloud->Draw();
+
+		// コア
+		OBJInCore->Draw();
+		OBJGreenOutCore1->Draw();
+		OBJGreenOutCore2->Draw();
+		OBJYellowOutCore1->Draw();
+		OBJYellowOutCore2->Draw();
+		OBJRedOutCore1->Draw();
+		OBJRedOutCore2->Draw();
+
 		if (thunderFlag == 1)
 		{
 			objThunder->Draw();
@@ -1532,9 +1556,16 @@ void GamePlayScene::ClassUpdate() {
 		}
 	}
 
-
 	spritePlayer->Update();
 
+	// コア
+	OBJInCore->Update();
+	OBJGreenOutCore1->Update();
+	OBJGreenOutCore2->Update();
+	OBJYellowOutCore1->Update();
+	OBJYellowOutCore2->Update();
+	OBJRedOutCore1->Update();
+	OBJRedOutCore2->Update();
 }
 
 void GamePlayScene::SpriteLoadTex() {
@@ -3747,4 +3778,25 @@ void GamePlayScene::Enemymove()
 		}
 	}
 
+}
+
+void GamePlayScene::CoreMove()
+{
+	// コア
+	OBJInCore->GetRotation();
+	OBJGreenOutCore1->GetRotation();
+	OBJGreenOutCore2->GetRotation();
+	OBJYellowOutCore1->GetRotation();
+	OBJYellowOutCore2->GetRotation();
+	OBJRedOutCore1->GetRotation();
+	OBJRedOutCore2->GetRotation();
+	CoreRot1.y += 0.3f;
+	CoreRot2.y -= 0.3f;
+	OBJInCore->SetRotation(CoreRot1);
+	OBJGreenOutCore1->SetRotation(CoreRot1);
+	OBJGreenOutCore2->SetRotation(CoreRot2);
+	OBJYellowOutCore1->SetRotation(CoreRot1);
+	OBJYellowOutCore2->SetRotation(CoreRot2);
+	OBJRedOutCore1->SetRotation(CoreRot1);
+	OBJRedOutCore2->SetRotation(CoreRot2);
 }

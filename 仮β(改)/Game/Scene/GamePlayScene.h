@@ -52,6 +52,8 @@ public:
 
 	void PlayerAtk();
 
+	// コアの動き
+	void CoreMove();
 
 private:
 	
@@ -106,20 +108,27 @@ private:
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	int counter = 0; // アニメーションの経過時間カウンター
 
-
 	//コア関連
-	Model* inCoa = Model::LoadFromOBJ("core_in");
-	Model* outCoa1 = Model::LoadFromOBJ("core_out1");
-	Model* outCoa2 = Model::LoadFromOBJ("core_out2");
-	Object3d* OBJInCoa = Object3d::Create();
-	Object3d* OBJOutCoaA = Object3d::Create();
-	Object3d* OBJOutCoaB = Object3d::Create();
+	Model* inCore = Model::LoadFromOBJ("core_in");
+	Model* greenOutCore1 = Model::LoadFromOBJ("core_out_green1");
+	Model* greenOutCore2 = Model::LoadFromOBJ("core_out_green2");
+	Model* yellowOutCore1 = Model::LoadFromOBJ("core_out_yellow1");
+	Model* yellowOutCore2 = Model::LoadFromOBJ("core_out_yellow2");
+	Model* redOutCore1 = Model::LoadFromOBJ("core_out_red1");
+	Model* redOutCore2 = Model::LoadFromOBJ("core_out_red2");
 
-	XMFLOAT3 CoaRotA = {};
-	XMFLOAT3 CoaRotB = {};
-	XMFLOAT3 CoaPos = { 0,4,50 };
-	int coaHit = 7;
+	Object3d* OBJInCore = Object3d::Create();
+	Object3d* OBJGreenOutCore1 = Object3d::Create();
+	Object3d* OBJGreenOutCore2 = Object3d::Create();
+	Object3d* OBJYellowOutCore1 = Object3d::Create();
+	Object3d* OBJYellowOutCore2 = Object3d::Create();
+	Object3d* OBJRedOutCore1 = Object3d::Create();
+	Object3d* OBJRedOutCore2 = Object3d::Create();
 
+	XMFLOAT3 CoreRot1 = {};
+	XMFLOAT3 CoreRot2 = {};
+	XMFLOAT3 CorePos = { 0,4,50 };
+	int coreHit = 7;
 
 	//プレイヤー関連
 	Model* modelCloud = Model::LoadFromOBJ("cloud");
@@ -157,14 +166,12 @@ private:
 	int rainFlag[10] = {};
 	int rainTimer[10] = {};
 
-
 	// 最短距離関係
 	float earliest[800];
 	XMFLOAT3 Earliest;
 	int earliestEnemyNum;
 
 	int gameFlag = 0;
-
 	
 	int score = 0;
 
