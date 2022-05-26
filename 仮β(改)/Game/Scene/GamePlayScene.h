@@ -85,7 +85,6 @@ private:
 	float angle[800] = {};
 	int enemyNam = 10;
 	int enemyWave = 0;
-	int enemyWaveFlag = 0;
 	int enemyFlag[800] = {};
 	int enemyCount = 0;
 	int enemyDeleteFlag[53] = {};
