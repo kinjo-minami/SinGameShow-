@@ -1798,7 +1798,7 @@ void GamePlayScene::SpriteLoadTex() {
 	spriteCommon->LoadTexture(0, L"Resources/hud.png");
 	spriteCommon->LoadTexture(1, L"Resources/gameClear.png");
 	spriteCommon->LoadTexture(2, L"Resources/gameover.png");
-	spriteCommon->LoadTexture(3, L"Resources/reader.png");
+	spriteCommon->LoadTexture(3, L"Resources/reader.png"); 
 	spriteCommon->LoadTexture(4, L"Resources/playerRe.png");
 	spriteCommon->LoadTexture(5, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(6, L"Resources/enemyRe.png");
