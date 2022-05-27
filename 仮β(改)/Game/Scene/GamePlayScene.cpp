@@ -110,16 +110,12 @@ void GamePlayScene::Create3D_object() {
 		{
 			objEnemyMov[i]->SetModel(modelEnemyWani);
 			objEnemyMov[i]->SetScale({ 8,8,8 });
-			//objEnemyMov[i]->SetScale({ 12,12,12 });
-
 		}
 		enemyMove[i] = enemyMove[i] / 10.0f;
 		enemyOriginMove[i] = enemyMove[i];
-		
+
 		XMFLOAT3 vel{};
-		//angle[i] = 60.0f;
 		const float rnd_acc = 0.0000f;
-		//float radius = (float)(rand() % 600);
 		vel.x = sin((angle[i] * PI) / 180) * radius;
 		vel.y = 0.0f;
 		vel.z = cos((angle[i] * PI) / 180) * radius;
@@ -1350,7 +1346,7 @@ void GamePlayScene::Create2D_object() {
 		spriteEnemyRe[i]->SetPosition({ sEnemyRe[i].x,sEnemyRe[i].y,0 });
 		spriteEnemyRe[i]->Update();
 
-		
+
 	}
 
 
@@ -3262,11 +3258,11 @@ void GamePlayScene::EnemyPlayerDistance()
 void GamePlayScene::EnemyHitCoa()
 {
 	if (gameFlag == 0) {
-		
+
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
 				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
-				if (CHit&& enemyFlag[i] ==0 )
+				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
@@ -3994,10 +3990,6 @@ void GamePlayScene::Enemymove()
 		}
 
 	}
-
-	
-
-	
 
 
 
