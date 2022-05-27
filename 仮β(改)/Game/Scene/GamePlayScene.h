@@ -121,7 +121,9 @@ private:
 
 
 	//プレイヤー関連
-	Model* modelCloud = Model::LoadFromOBJ("cloud");
+	Model* modelCloudThunder = Model::LoadFromOBJ("cloud");
+	Model* modelCloudRain = Model::LoadFromOBJ("cloud_rain");
+	Model* modelCloudSnow = Model::LoadFromOBJ("cloud_snow");
 	Object3d* objCloud = Object3d::Create();
 
 	XMFLOAT3 cloudPos = objCloud->GetPosition();
@@ -142,7 +144,7 @@ private:
 
 	//雪
 	Object3d* objSnow[10] = {};
-	Model* modelSnow = Model::LoadFromOBJ("solothunder");
+	Model* modelSnow = Model::LoadFromOBJ("iceHorn");
 
 	XMFLOAT3 snowPos[10] = {};
 	int snowFlag[10] = {};
@@ -150,7 +152,7 @@ private:
 	
 	//雨
 	Object3d* objRain[10] = {};
-	Model* modelRain = Model::LoadFromOBJ("solothunder");
+	Model* modelRain = Model::LoadFromOBJ("puddle");
 
 	XMFLOAT3 rainPos[10] = {};
 	int rainFlag[10] = {};
@@ -161,6 +163,13 @@ private:
 	float earliest[800];
 	XMFLOAT3 Earliest;
 	int earliestEnemyNum;
+
+
+	//テリトリー
+	Object3d* objPlayerTerritory = Object3d::Create();
+	Object3d* objStageTerritory = Object3d::Create();
+	Model* modelTerritory = Model::LoadFromOBJ("territory");
+
 
 	int gameFlag = 0;
 

@@ -1,4 +1,4 @@
-# Blender MTL File: 'territory.blend'
+# Blender MTL File: 'iceHorn.blend'
 # Material Count: 1
 
 newmtl マテリアル
@@ -10,4 +10,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd territory.png
+map_Kd iceHorn.png
+

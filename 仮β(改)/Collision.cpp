@@ -71,7 +71,7 @@ bool Collision::SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy)
 	float temp = sqrtf(pow(snow.x - enemy.x, 2) + pow(snow.z - enemy.y, 2) + pow(snow.z - enemy.z, 2));
 
 
-	return 70 - 17 > temp;
+	return 100 - 17 > temp;
 }
 
 bool Collision::UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy)
@@ -79,5 +79,5 @@ bool Collision::UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy)
 	float temp = sqrtf(pow(snow.x - enemy.x, 2) + pow(snow.z - enemy.y, 2) + pow(snow.z - enemy.z, 2));
 
 
-	return 70 - 17 <= temp;
+	return 100 - 17 < temp;
 }

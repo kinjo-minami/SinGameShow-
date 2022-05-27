@@ -59,11 +59,17 @@ void GamePlayScene::Create3D_object() {
 	objSky->SetPosition({ 0,0,50 });
 	objSky->SetScale({ 6.0f,6.0f,6.0f });
 	skyPos = objSky->GetPosition();
+	objStageTerritory->SetModel(modelTerritory);
+	objStageTerritory->SetScale({ 98, 1, 98});
+	objStageTerritory->SetPosition({ CoaPos.x,CoaPos.y-10,CoaPos.z });
 
 	//プレイヤー
-	objCloud->SetModel(modelCloud);
+	objCloud->SetModel(modelCloudThunder);
 	cloudPos = objCloud->GetPosition();
 	cloudRot = objCloud->GetRotation();
+	objPlayerTerritory->SetModel(modelTerritory);
+	objPlayerTerritory->SetScale({ 10, 1, 10 });
+	objPlayerTerritory->SetPosition({ cloudPos.x,cloudPos.y ,cloudPos.z });
 
 	//雷
 	objThunder->SetModel(modelThunder);
@@ -95,37 +101,81 @@ void GamePlayScene::Create3D_object() {
 		if (enemyMove[i] == 1)
 		{
 			objEnemyMov[i]->SetModel(modelEnemyRat);
+			enemyMove[i] = enemyMove[i] / 10.0f;
+			enemyOriginMove[i] = enemyMove[i];
+
+			XMFLOAT3 vel{};
+			const float rnd_acc = 0.0000f;
+			vel.x = sin((angle[i] * PI) / 180) * radius;
+			vel.y = 0.0f;
+			vel.z = cos((angle[i] * PI) / 180) * radius;
+			enemyMovPos[i].x += vel.x;
+			enemyMovPos[i].y += vel.y;
+			enemyMovPos[i].z += vel.z;
+
+			objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+			objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+			objEnemyMov[i]->Update();
 		}
 		if (enemyMove[i] == 2)
 		{
 			objEnemyMov[i]->SetModel(modelEnemyFrog);
+			enemyMove[i] = enemyMove[i] / 10.0f;
+			enemyOriginMove[i] = enemyMove[i];
 
+			XMFLOAT3 vel{};
+			const float rnd_acc = 0.0000f;
+			vel.x = sin((angle[i] * PI) / 180) * radius;
+			vel.y = 0.0f;
+			vel.z = cos((angle[i] * PI) / 180) * radius;
+			enemyMovPos[i].x += vel.x;
+			enemyMovPos[i].y += vel.y;
+			enemyMovPos[i].z += vel.z;
+
+			objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+			objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+			objEnemyMov[i]->Update();
 		}
 		if (enemyMove[i] == 3)
 		{
 			objEnemyMov[i]->SetModel(modelEnemySpider);
+			enemyMove[i] = enemyMove[i] / 10.0f;
+			enemyOriginMove[i] = enemyMove[i];
 
+			XMFLOAT3 vel{};
+			const float rnd_acc = 0.0000f;
+			vel.x = sin((angle[i] * PI) / 180) * radius;
+			vel.y = 0.0f;
+			vel.z = cos((angle[i] * PI) / 180) * radius;
+			enemyMovPos[i].x += vel.x;
+			enemyMovPos[i].y += vel.y-10;
+			enemyMovPos[i].z += vel.z;
+
+			objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+			objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+			objEnemyMov[i]->Update();
 		}
 		if (enemyMove[i] == 4)
 		{
 			objEnemyMov[i]->SetModel(modelEnemyWani);
 			objEnemyMov[i]->SetScale({ 8,8,8 });
+			enemyMove[i] = enemyMove[i] / 10.0f;
+			enemyOriginMove[i] = enemyMove[i];
+
+			XMFLOAT3 vel{};
+			const float rnd_acc = 0.0000f;
+			vel.x = sin((angle[i] * PI) / 180) * radius;
+			vel.y = 0.0f;
+			vel.z = cos((angle[i] * PI) / 180) * radius;
+			enemyMovPos[i].x += vel.x;
+			enemyMovPos[i].y += vel.y;
+			enemyMovPos[i].z += vel.z;
+
+			objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
+			objEnemyMov[i]->SetPosition(enemyMovPos[i]);
+			objEnemyMov[i]->Update();
 		}
-		enemyMove[i] = enemyMove[i] / 10.0f;
-		enemyOriginMove[i] = enemyMove[i];
-
-		XMFLOAT3 vel{};
-		const float rnd_acc = 0.0000f;
-		vel.x = sin((angle[i] * PI) / 180) * radius;
-		vel.y = 0.0f;
-		vel.z = cos((angle[i] * PI) / 180) * radius;
-		enemyMovPos[i].x += vel.x;
-		enemyMovPos[i].y += vel.y;
-		enemyMovPos[i].z += vel.z;
-
-		objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
-		objEnemyMov[i]->SetPosition(enemyMovPos[i]);
-		objEnemyMov[i]->Update();
+	
 	}
 
 
@@ -254,6 +304,7 @@ void GamePlayScene::PlayerMove() {
 
 	}
 
+	objPlayerTerritory->SetPosition({ cloudPos.x,cloudPos.y -5,cloudPos.z });
 
 	objCloud->SetPosition(cloudPos);
 	cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -334,17 +385,23 @@ void GamePlayScene::PlayerAtk()
 
 	if (atkFlag == 1)
 	{
-		for (int i = 0; i < 10; i++)
-		{
-			if (input->TriggerMouseLeft() && snowFlag[i] == 0)
+		
+			for (int i = 0; i < 10; i++)
 			{
-				snowPos[i] = cloudPos;
-				snowFlag[i] = 1;
+				if (input->TriggerMouseLeft() && snowFlag[i] == 0)
+				{
+					snowPos[i] = cloudPos;
+					objSnow[i]->SetPosition({ snowPos[i].x,snowPos[i].y - 20,snowPos[i].z });
+					snowTimer[i] =500;
+
+					snowFlag[i] = 1;
+					break;
+				}
+
 
 			}
-
-
-		}
+		
+		
 	}
 
 
@@ -357,6 +414,7 @@ void GamePlayScene::PlayerAtk()
 			{
 				rainPos[i] = cloudPos;
 				rainFlag[i] = 1;
+				objRain[i]->SetPosition(rainPos[i]);
 
 			}
 
@@ -379,11 +437,7 @@ void GamePlayScene::PlayerAtk()
 					{
 						enemyMove[j] = 0.0f;
 					}
-					bool unSnowHit = Collision::UnSnoOrRainHit(snowPos[i], enemyMovPos[j]);
-					if (unSnowHit)
-					{
-						enemyMove[j] = enemyOriginMove[j];
-					}
+					
 				}
 
 			}
@@ -392,8 +446,18 @@ void GamePlayScene::PlayerAtk()
 			if (snowTimer[i] <= 0)
 			{
 				snowFlag[i] = 0;
+				for (int j = 0; j < 800; j++)
+				{
+					if (enemyFlag[j] == 0)
+					{
+						enemyMove[j] = enemyOriginMove[j];
+
+					}
+				}
 			}
 		}
+
+
 		if (rainFlag[i] == 1)
 		{
 			for (int j = 0; j < 800; j++)
@@ -422,11 +486,23 @@ void GamePlayScene::PlayerAtk()
 			{
 				rainTimer[i] = 500;
 				rainFlag[i] = 0;
+				for (int j = 0; j < 800; j++)
+				{
+					if (enemyFlag[j] == 0)
+					{
+						enemyMove[j] = enemyOriginMove[j];
+
+					}
+				}
+
 			}
 		}
 	}
 
 
+	if (atkFlag == 0)objCloud->SetModel(modelCloudThunder);
+	if (atkFlag == 1)objCloud->SetModel(modelCloudSnow);
+	if (atkFlag == 2)objCloud->SetModel(modelCloudRain);
 
 }
 
@@ -441,9 +517,23 @@ void GamePlayScene::Draw() {
 		objGround->Draw();
 		objSky->Draw();
 		objCloud->Draw();
+
+		objPlayerTerritory->Draw();
+		objStageTerritory->Draw();
 		if (thunderFlag == 1)
 		{
 			objThunder->Draw();
+		}
+		for (int i = 0; i < 10; i++)
+		{
+			if (snowFlag[i] == 1)
+			{
+				objSnow[i]->Draw();
+			}
+			if (rainFlag[i] == 1)
+			{
+				objRain[i]->Draw();
+			}
 		}
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
@@ -1363,6 +1453,14 @@ void GamePlayScene::ClassUpdate() {
 	objSky->Update();
 	objCloud->Update();
 	objThunder->Update();
+	objPlayerTerritory->Update();
+	objStageTerritory->Update();
+	for (int i = 0; i < 10; i++)
+	{
+		objRain[i]->Update();
+		objSnow[i]->Update();
+
+	}
 	for (auto& sprite : spritesRader) {
 		sprite->Update();
 	}
@@ -1798,7 +1896,7 @@ void GamePlayScene::SpriteLoadTex() {
 	spriteCommon->LoadTexture(0, L"Resources/hud.png");
 	spriteCommon->LoadTexture(1, L"Resources/gameClear.png");
 	spriteCommon->LoadTexture(2, L"Resources/gameover.png");
-	spriteCommon->LoadTexture(3, L"Resources/reader.png"); 
+	spriteCommon->LoadTexture(3, L"Resources/reader.png");
 	spriteCommon->LoadTexture(4, L"Resources/playerRe.png");
 	spriteCommon->LoadTexture(5, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(6, L"Resources/enemyRe.png");
