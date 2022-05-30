@@ -60,8 +60,8 @@ void GamePlayScene::Create3D_object() {
 	objSky->SetScale({ 6.0f,6.0f,6.0f });
 	skyPos = objSky->GetPosition();
 	objStageTerritory->SetModel(modelTerritory);
-	objStageTerritory->SetScale({ 98, 1, 98});
-	objStageTerritory->SetPosition({ CoaPos.x,CoaPos.y-10,CoaPos.z });
+	objStageTerritory->SetScale({ 98, 1, 98 });
+	objStageTerritory->SetPosition({ CorePos.x,CorePos.y - 10,CorePos.z });
 
 	//プレイヤー
 	objCloud->SetModel(modelCloudThunder);
@@ -87,8 +87,12 @@ void GamePlayScene::Create3D_object() {
 		rainTimer[i] = 500;
 	}
 
-
-
+	OBJInCore->SetModel(inCore);
+	OBJOutCoreA->SetModel(greenOutCore1);
+	OBJOutCoreB->SetModel(greenOutCore2);
+	OBJInCore->SetPosition(CorePos);
+	OBJOutCoreA->SetPosition(CorePos);
+	OBJOutCoreB->SetPosition(CorePos);
 
 	//enemy複製
 	for (int i = 0; i < 800; i++) {
@@ -148,7 +152,7 @@ void GamePlayScene::Create3D_object() {
 			vel.y = 0.0f;
 			vel.z = cos((angle[i] * PI) / 180) * radius;
 			enemyMovPos[i].x += vel.x;
-			enemyMovPos[i].y += vel.y-10;
+			enemyMovPos[i].y += vel.y - 10;
 			enemyMovPos[i].z += vel.z;
 
 			objEnemyMov[i]->SetRotation({ 0.0f,angle[i],0.0f });
@@ -175,7 +179,7 @@ void GamePlayScene::Create3D_object() {
 			objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 			objEnemyMov[i]->Update();
 		}
-	
+
 	}
 
 
@@ -192,6 +196,7 @@ void GamePlayScene::Update() {
 		EnemyPlayerDistance();
 		PlayerAtk();
 		EnemyHitCoa();
+		CoreMove();
 	}
 	if (gameFlag == 1) {
 
@@ -286,8 +291,8 @@ void GamePlayScene::PlayerMove() {
 
 	bool skyHit = Collision::Virtualitys(camera->GetTarget(), skyPos);
 	bool UnSkyHit = Collision::UnVirtualitys(camera->GetTarget(), skyPos);
-	bool coaPHit = Collision::CoaPlayerHit(CoaPos, camera->GetTarget());
-	bool unCoaPHit = Collision::UnCoaPlayerHit(CoaPos, camera->GetTarget());
+	bool coaPHit = Collision::CoaPlayerHit(CorePos, camera->GetTarget());
+	bool unCoaPHit = Collision::UnCoaPlayerHit(CorePos, camera->GetTarget());
 	if (skyHit) {
 		objCloud->SetPosition(cloudPos);
 	}
@@ -304,7 +309,7 @@ void GamePlayScene::PlayerMove() {
 
 	}
 
-	objPlayerTerritory->SetPosition({ cloudPos.x,cloudPos.y -5,cloudPos.z });
+	objPlayerTerritory->SetPosition({ cloudPos.x,cloudPos.y - 5,cloudPos.z });
 
 	objCloud->SetPosition(cloudPos);
 	cloudRot.y = atan2f(-fTargetEye.x, -fTargetEye.z);
@@ -385,24 +390,26 @@ void GamePlayScene::PlayerAtk()
 
 	if (atkFlag == 1)
 	{
-		
-			for (int i = 0; i < 10; i++)
+
+		for (int i = 0; i < 10; i++)
+		{
+			if (input->TriggerMouseLeft() && snowFlag[i] == 0)
 			{
-				if (input->TriggerMouseLeft() && snowFlag[i] == 0)
-				{
-					snowPos[i] = cloudPos;
-					objSnow[i]->SetPosition({ snowPos[i].x,snowPos[i].y - 20,snowPos[i].z });
-					snowTimer[i] =500;
+				snowPos[i] = cloudPos;
+				objSnow[i]->SetPosition({ snowPos[i].x,snowPos[i].y - 20,snowPos[i].z });
+				snowTimer[i] = 500;
 
-					snowFlag[i] = 1;
-					break;
-				}
-
-
+				snowFlag[i] = 1;
+				break;
 			}
-		
-		
+
+
+		}
+
+
 	}
+
+
 
 
 
@@ -414,7 +421,8 @@ void GamePlayScene::PlayerAtk()
 			{
 				rainPos[i] = cloudPos;
 				rainFlag[i] = 1;
-				objRain[i]->SetPosition(rainPos[i]);
+				objRain[i]->SetPosition({ rainPos[i].x,rainPos[i].y - 10.0f,rainPos[i].z });
+				break;
 
 			}
 
@@ -431,13 +439,13 @@ void GamePlayScene::PlayerAtk()
 			{
 				if (enemyFlag[j] == 0)
 				{
-					bool snowHit = Collision::SnoOrRainHit(snowPos[i], enemyMovPos[j], enemyOriginMove[j]*10);
+					bool snowHit = Collision::SnoOrRainHit(snowPos[i], enemyMovPos[j], enemyOriginMove[j] * 10, 0);
 
 					if (snowHit)
 					{
 						enemyMove[j] = 0.0f;
 					}
-					
+
 				}
 
 			}
@@ -464,20 +472,19 @@ void GamePlayScene::PlayerAtk()
 			{
 				if (enemyFlag[j] == 0)
 				{
-					bool rainHit = Collision::SnoOrRainHit(rainPos[i], enemyMovPos[j], enemyOriginMove[j] * 10);
+					bool rainHit = Collision::SnoOrRainHit(rainPos[i], enemyMovPos[j], enemyOriginMove[j] * 10, 1);
 
 					if (rainHit)
 					{
 						enemyMove[j] = enemyOriginMove[j] / 10.0f;
 					}
-					bool unRainHit = Collision::UnSnoOrRainHit(rainPos[i], enemyMovPos[j], enemyOriginMove[j] * 10);
+					bool unRainHit = Collision::UnSnoOrRainHit(rainPos[i], enemyMovPos[j], enemyOriginMove[j] * 10, 1);
 					if (unRainHit)
 					{
 						enemyMove[j] = enemyOriginMove[j];
 					}
 
 				}
-
 
 			}
 			rainTimer[i]--;
@@ -494,7 +501,7 @@ void GamePlayScene::PlayerAtk()
 						{
 							enemyMove[j] = enemyOriginMove[j];
 						}
-						
+
 
 					}
 				}
@@ -510,7 +517,28 @@ void GamePlayScene::PlayerAtk()
 
 }
 
+void GamePlayScene::CoreMove()
+{
+	CoreRotA.y += 0.3f;
+	CoreRotB.y -= 0.3f;
+	OBJInCore->SetRotation(CoreRotA);
+	OBJOutCoreA->SetRotation(CoreRotA);
+	OBJOutCoreB->SetRotation(CoreRotB);
 
+	if (coaHit < 5 && coreCount == 0)
+	{
+		OBJOutCoreA->SetModel(yellowOutCore1);
+		OBJOutCoreB->SetModel(yellowOutCore2);
+		coreCount = 1;
+	}
+
+	if (coaHit < 2 && coreCount == 1)
+	{
+		OBJOutCoreA->SetModel(redOutCore1);
+		OBJOutCoreB->SetModel(redOutCore2);
+		coreCount = 2;
+	}
+}
 
 void GamePlayScene::Draw() {
 
@@ -538,6 +566,15 @@ void GamePlayScene::Draw() {
 			{
 				objRain[i]->Draw();
 			}
+		}
+		if (coaHit >= 0)
+		{
+			OBJInCore->Draw();
+		}
+		if (coaHit >= 1)
+		{
+			OBJOutCoreA->Draw();
+			OBJOutCoreB->Draw();
 		}
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
@@ -1459,6 +1496,9 @@ void GamePlayScene::ClassUpdate() {
 	objThunder->Update();
 	objPlayerTerritory->Update();
 	objStageTerritory->Update();
+	OBJInCore->Update();
+	OBJOutCoreA->Update();
+	OBJOutCoreB->Update();
 	for (int i = 0; i < 10; i++)
 	{
 		objRain[i]->Update();
@@ -3363,23 +3403,24 @@ void GamePlayScene::EnemyHitCoa()
 
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
-
+					coaHit--;
 				}
 			}
 		}
 		if (enemyWave >= 1) {
 			for (int i = enemyNam; i < enemyNam * 2; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 
@@ -3389,11 +3430,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 2) {
 			for (int i = enemyNam * 2; i < enemyNam * 3; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3402,11 +3444,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 3) {
 			for (int i = enemyNam * 3; i < enemyNam * 4; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 
@@ -3416,11 +3459,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 4) {
 			for (int i = enemyNam * 4; i < enemyNam * 5; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 
@@ -3430,11 +3474,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 5) {
 			for (int i = enemyNam * 5; i < enemyNam * 6; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 
@@ -3444,11 +3489,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 6) {
 			for (int i = enemyNam * 6; i < (enemyNam * 7) + 1; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3457,11 +3503,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 7) {
 			for (int i = (enemyNam * 7) + 1; i < (enemyNam * 8) + 2; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3470,11 +3517,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 8) {
 			for (int i = (enemyNam * 8) + 2; i < (enemyNam * 9) + 3; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3483,11 +3531,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 9) {
 			for (int i = (enemyNam * 9) + 3; i < (enemyNam * 10) + 5; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3496,11 +3545,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 10) {
 			for (int i = (enemyNam * 10) + 5; i < (enemyNam * 11) + 7; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3508,11 +3558,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 11) {
 			for (int i = (enemyNam * 11) + 7; i < (enemyNam * 12) + 9; i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3521,11 +3572,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 12) {
 			for (int i = (enemyNam * 12) + 9; i < (enemyNam * 13) + (enemyNam + 2); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3534,11 +3586,12 @@ void GamePlayScene::EnemyHitCoa()
 
 			for (int i = (enemyNam * 13) + (enemyNam + 2); i < (enemyNam * 14) + (enemyNam + 5); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3547,11 +3600,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 14) {
 			for (int i = (enemyNam * 14) + (enemyNam + 5); i < (enemyNam * 15) + (enemyNam + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3561,11 +3615,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 15) {
 			for (int i = (enemyNam * 15) + (enemyNam + 8); i < (enemyNam * 16) + ((enemyNam * 2) + 1); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3574,11 +3629,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 16) {
 			for (int i = (enemyNam * 16) + ((enemyNam * 2) + 1); i < (enemyNam * 17) + ((enemyNam * 2) + 4); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3587,11 +3643,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 17) {
 			for (int i = (enemyNam * 17) + ((enemyNam * 2) + 4); i < (enemyNam * 18) + ((enemyNam * 2) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3600,11 +3657,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 18) {
 			for (int i = (enemyNam * 18) + ((enemyNam * 2) + 8); i < (enemyNam * 19) + ((enemyNam * 3) + 2); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3613,11 +3671,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 19) {
 			for (int i = (enemyNam * 19) + ((enemyNam * 3) + 2); i < (enemyNam * 20) + ((enemyNam * 3) + 6); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3626,11 +3685,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 20) {
 			for (int i = (enemyNam * 20) + ((enemyNam * 3) + 6); i < (enemyNam * 21) + ((enemyNam * 4) + 0); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3639,11 +3699,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 21) {
 			for (int i = (enemyNam * 21) + ((enemyNam * 4) + 0); i < (enemyNam * 22) + ((enemyNam * 4) + 4); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3652,11 +3713,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 22) {
 			for (int i = (enemyNam * 22) + ((enemyNam * 4) + 4); i < (enemyNam * 23) + ((enemyNam * 4) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3665,11 +3727,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 23) {
 			for (int i = (enemyNam * 23) + ((enemyNam * 4) + 8); i < (enemyNam * 24) + ((enemyNam * 5) + 3); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3678,11 +3741,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 24) {
 			for (int i = (enemyNam * 24) + ((enemyNam * 5) + 3); i < (enemyNam * 25) + ((enemyNam * 5) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3691,11 +3755,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 25) {
 			for (int i = (enemyNam * 25) + ((enemyNam * 5) + 8); i < (enemyNam * 26) + ((enemyNam * 6) + 3); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3704,11 +3769,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 26) {
 			for (int i = (enemyNam * 26) + ((enemyNam * 6) + 3); i < (enemyNam * 27) + ((enemyNam * 6) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3717,11 +3783,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 27) {
 			for (int i = (enemyNam * 27) + ((enemyNam * 6) + 8); i < (enemyNam * 28) + ((enemyNam * 7) + 3); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 
@@ -3731,11 +3798,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 28) {
 			for (int i = (enemyNam * 28) + ((enemyNam * 7) + 3); i < (enemyNam * 29) + ((enemyNam * 7) + 9); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3744,11 +3812,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 29) {
 			for (int i = (enemyNam * 29) + ((enemyNam * 7) + 9); i < (enemyNam * 30) + ((enemyNam * 8) + 5); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3757,11 +3826,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 30) {
 			for (int i = (enemyNam * 30) + ((enemyNam * 8) + 5); i < (enemyNam * 31) + ((enemyNam * 9) + 1); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3770,11 +3840,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 31) {
 			for (int i = (enemyNam * 31) + ((enemyNam * 9) + 1); i < (enemyNam * 32) + ((enemyNam * 9) + 7); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3783,11 +3854,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 32) {
 			for (int i = (enemyNam * 32) + ((enemyNam * 9) + 7); i < (enemyNam * 33) + ((enemyNam * 10) + 3); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3796,11 +3868,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 33) {
 			for (int i = (enemyNam * 33) + ((enemyNam * 10) + 3); i < (enemyNam * 34) + ((enemyNam * 10) + 9); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3809,11 +3882,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 34) {
 			for (int i = (enemyNam * 34) + ((enemyNam * 10) + 9); i < (enemyNam * 35) + ((enemyNam * 11) + 5); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3822,11 +3896,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 35) {
 			for (int i = (enemyNam * 35) + ((enemyNam * 11) + 5); i < (enemyNam * 36) + ((enemyNam * 12) + 1); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3835,11 +3910,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 36) {
 			for (int i = (enemyNam * 36) + ((enemyNam * 12) + 1); i < (enemyNam * 37) + ((enemyNam * 12) + 7); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3848,11 +3924,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 37) {
 			for (int i = (enemyNam * 37) + ((enemyNam * 12) + 7); i < (enemyNam * 38) + ((enemyNam * 13) + 4); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3861,11 +3938,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 38) {
 			for (int i = (enemyNam * 38) + ((enemyNam * 13) + 4); i < (enemyNam * 39) + ((enemyNam * 14) + 1); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3874,11 +3952,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 39) {
 			for (int i = (enemyNam * 39) + ((enemyNam * 14) + 1); i < (enemyNam * 40) + ((enemyNam * 14) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3887,11 +3966,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 40) {
 			for (int i = (enemyNam * 40) + ((enemyNam * 14) + 8); i < (enemyNam * 41) + ((enemyNam * 15) + 5); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3900,11 +3980,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 41) {
 			for (int i = (enemyNam * 41) + ((enemyNam * 15) + 5); i < (enemyNam * 42) + ((enemyNam * 16) + 2); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3913,11 +3994,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 42) {
 			for (int i = (enemyNam * 42) + ((enemyNam * 16) + 2); i < (enemyNam * 43) + ((enemyNam * 17) + 0); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3926,11 +4008,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 43) {
 			for (int i = (enemyNam * 43) + ((enemyNam * 17) + 0); i < (enemyNam * 44) + ((enemyNam * 17) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3939,11 +4022,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 44) {
 			for (int i = (enemyNam * 44) + ((enemyNam * 17) + 8); i < (enemyNam * 45) + ((enemyNam * 18) + 6); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3952,11 +4036,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 45) {
 			for (int i = (enemyNam * 45) + ((enemyNam * 18) + 6); i < (enemyNam * 46) + ((enemyNam * 19) + 4); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3965,11 +4050,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 46) {
 			for (int i = (enemyNam * 46) + ((enemyNam * 19) + 4); i < (enemyNam * 47) + ((enemyNam * 20) + 2); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3978,11 +4064,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 47) {
 			for (int i = (enemyNam * 47) + ((enemyNam * 20) + 2); i < (enemyNam * 48) + ((enemyNam * 21) + 0); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -3991,11 +4078,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 48) {
 			for (int i = (enemyNam * 48) + ((enemyNam * 21) + 0); i < (enemyNam * 49) + ((enemyNam * 21) + 8); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -4004,11 +4092,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 49) {
 			for (int i = (enemyNam * 49) + ((enemyNam * 21) + 8); i < (enemyNam * 50) + ((enemyNam * 22) + 6); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -4017,11 +4106,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 50) {
 			for (int i = (enemyNam * 50) + ((enemyNam * 22) + 6); i < (enemyNam * 51) + ((enemyNam * 23) + 5); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -4030,11 +4120,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 51) {
 			for (int i = (enemyNam * 51) + ((enemyNam * 23) + 5); i < (enemyNam * 52) + ((enemyNam * 24) + 4); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}
@@ -4043,11 +4134,12 @@ void GamePlayScene::EnemyHitCoa()
 		if (enemyWave >= 52) {
 			for (int i = (enemyNam * 52) + ((enemyNam * 24) + 4); i < (enemyNam * 54) + ((enemyNam * 26)); i++)
 			{
-				bool CHit = Collision::CoaHit(CoaPos, enemyMovPos[i], 25);
+				bool CHit = Collision::CoaHit(CorePos, enemyMovPos[i], 25);
 				if (CHit && enemyFlag[i] == 0)
 				{
 					enemyFlag[i] = 1;
 					enemyCount++;
+					coaHit--;
 
 				}
 			}

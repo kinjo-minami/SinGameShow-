@@ -2,14 +2,14 @@
 
 bool Collision::Virtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos)
 {
-	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + pow(skyPos.z - PlayerRay.y, 2) + pow(skyPos.z - PlayerRay.z, 2));
+	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + pow(skyPos.y - PlayerRay.y, 2) + pow(skyPos.z - PlayerRay.z, 2));
 
 	return 500 - 17 > temp;
 }
 
 bool Collision::UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos)
 {
-	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + pow(skyPos.z - PlayerRay.y, 2) + pow(skyPos.z - PlayerRay.z, 2));
+	float temp = sqrtf(pow(skyPos.x - PlayerRay.x, 2) + pow(skyPos.y - PlayerRay.y, 2) + pow(skyPos.z - PlayerRay.z, 2));
 
 	return 500 - 17 < temp;
 }
@@ -54,69 +54,104 @@ bool Collision::CoaHit(XMFLOAT3 Coa, XMFLOAT3 Enemy, float rad)
 
 bool Collision::CoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player)
 {
-	float temp = sqrtf(pow(coa.x - player.x, 2) + pow(coa.z - player.y, 2) + pow(coa.z - player.z, 2));
+	float temp = sqrtf(pow(coa.x - player.x, 2) + pow(coa.y - player.y, 2) + pow(coa.z - player.z, 2));
 
-	return 100 - 17 > temp;
+	return 100 - 50 > temp;
 }
 
 bool Collision::UnCoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player)
 {
-	float temp = sqrtf(pow(coa.x - player.x, 2) + pow(coa.z - player.y, 2) + pow(coa.z - player.z, 2));
+	float temp = sqrtf(pow(coa.x - player.x, 2) + pow(coa.y - player.y, 2) + pow(coa.z - player.z, 2));
 
-	return 100 - 17 < temp;
+	return 100 - 50 < temp;
 }
 
-bool Collision::SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy, int enmeyFlag)
+bool Collision::SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy, int enmeyFlag, char flag)
 {
-	float temp = sqrtf(pow(snow.x - enemy.x, 2) + pow(snow.z - enemy.y, 2) + pow(snow.z - enemy.z, 2));
-	
-	if (enmeyFlag == 1)
+	float temp = sqrtf(pow(snow.x - enemy.x, 2) + pow(snow.y - enemy.y, 2) + pow(snow.z - enemy.z, 2));
+
+	if (flag == 0)
 	{
-		return 100 - 17 > temp;
-
+		if (enmeyFlag == 1)
+		{
+			return 100 - 50 > temp;
+		}
+		if (enmeyFlag == 2)
+		{
+			return 100 - 50 > temp;
+		}
+		if (enmeyFlag == 3)
+		{
+			return 100 - 50 > temp;
+		}
+		if (enmeyFlag == 4)
+		{
+			return 100 - 50 > temp;
+		}
 	}
-	if (enmeyFlag == 2)
+	if (flag == 1)
 	{
-		return 100 - 17 > temp;
-
+		if (enmeyFlag == 1)
+		{
+			return 200 > temp;
+		}
+		if (enmeyFlag == 2)
+		{
+			return 200 > temp;
+		}
+		if (enmeyFlag == 3)
+		{
+			return 200 > temp;
+		}
+		if (enmeyFlag == 4)
+		{
+			return 200 - 17 > temp;
+		}
 	}
-	if (enmeyFlag == 3)
-	{
-		return 100  > temp;
-
-	}
-	if (enmeyFlag == 4)
-	{
-		return 100 - 17 > temp;
-
-	}
-
 	//return 100 - 17 > temp;
 }
 
-bool Collision::UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy, int enmeyFlag)
+bool Collision::UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy, int enmeyFlag, char flag)
 {
-	float temp = sqrtf(pow(snow.x - enemy.x, 2) + pow(snow.z - enemy.y, 2) + pow(snow.z - enemy.z, 2));
+	float temp = sqrtf(pow(snow.x - enemy.x, 2) + pow(snow.y - enemy.y, 2) + pow(snow.z - enemy.z, 2));
 
-	if (enmeyFlag == 1)
+	if (flag == 0)
 	{
-		return 100 - 17 < temp;
-
+		if (enmeyFlag == 1)
+		{
+			return 100 - 50 < temp;
+		}
+		if (enmeyFlag == 2)
+		{
+			return 100 - 50 < temp;
+		}
+		if (enmeyFlag == 3)
+		{
+			return 100 - 50 < temp;
+		}
+		if (enmeyFlag == 4)
+		{
+			return 100 - 50 < temp;
+		}
 	}
-	if (enmeyFlag == 2)
+	if (flag == 1)
 	{
-		return 100 - 17 < temp;
-
-	}
-	if (enmeyFlag == 3)
-	{
-		return 100  < temp;
-
-	}
-	if (enmeyFlag == 4)
-	{
-		return 100 - 17 < temp;
-
+		if (enmeyFlag == 1)
+		{
+			return 200 < temp;
+		}
+		if (enmeyFlag == 2)
+		{
+			return 200 < temp;
+		}
+		if (enmeyFlag == 3)
+		{
+			return 200 < temp;
+		}
+		if (enmeyFlag == 4)
+		{
+			return 200 < temp;
+		}
 	}
 	//return 100 - 17 < temp;
 }

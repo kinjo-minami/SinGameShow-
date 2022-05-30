@@ -52,7 +52,7 @@ public:
 
 	void PlayerAtk();
 
-
+	void CoreMove();
 private:
 	
 	// Sprite
@@ -107,18 +107,22 @@ private:
 
 
 	//コア関連
-	Model* inCoa = Model::LoadFromOBJ("core_in");
-	Model* outCoa1 = Model::LoadFromOBJ("core_out1");
-	Model* outCoa2 = Model::LoadFromOBJ("core_out2");
-	Object3d* OBJInCoa = Object3d::Create();
-	Object3d* OBJOutCoaA = Object3d::Create();
-	Object3d* OBJOutCoaB = Object3d::Create();
+	Model* inCore = Model::LoadFromOBJ("core_in");
+	Model* greenOutCore1 = Model::LoadFromOBJ("core_out_green1");
+	Model* greenOutCore2 = Model::LoadFromOBJ("core_out_green2");
+	Model* yellowOutCore1 = Model::LoadFromOBJ("core_out_yellow1");
+	Model* yellowOutCore2 = Model::LoadFromOBJ("core_out_yellow2");
+	Model* redOutCore1 = Model::LoadFromOBJ("core_out_red1");
+	Model* redOutCore2 = Model::LoadFromOBJ("core_out_red2");
+	Object3d* OBJInCore = Object3d::Create();
+	Object3d* OBJOutCoreA = Object3d::Create();
+	Object3d* OBJOutCoreB = Object3d::Create();
 
-	XMFLOAT3 CoaRotA = {};
-	XMFLOAT3 CoaRotB = {};
-	XMFLOAT3 CoaPos = { 0,4,50 };
+	XMFLOAT3 CoreRotA = {};
+	XMFLOAT3 CoreRotB = {};
+	XMFLOAT3 CorePos = { 0,4,50 };
 	int coaHit = 7;
-
+	char coreCount = 0;
 
 	//プレイヤー関連
 	Model* modelCloudThunder = Model::LoadFromOBJ("cloud");

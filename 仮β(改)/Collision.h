@@ -28,7 +28,7 @@ public:
 	static bool CoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player);
 	static bool UnCoaPlayerHit(XMFLOAT3 coa, XMFLOAT3 player);
 
-	static bool SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy,int enmeyFlag);
-	static bool UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy,int enmeyFlag);
+	static bool SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy,int enmeyFlag,char flag);
+	static bool UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy,int enmeyFlag, char flag);
 
 };
