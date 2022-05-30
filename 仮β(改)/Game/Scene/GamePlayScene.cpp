@@ -431,7 +431,7 @@ void GamePlayScene::PlayerAtk()
 			{
 				if (enemyFlag[j] == 0)
 				{
-					bool snowHit = Collision::SnoOrRainHit(snowPos[i], enemyMovPos[j]);
+					bool snowHit = Collision::SnoOrRainHit(snowPos[i], enemyMovPos[j], enemyOriginMove[j]*10);
 
 					if (snowHit)
 					{
@@ -448,7 +448,7 @@ void GamePlayScene::PlayerAtk()
 				snowFlag[i] = 0;
 				for (int j = 0; j < 800; j++)
 				{
-					if (enemyFlag[j] == 0)
+					if (enemyFlag[j] == 0 && enemyMove[j] == 0.0f)
 					{
 						enemyMove[j] = enemyOriginMove[j];
 
@@ -464,13 +464,13 @@ void GamePlayScene::PlayerAtk()
 			{
 				if (enemyFlag[j] == 0)
 				{
-					bool rainHit = Collision::SnoOrRainHit(rainPos[i], enemyMovPos[j]);
+					bool rainHit = Collision::SnoOrRainHit(rainPos[i], enemyMovPos[j], enemyOriginMove[j] * 10);
 
 					if (rainHit)
 					{
 						enemyMove[j] = enemyOriginMove[j] / 10.0f;
 					}
-					bool unRainHit = Collision::UnSnoOrRainHit(rainPos[i], enemyMovPos[j]);
+					bool unRainHit = Collision::UnSnoOrRainHit(rainPos[i], enemyMovPos[j], enemyOriginMove[j] * 10);
 					if (unRainHit)
 					{
 						enemyMove[j] = enemyOriginMove[j];
@@ -490,7 +490,11 @@ void GamePlayScene::PlayerAtk()
 				{
 					if (enemyFlag[j] == 0)
 					{
-						enemyMove[j] = enemyOriginMove[j];
+						if (enemyMove[j] == enemyOriginMove[j] / 10.0f)
+						{
+							enemyMove[j] = enemyOriginMove[j];
+						}
+						
 
 					}
 				}
