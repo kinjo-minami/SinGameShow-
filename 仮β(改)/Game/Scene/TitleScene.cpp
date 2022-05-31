@@ -10,9 +10,13 @@ TitleScene::TitleScene(SceneManager* sceneManager)
 }
 
 void TitleScene::Initialize() {
+	bgmFlag = 0;
+
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	spriteCommon->LoadTexture(0, L"Resources/title2.png");
 	spriteCommon->LoadTexture(1, L"Resources/rain2.png");
+	bgm->Initialize();
+	bgm->SoundLoadWave("Resources/BGM/BGM2.wav");
 	title =Sprite::Create(0, { 0,0 }, false, false);
 	rain = Sprite::Create(1, { 0,0 }, false, false);
 }
@@ -40,8 +44,11 @@ void TitleScene::Update() {
 
 	if (input->TriggerMouseLeft())
 	{
+
 		BaseScene* scene = new GamePlayScene(sceneManager_);
 		sceneManager_->SetNextScene(scene);
+		bgm->stopSound();
+
 	}
 
 	title->Update();
@@ -49,6 +56,11 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
+	if (bgmFlag == 0)
+	{
+		bgm->SoundPlayWave();
+		bgmFlag = 1;
+	}
 	SpriteCommon::GetInstance()->PreDraw();
 	rain->Draw();
 	title->Draw();

@@ -70,6 +70,10 @@ public:
 
 	void SetPosition(const XMFLOAT3 position) { position_ = position; }
 
+	void SetTexLeftTop(XMFLOAT2 texLeftTop) { texLeftTop_ = texLeftTop; }
+
+	void SetTexSize(XMFLOAT2 texSize) { texSize_ = texSize; }
+
 	void SetRotation(float rotation) { rotation_ = rotation; }
 
 	void SetSize(XMFLOAT2 size) { size_ = size; }

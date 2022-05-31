@@ -6,6 +6,7 @@
 #include"DebugCamera.h"
 #include"Collision.h"
 #include"Audio.h"
+#include"DebugText.h"
 class DirectXCommon;
 
 class GamePlayScene : public BaseScene {
@@ -142,7 +143,7 @@ private:
 	XMFLOAT3 CoreRotA = {};
 	XMFLOAT3 CoreRotB = {};
 	XMFLOAT3 CorePos = { 0,4,50 };
-	int coaHit = 7;
+	int coaHit = 15;
 	char coreCount = 0;
 
 	//プレイヤー関連
@@ -183,6 +184,14 @@ private:
 	int rainFlag[10] = {};
 	int rainTimer[10] = {};
 
+	// スコア
+	char str[100] = { 0 };
+	int score = 0;
+	int bestScore = 0;
+	XMFLOAT2 scorePos = { 0.0f, 0.0f };
+	const int debugTextTexNumber[2] = { 49, 50 };
+	DebugText* debugText1 = new DebugText;
+	DebugText* debugText2 = new DebugText;
 
 	// 最短距離関係
 	float earliest[800];
@@ -206,8 +215,7 @@ private:
 	int gameFlag = 0;
 
 	
-	int score = 0;
-
+	
 	const float PI = 3.1415926f;
 
 };

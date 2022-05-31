@@ -126,6 +126,9 @@
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル\game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Game\2D,3D\2D\DebugText.cpp">
+      <Filter>ソース ファイル\game\2D,3Dobject\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>ヘッダー ファイル\game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\2D,3D\2D\DebugText.h">
+      <Filter>ヘッダー ファイル\game\2D,3Dobject\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

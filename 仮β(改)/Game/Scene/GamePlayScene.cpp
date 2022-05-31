@@ -4,6 +4,7 @@
 #include "DirectXCommon.h"
 #include "TitleScene.h"
 #include"Collision.h"
+
 using namespace DirectX;
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -36,6 +37,8 @@ void GamePlayScene::Initialize() {
 	camera->SetTarget({ 0, 1, -400 });
 	camera->SetDistance(3.0f);
 	camera->SetEye({ 0, 0, 0 });
+	ShowCursor(FALSE);
+	bestScore = sceneManager_->GetBestScore();
 
 #pragma endregion 描画初期化処理
 }
@@ -44,9 +47,34 @@ void GamePlayScene::Finalize() {
 	for (auto& sprite : sprites) {
 		delete sprite;
 	}
-	delete spritePlayer;
+	delete	spriteClear;
+	delete	spriteOver;
+	delete	spriteHud1;
+	delete	spriteHud2;
+	delete	spritePlayer;
+	for (int i = 0; i < fallNam; i++) {
+		delete	spriteSnow[i];
+		delete	spriteRain[i];
+
+	}
+	for (int i = 0; i < enemyNam * 80; i++)
+	{
+		delete	spriteEnemyRe[i];
 
 
+	}
+	
+	for (int i = 0; i < 10; i++)
+	{
+		delete	objSnow[i];
+		
+		delete	objRain[i];
+		
+	}
+	for (int i = 0; i < 800; i++) {
+		delete	objEnemyMov[i];
+
+	}
 
 	delete camera;
 }
@@ -194,6 +222,7 @@ void GamePlayScene::Create3D_object() {
 
 void GamePlayScene::Update() {
 	Input* input = Input::GetInstance();
+	SetCursorPos(860, 440);
 
 	ClassUpdate();
 	if (gameFlag == 0) {
@@ -203,16 +232,49 @@ void GamePlayScene::Update() {
 		PlayerAtk();
 		EnemyHitCoa();
 		CoreMove();
+
+		scorePos = { 0.0f, 0.0f };
+		if (bestScore <= score)
+		{
+			bestScore = score;
+			sceneManager_->SetBestScore(bestScore);
+		}
+		sprintf_s(str, "BESTSCORE:%d", (int)bestScore);
+		debugText1->Print(str, scorePos.x, scorePos.y, 1.0f);
+		sprintf_s(str, "SCORE:%d", (int)score);
+		debugText1->Print(str, scorePos.x, scorePos.y + 55, 1.0f);
 	}
 	if (gameFlag == 1) {
+		if (input->PushMouseLeft())
+		{
+			audioBgm->stopSound();
+			//Finalize();
+			ChangeScene();
 
+		}
+		scorePos = { 310.0f, 240.0f };
 
+		sprintf_s(str, "BESTSCORE:%d", (int)bestScore);
+		debugText2->Print(str, scorePos.x, scorePos.y, 1.0f);
+		sprintf_s(str, "SCORE:%d", (int)score);
+		debugText2->Print(str, scorePos.x, scorePos.y + 55, 1.0f);
 	}
 	if (gameFlag == 2) {
+		if (input->PushMouseLeft())
+		{
+			//Finalize();
+			ChangeScene();
+			audioBgm->stopSound();
 
+		}
+		scorePos = { 310.0f, 240.0f };
+
+		sprintf_s(str, "BESTSCORE:%d", (int)bestScore);
+		debugText2->Print(str, scorePos.x, scorePos.y, 1.0f);
+		sprintf_s(str, "SCORE:%d", (int)score);
+		debugText2->Print(str, scorePos.x, scorePos.y + 55, 1.0f);
 
 	}
-
 	/*if (input->TriggerKey(DIK_RETURN)) {
 		ChangeScene();
 	}*/
@@ -372,7 +434,7 @@ void GamePlayScene::PlayerAtk()
 			atkFlag = 0;
 		}
 	}
-	
+
 	if (atkFlag == 0)
 	{
 		bool isSpriteTerritory1 = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum], 0);
@@ -403,7 +465,7 @@ void GamePlayScene::PlayerAtk()
 			}
 		}
 	}
-	
+
 	if (thunderFlag == 1)
 	{
 		thunderPos.y -= 20.0f;
@@ -426,7 +488,7 @@ void GamePlayScene::PlayerAtk()
 		for (int i = 0; i < fallNam; i++) {
 			if (fallAliveFlag[i] == 0) {
 				fallPosX[i] = rand() % WinApp::window_width;
-				fallPosY[i] =-32.0f;
+				fallPosY[i] = -32.0f;
 				fallSpeed[i] = 0.1f;
 				fallAliveFlag[i] = 1;
 				spriteSnow[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
@@ -602,12 +664,12 @@ void GamePlayScene::CoreMove()
 	OBJOutCoreA->SetRotation(CoreRotA);
 	OBJOutCoreB->SetRotation(CoreRotB);
 
-	if (coaHit <= 7 && coreCount == 0)
+	if (coaHit <= 15 && coreCount == 0)
 	{
 		audioBgm->SoundPlayWave();
 		coreCount = 1;
 	}
-	if (coaHit <= 5 && coreCount == 1)
+	if (coaHit <= 10 && coreCount == 1)
 	{
 		audioBgm->stopSound();
 		audioBgm->SoundLoadWave("Resources/BGM/BGM3.wav");
@@ -617,7 +679,7 @@ void GamePlayScene::CoreMove()
 		coreCount = 2;
 	}
 
-	if (coaHit <= 2 && coreCount == 2)
+	if (coaHit <= 5 && coreCount == 2)
 	{
 		audioBgm->stopSound();
 		audioBgm->SoundLoadWave("Resources/BGM/BGM4.wav");
@@ -627,6 +689,25 @@ void GamePlayScene::CoreMove()
 		OBJOutCoreB->SetModel(redOutCore2);
 		coreCount = 3;
 	}
+	if (coaHit <= 2 && coreCount == 3)
+	{
+		audioBgm->stopSound();
+		audioBgm->SoundLoadWave("Resources/BGM/BGM5.wav");
+		audioBgm->SoundPlayWave();
+		coreCount = 4;
+
+	}
+	if (coaHit <= 0)
+	{
+		gameFlag = 2;
+	}
+
+	if (coaHit > 0 && enemyCount >= 800)
+	{
+		gameFlag = 1;
+	}
+	
+
 }
 
 void GamePlayScene::AudioInitialize()
@@ -642,7 +723,7 @@ void GamePlayScene::AudioInitialize()
 
 	audioBgm->Initialize();
 	audioBgm->SoundLoadWave("Resources/BGM/BGM1.wav");
-	
+
 
 
 }
@@ -675,11 +756,13 @@ void GamePlayScene::Draw() {
 				objRain[i]->Draw();
 			}
 		}
+		
+
 		if (coaHit >= 0)
 		{
 			OBJInCore->Draw();
 		}
-		if (coaHit >= 1)
+		if (coaHit > 2)
 		{
 			OBJOutCoreA->Draw();
 			OBJOutCoreB->Draw();
@@ -1125,28 +1208,27 @@ void GamePlayScene::Draw() {
 #pragma region enemy
 
 	if (gameFlag == 0) {
-		
-		
-			for (int i = 0; i < fallNam; i++) {
-				if (atkFlag == 1)
-				{
-					if (fallAliveFlag[i] == 1) {
-						spriteSnow[i]->Draw();
-					}
-				}
-				if (atkFlag == 2)
-				{
-					if (fallAliveFlag[i] == 1) {
-						spriteRain[i]->Draw();
-					}
-				}
 
-			
-
+		for (int i = 0; i < fallNam; i++) {
+			if (atkFlag == 1)
+			{
+				if (fallAliveFlag[i] == 1) {
+					spriteSnow[i]->Draw();
+				}
 			}
-		
-		
-		
+			if (atkFlag == 2)
+			{
+				if (fallAliveFlag[i] == 1) {
+					spriteRain[i]->Draw();
+				}
+			}
+
+
+
+		}
+
+
+
 		for (auto& sprite : spritesRader) {
 			sprite->Draw();
 		}
@@ -1589,12 +1671,17 @@ void GamePlayScene::Draw() {
 
 
 
+	debugText1->DrawAll();
 
 	if (gameFlag == 1) {
 		spriteClear->Draw();
+		debugText2->DrawAll();
+
 	}
 	if (gameFlag == 2) {
 		spriteOver->Draw();
+		debugText2->DrawAll();
+
 	}
 
 }
@@ -1620,9 +1707,9 @@ void GamePlayScene::Create2D_object() {
 
 	spritesRader.push_back(sprite);
 	for (int i = 0; i < fallNam; i++) {
-		spriteSnow[i] = Sprite::Create( 8, { 0,0 }, false, false);
+		spriteSnow[i] = Sprite::Create(8, { 0,0 }, false, false);
 		spriteSnow[i]->SetPosition({ 0,-32,0 });
-		spriteRain[i]= Sprite::Create(9, { 0,0 }, false, false);
+		spriteRain[i] = Sprite::Create(9, { 0,0 }, false, false);
 		spriteRain[i]->SetPosition({ 0,-32,0 });
 
 	}
@@ -1672,12 +1759,15 @@ void GamePlayScene::ClassUpdate() {
 
 	spriteHud1->Update();
 	spriteHud2->Update();
+	spriteClear->Update();
+	spriteOver->Update();
+
 	for (int i = 0; i < fallNam; i++) {
-	
+
 		spriteSnow[i]->Update();
 		spriteRain[i]->Update();
 	}
-	
+
 
 	if (enemyWave >= 0) {
 
@@ -2109,8 +2199,8 @@ void GamePlayScene::ClassUpdate() {
 void GamePlayScene::SpriteLoadTex() {
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	spriteCommon->LoadTexture(0, L"Resources/hud2.png");
-	spriteCommon->LoadTexture(1, L"Resources/gameClear.png");
-	spriteCommon->LoadTexture(2, L"Resources/gameover.png");
+	spriteCommon->LoadTexture(1, L"Resources/ResultClear.png");
+	spriteCommon->LoadTexture(2, L"Resources/ResultOver.png");
 	spriteCommon->LoadTexture(3, L"Resources/reader.png");
 	spriteCommon->LoadTexture(4, L"Resources/playerRe.png");
 	spriteCommon->LoadTexture(5, L"Resources/coraRe.png");
@@ -2118,6 +2208,12 @@ void GamePlayScene::SpriteLoadTex() {
 	spriteCommon->LoadTexture(7, L"Resources/hud3.png");
 	spriteCommon->LoadTexture(8, L"Resources/snow.png");
 	spriteCommon->LoadTexture(9, L"Resources/rain3.png");
+	// デバッグテキスト
+	
+	spriteCommon->LoadTexture(debugTextTexNumber[0], L"Resources/debugfont3.png");
+	debugText1->Initialize(spriteCommon, debugTextTexNumber[0]);
+	spriteCommon->LoadTexture(debugTextTexNumber[1], L"Resources/debugfont4.png");
+	debugText2->Initialize(spriteCommon, debugTextTexNumber[1]);
 }
 
 void GamePlayScene::CameraCreateSet() {
@@ -2134,7 +2230,7 @@ void GamePlayScene::EnemyPlayerDistance()
 {
 	if (enemyWave >= 0)
 	{
-		for (int i = 0; i < enemyNam ; i++)
+		for (int i = 0; i < enemyNam; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -4352,7 +4448,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 7 && enemyWave == 0)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4387,7 +4483,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 16 && enemyWave == 1)
 		{
-			score += 1000;
+			score += 3800;
+
 
 			enemyWave++;
 		}
@@ -4420,7 +4517,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 26 && enemyWave == 2)
 		{
-			score += 1000;
+			score += 3800;
+
 
 			enemyWave++;
 		}
@@ -4453,7 +4551,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 36 && enemyWave == 3)
 		{
-			score += 1000;
+			score += 3800;
+
 
 			enemyWave++;
 		}
@@ -4486,7 +4585,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 46 && enemyWave == 4)
 		{
-			score += 1000;
+			score += 3800;
+
 
 			enemyWave++;
 		}
@@ -4519,7 +4619,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 56 && enemyWave == 5)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4552,7 +4652,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 66 && enemyWave == 6)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4585,7 +4685,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 76 && enemyWave == 7)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4618,7 +4718,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 86 && enemyWave == 8)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4651,7 +4751,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 96 && enemyWave == 9)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4684,7 +4784,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 110 && enemyWave == 10)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4717,7 +4817,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 120 && enemyWave == 11)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4750,7 +4850,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 139 && enemyWave == 12)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4783,7 +4883,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 150 && enemyWave == 13)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4816,7 +4916,8 @@ void GamePlayScene::Enemymove()
 		if (enemyCount >= 162 && enemyWave == 14)
 		{
 
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -4847,7 +4948,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 174 && enemyWave == 15)
 		{
-			score += 1000;
+			score += 3800;
 
 			enemyWave++;
 		}
@@ -4878,7 +4979,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 186 && enemyWave == 16)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -4908,7 +5010,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 200 && enemyWave == 17)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -4938,7 +5041,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 216 && enemyWave == 18)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -4968,7 +5072,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 230 && enemyWave == 19)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -4998,7 +5103,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 244 && enemyWave == 20)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5028,7 +5134,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 258 && enemyWave == 21)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5058,7 +5165,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 272 && enemyWave == 22)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5088,7 +5196,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 287 && enemyWave == 23)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5118,7 +5227,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 302 && enemyWave == 24)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5148,7 +5258,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 317 && enemyWave == 25)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5178,7 +5289,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 332 && enemyWave == 26)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5208,7 +5320,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 347 && enemyWave == 27)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5238,7 +5351,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 362 && enemyWave == 28)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5268,7 +5382,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 378 && enemyWave == 29)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5298,7 +5413,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 394 && enemyWave == 30)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5328,7 +5444,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 410 && enemyWave == 31)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5358,7 +5475,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 426 && enemyWave == 32)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5388,7 +5506,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 442 && enemyWave == 33)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5418,7 +5537,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 458 && enemyWave == 34)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5448,7 +5568,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 474 && enemyWave == 35)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5478,7 +5599,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 490 && enemyWave == 36)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5508,7 +5630,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 506 && enemyWave == 37)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5538,7 +5661,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 523 && enemyWave == 38)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5568,7 +5692,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 540 && enemyWave == 39)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5598,7 +5723,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 557 && enemyWave == 40)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5628,7 +5754,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 574 && enemyWave == 41)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5658,7 +5785,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 592 && enemyWave == 42)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5688,7 +5816,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 610 && enemyWave == 43)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5718,7 +5847,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 628 && enemyWave == 44)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5748,7 +5878,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 646 && enemyWave == 45)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5778,7 +5909,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 663 && enemyWave == 46)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5808,7 +5940,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 681 && enemyWave == 47)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5838,7 +5971,7 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 699 && enemyWave == 48)
 		{
-			score += 1000;
+			score += 3800;
 			enemyWave++;
 		}
 	}
@@ -5868,7 +6001,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 717 && enemyWave == 49)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5898,7 +6032,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 736 && enemyWave == 50)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5928,7 +6063,8 @@ void GamePlayScene::Enemymove()
 		}
 		if (enemyCount >= 760 && enemyWave == 51)
 		{
-			score += 1000;
+			score += 3800;
+
 			enemyWave++;
 		}
 	}
@@ -5955,6 +6091,12 @@ void GamePlayScene::Enemymove()
 				objEnemyMov[i]->SetPosition(enemyMovPos[i]);
 				objEnemyMov[i]->Update();
 			}
+		}
+		if (enemyCount >= 800 && enemyWave == 52)
+		{
+			score += 6199;
+
+			enemyWave++;
 		}
 	}
 

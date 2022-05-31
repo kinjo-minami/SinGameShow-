@@ -1,29 +1,35 @@
-#include "DebugText.h"
+ï»¿#include "DebugText.h"
 
-void DebugText::Initialize(ID3D12Device* dev, int window_width, int window_height, UINT texnumber, const SpriteCommon& spriteCommon)
+void DebugText::Initialize(SpriteCommon* spriteCommon, UINT texnumber)
 {
-    // ‘S‚Ä‚ÌƒXƒvƒ‰ƒCƒgƒf[ƒ^‚É‚Â‚¢‚Ä
-    for (int i = 0; i < _countof(sprites); i++)
+    // nullptrãƒã‚§ãƒƒã‚¯
+    assert(spriteCommon);
+
+    // å¼•æ•°ã‚’ãƒ¡ãƒ³ãƒå¤‰æ•°ã«æ ¼ç´
+    spriteCommon_ = spriteCommon;
+
+    // å…¨ã¦ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ‡ãƒ¼ã‚¿ã«ã¤ã„ã¦
+    for (int i = 0; i < _countof(sprites_); i++)
     {
-        // ƒXƒvƒ‰ƒCƒg‚ğ¶¬‚·‚é
-        sprites[i] = SpriteCreate(dev, window_width, window_height, texnumber, spriteCommon, { 0,0 });
+        // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’ç”Ÿæˆã™ã‚‹
+        sprites_[i] = Sprite::Create( texnumber, { 0,0 }, false, false);
     }
 }
 
-void DebugText::Print(const SpriteCommon& spriteCommon, const std::string& text, float x, float y, float scale)
+void DebugText::Print(const std::string& text, float x, float y, float scale)
 {
-    // ‘S‚Ä‚Ì•¶š‚É‚Â‚¢‚Ä
+    // å…¨ã¦ã®æ–‡å­—ã«ã¤ã„ã¦
     for (int i = 0; i < text.size(); i++)
     {
-        // Å‘å•¶š”’´‰ß
-        if (spriteIndex >= maxCharCount) {
+        // æœ€å¤§æ–‡å­—æ•°è¶…é
+        if (spriteIndex_ >= maxCharCount) {
             break;
         }
 
-        // 1•¶šæ‚èo‚·(¦ASCIIƒR[ƒh‚Å‚µ‚©¬‚è—§‚½‚È‚¢)
+        // 1æ–‡å­—å–ã‚Šå‡ºã™(â€»ASCIIã‚³ãƒ¼ãƒ‰ã§ã—ã‹æˆã‚Šç«‹ãŸãªã„)
         const unsigned char& character = text[i];
 
-        // ASCIIƒR[ƒh‚Ì2’i•ª”ò‚Î‚µ‚½”Ô†‚ğŒvZ
+        // ASCIIã‚³ãƒ¼ãƒ‰ã®2æ®µåˆ†é£›ã°ã—ãŸç•ªå·ã‚’è¨ˆç®—
         int fontIndex = character - 32;
         if (character >= 0x7f) {
             fontIndex = 0;
@@ -32,30 +38,30 @@ void DebugText::Print(const SpriteCommon& spriteCommon, const std::string& text,
         int fontIndexY = fontIndex / fontLineCount;
         int fontIndexX = fontIndex % fontLineCount;
 
-        // À•WŒvZ
-        sprites[spriteIndex].position = { x + fontWidth * scale * i, y, 0 };
-        sprites[spriteIndex].texLeftTop = { (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight };
-        sprites[spriteIndex].texSize = { fontWidth, fontHeight };
-        sprites[spriteIndex].size = { fontWidth * scale, fontHeight * scale };
-        // ’¸“_ƒoƒbƒtƒ@“]‘—
-        SpriteTransferVertexBuffer(sprites[spriteIndex], spriteCommon);
-        // XV
-        SpriteUpdate(sprites[spriteIndex], spriteCommon);
+        // åº§æ¨™è¨ˆç®—
+        sprites_[spriteIndex_]->SetPosition({ x + fontWidth * scale * i, y, 0 });
+        sprites_[spriteIndex_]->SetTexLeftTop({ (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight });
+        sprites_[spriteIndex_]->SetTexSize({ fontWidth, fontHeight });
+        sprites_[spriteIndex_]->SetSize({ fontWidth * scale, fontHeight * scale });
+        // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡è»¢é€
+        sprites_[spriteIndex_]->TransferVertexBuffer();
+        // æ›´æ–°
+        sprites_[spriteIndex_]->Update();
 
-        // •¶š‚ğ‚P‚Âi‚ß‚é
-        spriteIndex++;
+        // æ–‡å­—ã‚’ï¼‘ã¤é€²ã‚ã‚‹
+        spriteIndex_++;
     }
 }
 
-// ‚Ü‚Æ‚ß‚Ä•`‰æ
-void DebugText::DrawAll(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon, ID3D12Device* dev)
+// ã¾ã¨ã‚ã¦æç”»
+void DebugText::DrawAll()
 {
-    // ‘S‚Ä‚Ì•¶š‚ÌƒXƒvƒ‰ƒCƒg‚É‚Â‚¢‚Ä
-    for (int i = 0; i < spriteIndex; i++)
+    // å…¨ã¦ã®æ–‡å­—ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã«ã¤ã„ã¦
+    for (int i = 0; i < spriteIndex_; i++)
     {
-        // ƒXƒvƒ‰ƒCƒg•`‰æ
-        SpriteDraw(sprites[i], cmdList, spriteCommon, dev);
+        // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
+        sprites_[i]->Draw();
     }
 
-    spriteIndex = 0;
+    spriteIndex_ = 0;
 }

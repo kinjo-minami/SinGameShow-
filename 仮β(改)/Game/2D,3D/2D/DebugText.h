@@ -1,28 +1,36 @@
-#pragma once
+ï»¿#pragma once
 
-#include<d3d12.h>
-#include<d3dx12.h>
-#include<dxgi1_6.h>
-#include<wrl.h>
+//#include<d3d12.h>
+//#include<d3dx12.h>
+//#include<dxgi1_6.h>
+//#include<wrl.h>
+
+#include "Sprite.h"
+#include <windows.h>
+#include <string>
+
 class DebugText
 {
-public: // ’è”‚ÌéŒ¾    
-    static const int maxCharCount = 256;    // Å‘å•¶š”
-    static const int fontWidth = 9;         // ƒtƒHƒ“ƒg‰æ‘œ“à1•¶š•ª‚Ì‰¡•
-    static const int fontHeight = 18;       // ƒtƒHƒ“ƒg‰æ‘œ“à1•¶š•ª‚Ìc•
-    static const int fontLineCount = 14;    // ƒtƒHƒ“ƒg‰æ‘œ“à1s•ª‚Ì•¶š”
+public: // å®šæ•°ã®å®£è¨€    
+    static const int maxCharCount = 256;    // æœ€å¤§æ–‡å­—æ•°
+    //static const int fontWidth = 9;         // ãƒ•ã‚©ãƒ³ãƒˆç”»åƒå†…1æ–‡å­—åˆ†ã®æ¨ªå¹…
+    //static const int fontHeight = 18;       // ãƒ•ã‚©ãƒ³ãƒˆç”»åƒå†…1æ–‡å­—åˆ†ã®ç¸¦å¹…
+    static const int fontWidth = 55;         // ãƒ•ã‚©ãƒ³ãƒˆç”»åƒå†…1æ–‡å­—åˆ†ã®æ¨ªå¹…
+    static const int fontHeight = 55;       // ãƒ•ã‚©ãƒ³ãƒˆç”»åƒå†…1æ–‡å­—åˆ†ã®ç¸¦å¹…
+    static const int fontLineCount = 14;    // ãƒ•ã‚©ãƒ³ãƒˆç”»åƒå†…1è¡Œåˆ†ã®æ–‡å­—æ•°
 
-public: // ƒƒ“ƒoŠÖ”
-    void Initialize(ID3D12Device* dev, int window_width, int window_height, UINT texnumber, const SpriteCommon& spriteCommon);
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
+    void Initialize(SpriteCommon* spriteCommon, UINT texnumber);
 
-    void Print(const SpriteCommon& spriteCommon, const std::string& text, float x, float y, float scale = 1.0f);
+    void Print(const std::string& text, float x, float y, float scale = 1.0f);
 
-    void DrawAll(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon, ID3D12Device* dev);
+    void DrawAll();
 
-private: // ƒƒ“ƒo•Ï”     
-    // ƒXƒvƒ‰ƒCƒgƒf[ƒ^‚Ì”z—ñ
-    Sprite sprites[maxCharCount];
-    // ƒXƒvƒ‰ƒCƒgƒf[ƒ^”z—ñ‚Ì“Y‚¦š”Ô†
-    int spriteIndex = 0;
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
+    // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå…±é€šéƒ¨åˆ†ï¼ˆå€Ÿã‚Šã¦ãã‚‹ï¼‰
+    SpriteCommon* spriteCommon_ = nullptr;
+    // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ‡ãƒ¼ã‚¿ã®é…åˆ—
+    Sprite* sprites_[maxCharCount];
+    // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ‡ãƒ¼ã‚¿é…åˆ—ã®æ·»ãˆå­—ç•ªå·
+    int spriteIndex_ = 0;
 };
-
