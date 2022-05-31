@@ -355,27 +355,52 @@ void GamePlayScene::PlayerAtk()
 	if (input->TriggerMouseRight())
 	{
 		atkFlag++;
+		for (int i = 0; i < fallNam; i++)
+		{
+			fallAliveFlag[i] = 0;
+			fallPosX[i] = 0;
+			fallPosY[i] = -32;
+			fallSpeed[i] = 0;
+			spriteSnow[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
+			spriteRain[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
+
+		}
 		if (atkFlag >= 3)
 		{
 			atkFlag = 0;
 		}
 	}
-
-	if (input->TriggerMouseLeft() && thunderFlag == 0 && atkFlag == 0)
+	
+	if (atkFlag == 0)
 	{
-		// 攻撃判定
-		bool isTerritory = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum]);
-		if (isTerritory)
-		{
-			//thunder->SEPlayWave();
+		bool isSpriteTerritory1 = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum], 0);
+		bool isSpriteTerritory2 = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum], 1);
 
-			thunderFlag = 1;
-			thunderPos = enemyMovPos[earliestEnemyNum];
-			thunderPos.y += 100.0;
-			thunderTimer = 10;
-			objThunder->SetPosition(thunderPos);
+		if (isSpriteTerritory1)
+		{
+			hudFlag = 1;
+		}
+		if (isSpriteTerritory2)
+		{
+			hudFlag = 0;
+		}
+		if (input->TriggerMouseLeft() && thunderFlag == 0)
+		{
+			// 攻撃判定
+			bool isTerritory = Collision::territory(cloudPos, enemyMovPos[earliestEnemyNum], 0);
+			if (isTerritory)
+			{
+				//thunder->SEPlayWave();
+
+				thunderFlag = 1;
+				thunderPos = enemyMovPos[earliestEnemyNum];
+				thunderPos.y += 100.0;
+				thunderTimer = 10;
+				objThunder->SetPosition(thunderPos);
+			}
 		}
 	}
+	
 	if (thunderFlag == 1)
 	{
 		thunderPos.y -= 20.0f;
@@ -394,7 +419,27 @@ void GamePlayScene::PlayerAtk()
 
 	if (atkFlag == 1)
 	{
-
+		hudFlag = 1;
+		for (int i = 0; i < fallNam; i++) {
+			if (fallAliveFlag[i] == 0) {
+				fallPosX[i] = rand() % WinApp::window_width;
+				fallPosY[i] =-32.0f;
+				fallSpeed[i] = 0.1f;
+				fallAliveFlag[i] = 1;
+				spriteSnow[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
+				break;
+			}
+		}
+		for (int i = 0; i < fallNam; i++) {
+			if (fallAliveFlag[i] == 1) {
+				fallPosY[i] += fallSpeed[i];
+				fallSpeed[i] += +0.2f;
+				if (fallPosY[i] > WinApp::window_height) {
+					fallAliveFlag[i] = 0;
+				}
+				spriteSnow[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
+			}
+		}
 		for (int i = 0; i < 10; i++)
 		{
 			if (input->TriggerMouseLeft() && snowFlag[i] == 0)
@@ -419,6 +464,27 @@ void GamePlayScene::PlayerAtk()
 
 	if (atkFlag == 2)
 	{
+		hudFlag = 1;
+		for (int i = 0; i < fallNam; i++) {
+			if (fallAliveFlag[i] == 0) {
+				fallPosX[i] = rand() % WinApp::window_width;
+				fallPosY[i] = -32.0f;
+				fallSpeed[i] = 1.0f;
+				fallAliveFlag[i] = 1;
+				spriteRain[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
+				break;
+			}
+		}
+		for (int i = 0; i < fallNam; i++) {
+			if (fallAliveFlag[i] == 1) {
+				fallPosY[i] += fallSpeed[i];
+				fallSpeed[i] += 1.0f;
+				if (fallPosY[i] > WinApp::window_height) {
+					fallAliveFlag[i] = 0;
+				}
+				spriteRain[i]->SetPosition({ fallPosX[i], fallPosY[i], 0.0f });
+			}
+		}
 		for (int i = 0; i < 10; i++)
 		{
 			if (input->TriggerMouseLeft() && rainFlag[i] == 0)
@@ -581,6 +647,9 @@ void GamePlayScene::Draw() {
 			OBJOutCoreA->Draw();
 			OBJOutCoreB->Draw();
 		}
+#pragma region enemy
+
+
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
 				if (enemyFlag[i] == 0)objEnemyMov[i]->Draw();
@@ -1001,6 +1070,8 @@ void GamePlayScene::Draw() {
 
 			}
 		}
+
+#pragma endregion enemy
 	}
 
 
@@ -1014,13 +1085,43 @@ void GamePlayScene::Draw() {
 	Object3d::PostDraw();
 
 	SpriteCommon::GetInstance()->PreDraw();
+#pragma region enemy
 
 	if (gameFlag == 0) {
+		
+		
+			for (int i = 0; i < fallNam; i++) {
+				if (atkFlag == 1)
+				{
+					if (fallAliveFlag[i] == 1) {
+						spriteSnow[i]->Draw();
+					}
+				}
+				if (atkFlag == 2)
+				{
+					if (fallAliveFlag[i] == 1) {
+						spriteRain[i]->Draw();
+					}
+				}
+
+			
+
+			}
+		
+		
+		
 		for (auto& sprite : spritesRader) {
 			sprite->Draw();
 		}
 		spritePlayer->Draw();
-
+		if (hudFlag == 0)
+		{
+			spriteHud1->Draw();
+		}
+		if (hudFlag == 1)
+		{
+			spriteHud2->Draw();
+		}
 		if (enemyWave >= 0) {
 			for (int i = 0; i < enemyNam; i++) {
 				if (enemyFlag[i] == 0)spriteEnemyRe[i]->Draw();
@@ -1442,6 +1543,13 @@ void GamePlayScene::Draw() {
 			}
 		}
 	}
+
+
+#pragma endregion enemy
+
+
+
+
 
 
 
@@ -1456,10 +1564,12 @@ void GamePlayScene::Draw() {
 
 
 void GamePlayScene::Create2D_object() {
-	sprite = Sprite::Create(0, { 0,0 }, false, false);
-	spritesRader.push_back(sprite);
+
 	spriteClear = Sprite::Create(1, { 0,0 }, false, false);
 	spriteOver = Sprite::Create(2, { 0,0 }, false, false);
+
+	spriteHud1 = Sprite::Create(0, { 0,0 }, false, false);
+	spriteHud2 = Sprite::Create(7, { 0,0 }, false, false);
 
 	sprite = Sprite::Create(3, { 0,0 }, false, false);
 	sprite->SetPosition({ 1280 - 256,0,0 });
@@ -1470,7 +1580,15 @@ void GamePlayScene::Create2D_object() {
 
 	sprite = Sprite::Create(5, { 0,0 }, false, false);
 	sprite->SetPosition({ 1280 - 256,0,0 });
+
 	spritesRader.push_back(sprite);
+	for (int i = 0; i < fallNam; i++) {
+		spriteSnow[i] = Sprite::Create( 8, { 0,0 }, false, false);
+		spriteSnow[i]->SetPosition({ 0,-32,0 });
+		spriteRain[i]= Sprite::Create(9, { 0,0 }, false, false);
+		spriteRain[i]->SetPosition({ 0,-32,0 });
+
+	}
 	for (int i = 0; i < enemyNam * 80; i++)
 	{
 		spriteEnemyRe[i] = Sprite::Create(6, { 0,0 }, false, false);
@@ -1514,6 +1632,16 @@ void GamePlayScene::ClassUpdate() {
 	for (auto& sprite : spritesRader) {
 		sprite->Update();
 	}
+
+	spriteHud1->Update();
+	spriteHud2->Update();
+	for (int i = 0; i < fallNam; i++) {
+	
+		spriteSnow[i]->Update();
+		spriteRain[i]->Update();
+	}
+	
+
 	if (enemyWave >= 0) {
 
 		for (int i = 0; i < enemyNam; i++) {
@@ -1943,13 +2071,16 @@ void GamePlayScene::ClassUpdate() {
 
 void GamePlayScene::SpriteLoadTex() {
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->LoadTexture(0, L"Resources/hud.png");
+	spriteCommon->LoadTexture(0, L"Resources/hud2.png");
 	spriteCommon->LoadTexture(1, L"Resources/gameClear.png");
 	spriteCommon->LoadTexture(2, L"Resources/gameover.png");
 	spriteCommon->LoadTexture(3, L"Resources/reader.png");
 	spriteCommon->LoadTexture(4, L"Resources/playerRe.png");
 	spriteCommon->LoadTexture(5, L"Resources/coraRe.png");
 	spriteCommon->LoadTexture(6, L"Resources/enemyRe.png");
+	spriteCommon->LoadTexture(7, L"Resources/hud3.png");
+	spriteCommon->LoadTexture(8, L"Resources/snow.png");
+	spriteCommon->LoadTexture(9, L"Resources/rain3.png");
 }
 
 void GamePlayScene::CameraCreateSet() {
@@ -1966,7 +2097,7 @@ void GamePlayScene::EnemyPlayerDistance()
 {
 	if (enemyWave >= 0)
 	{
-		for (int i = 0; i < enemyNam * 80; i++)
+		for (int i = 0; i < enemyNam ; i++)
 		{
 			if (enemyFlag[i] == 0)
 			{
@@ -4154,7 +4285,7 @@ void GamePlayScene::EnemyHitCoa()
 }
 void GamePlayScene::Enemymove()
 {
-	bool isHit = Collision::territory(cloudPos, enemyMovPos[0]);
+
 	if (enemyWave >= 0) {
 		//エネミー移動
 		for (int i = 0; i < enemyNam; i++)

@@ -62,6 +62,23 @@ private:
 	Sprite* spritePlayer = nullptr;
 	Sprite* spriteEnemyRe[800] = {};
 
+	Sprite* spriteHud1 = nullptr;
+	Sprite* spriteHud2 = nullptr;
+	char hudFlag = 0;
+
+	//雪
+
+	Sprite* spriteSnow[200] = {};
+	
+	float fallPosX[200] = { 0 };
+	float fallPosY[200] = { 0 };
+	float fallSpeed[200] = { 0 };
+	int fallAliveFlag[200] = { 0 };
+	int fallNam = 200;
+
+	// 雨
+	Sprite* spriteRain[200] = {};
+
 	std::vector<Sprite*> sprites;
 	
 	std::vector<Sprite*> spritesRader;

@@ -14,7 +14,7 @@ bool Collision::UnVirtualitys(XMFLOAT3 PlayerRay, XMFLOAT3 skyPos)
 	return 500 - 17 < temp;
 }
 
-bool Collision::territory(XMFLOAT3 Player, XMFLOAT3 Enemy)
+bool Collision::territory(XMFLOAT3 Player, XMFLOAT3 Enemy,char flag)
 {
 	float temp[4] = {};
 	temp[0] = Player.x - Enemy.x;
@@ -24,8 +24,15 @@ bool Collision::territory(XMFLOAT3 Player, XMFLOAT3 Enemy)
 	temp[3] = sqrtf((temp[0] * temp[0]) + (temp[1] * temp[1]) + (temp[2] * temp[2]));
 
 	//float sqrtf(temp[3]);
-
-	return temp[3] < sqrtf(10000.0f);
+	if (flag == 0)
+	{
+		return temp[3] < sqrtf(10000.0f);
+	}
+	if (flag == 1)
+	{
+		return temp[3] > sqrtf(10000.0f);
+	}
+	
 }
 
 bool Collision::ATKcollision(XMFLOAT3 Player, XMFLOAT3 Enemy)
