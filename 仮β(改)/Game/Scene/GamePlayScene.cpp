@@ -31,6 +31,8 @@ void GamePlayScene::Initialize() {
 
 	Create3D_object();
 
+	AudioInitialize();
+
 	camera->SetTarget({ 0, 1, -400 });
 	camera->SetDistance(3.0f);
 	camera->SetEye({ 0, 0, 0 });
@@ -391,6 +393,7 @@ void GamePlayScene::PlayerAtk()
 			if (isTerritory)
 			{
 				//thunder->SEPlayWave();
+				audioThunder->SEPlayWave();
 
 				thunderFlag = 1;
 				thunderPos = enemyMovPos[earliestEnemyNum];
@@ -444,6 +447,8 @@ void GamePlayScene::PlayerAtk()
 		{
 			if (input->TriggerMouseLeft() && snowFlag[i] == 0)
 			{
+				audioSnow->SEPlayWave();
+
 				snowPos[i] = cloudPos;
 				objSnow[i]->SetPosition({ snowPos[i].x,snowPos[i].y - 20,snowPos[i].z });
 				snowTimer[i] = 500;
@@ -489,6 +494,8 @@ void GamePlayScene::PlayerAtk()
 		{
 			if (input->TriggerMouseLeft() && rainFlag[i] == 0)
 			{
+				audioRain->SEPlayWave();
+
 				rainPos[i] = cloudPos;
 				rainFlag[i] = 1;
 				objRain[i]->SetPosition({ rainPos[i].x,rainPos[i].y - 10.0f,rainPos[i].z });
@@ -595,19 +602,49 @@ void GamePlayScene::CoreMove()
 	OBJOutCoreA->SetRotation(CoreRotA);
 	OBJOutCoreB->SetRotation(CoreRotB);
 
-	if (coaHit <= 5 && coreCount == 0)
+	if (coaHit <= 7 && coreCount == 0)
 	{
-		OBJOutCoreA->SetModel(yellowOutCore1);
-		OBJOutCoreB->SetModel(yellowOutCore2);
+		audioBgm->SoundPlayWave();
 		coreCount = 1;
 	}
-
-	if (coaHit <= 2 && coreCount == 1)
+	if (coaHit <= 5 && coreCount == 1)
 	{
-		OBJOutCoreA->SetModel(redOutCore1);
-		OBJOutCoreB->SetModel(redOutCore2);
+		audioBgm->stopSound();
+		audioBgm->SoundLoadWave("Resources/BGM/BGM3.wav");
+		audioBgm->SoundPlayWave();
+		OBJOutCoreA->SetModel(yellowOutCore1);
+		OBJOutCoreB->SetModel(yellowOutCore2);
 		coreCount = 2;
 	}
+
+	if (coaHit <= 2 && coreCount == 2)
+	{
+		audioBgm->stopSound();
+		audioBgm->SoundLoadWave("Resources/BGM/BGM4.wav");
+		audioBgm->SoundPlayWave();
+
+		OBJOutCoreA->SetModel(redOutCore1);
+		OBJOutCoreB->SetModel(redOutCore2);
+		coreCount = 3;
+	}
+}
+
+void GamePlayScene::AudioInitialize()
+{
+	audioThunder->Initialize();
+	audioThunder->SoundLoadWave("Resources/BGM/thunder.wav");
+
+	audioSnow->Initialize();
+	audioSnow->SoundLoadWave("Resources/BGM/ice1.wav");
+
+	audioRain->Initialize();
+	audioRain->SoundLoadWave("Resources/BGM/water2.wav");
+
+	audioBgm->Initialize();
+	audioBgm->SoundLoadWave("Resources/BGM/BGM1.wav");
+	
+
+
 }
 
 void GamePlayScene::Draw() {

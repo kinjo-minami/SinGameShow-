@@ -5,7 +5,7 @@
 #include"Object3d.h"
 #include"DebugCamera.h"
 #include"Collision.h"
-
+#include"Audio.h"
 class DirectXCommon;
 
 class GamePlayScene : public BaseScene {
@@ -53,6 +53,10 @@ public:
 	void PlayerAtk();
 
 	void CoreMove();
+
+
+	//音
+	void AudioInitialize();
 private:
 	
 	// Sprite
@@ -192,6 +196,12 @@ private:
 	Object3d* objCoreTerritory = Object3d::Create();
 	Model* modelTerritory = Model::LoadFromOBJ("territory");
 
+	//音
+	Audio* audioThunder = new Audio;
+	Audio* audioSnow = new Audio;
+	Audio* audioRain = new Audio;
+	Audio* audioBgm = new Audio;
+	
 
 	int gameFlag = 0;
 
