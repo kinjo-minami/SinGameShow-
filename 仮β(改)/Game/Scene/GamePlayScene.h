@@ -172,6 +172,7 @@ private:
 	//テリトリー
 	Object3d* objPlayerTerritory = Object3d::Create();
 	Object3d* objStageTerritory = Object3d::Create();
+	Object3d* objCoreTerritory = Object3d::Create();
 	Model* modelTerritory = Model::LoadFromOBJ("territory");
 
 

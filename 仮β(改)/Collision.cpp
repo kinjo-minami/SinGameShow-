@@ -93,19 +93,19 @@ bool Collision::SnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy, int enmeyFlag, char 
 	{
 		if (enmeyFlag == 1)
 		{
-			return 200 > temp;
+			return 120 > temp;
 		}
 		if (enmeyFlag == 2)
 		{
-			return 200 > temp;
+			return 120 > temp;
 		}
 		if (enmeyFlag == 3)
 		{
-			return 200 > temp;
+			return 120 > temp;
 		}
 		if (enmeyFlag == 4)
 		{
-			return 200 - 17 > temp;
+			return 120 > temp;
 		}
 	}
 	//return 100 - 17 > temp;
@@ -138,19 +138,19 @@ bool Collision::UnSnoOrRainHit(XMFLOAT3 snow, XMFLOAT3 enemy, int enmeyFlag, cha
 	{
 		if (enmeyFlag == 1)
 		{
-			return 200 < temp;
+			return 120 < temp;
 		}
 		if (enmeyFlag == 2)
 		{
-			return 200 < temp;
+			return 120 < temp;
 		}
 		if (enmeyFlag == 3)
 		{
-			return 200 < temp;
+			return 120 < temp;
 		}
 		if (enmeyFlag == 4)
 		{
-			return 200 < temp;
+			return 120 < temp;
 		}
 	}
 	//return 100 - 17 < temp;

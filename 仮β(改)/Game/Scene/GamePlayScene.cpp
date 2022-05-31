@@ -62,6 +62,9 @@ void GamePlayScene::Create3D_object() {
 	objStageTerritory->SetModel(modelTerritory);
 	objStageTerritory->SetScale({ 98, 1, 98 });
 	objStageTerritory->SetPosition({ CorePos.x,CorePos.y - 10,CorePos.z });
+	objCoreTerritory->SetModel(modelTerritory);
+	objCoreTerritory->SetScale({ 10.0f,10.0f,10.0f });
+	objCoreTerritory->SetPosition({ CorePos.x,CorePos.y - 10,CorePos.z });
 
 	//プレイヤー
 	objCloud->SetModel(modelCloudThunder);
@@ -84,6 +87,7 @@ void GamePlayScene::Create3D_object() {
 
 		objRain[i] = Object3d::Create();
 		objRain[i]->SetModel(modelRain);
+		objRain[i]->SetScale({ 20.0f,14.0f,20.0f });
 		rainTimer[i] = 500;
 	}
 
@@ -525,14 +529,14 @@ void GamePlayScene::CoreMove()
 	OBJOutCoreA->SetRotation(CoreRotA);
 	OBJOutCoreB->SetRotation(CoreRotB);
 
-	if (coaHit < 5 && coreCount == 0)
+	if (coaHit <= 5 && coreCount == 0)
 	{
 		OBJOutCoreA->SetModel(yellowOutCore1);
 		OBJOutCoreB->SetModel(yellowOutCore2);
 		coreCount = 1;
 	}
 
-	if (coaHit < 2 && coreCount == 1)
+	if (coaHit <= 2 && coreCount == 1)
 	{
 		OBJOutCoreA->SetModel(redOutCore1);
 		OBJOutCoreB->SetModel(redOutCore2);
@@ -552,6 +556,7 @@ void GamePlayScene::Draw() {
 
 		objPlayerTerritory->Draw();
 		objStageTerritory->Draw();
+		objCoreTerritory->Draw();
 		if (thunderFlag == 1)
 		{
 			objThunder->Draw();
@@ -1499,6 +1504,7 @@ void GamePlayScene::ClassUpdate() {
 	OBJInCore->Update();
 	OBJOutCoreA->Update();
 	OBJOutCoreB->Update();
+	objCoreTerritory->Update();
 	for (int i = 0; i < 10; i++)
 	{
 		objRain[i]->Update();
