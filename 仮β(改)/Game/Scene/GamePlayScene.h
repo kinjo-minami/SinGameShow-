@@ -143,7 +143,7 @@ private:
 	XMFLOAT3 CoreRotA = {};
 	XMFLOAT3 CoreRotB = {};
 	XMFLOAT3 CorePos = { 0,4,50 };
-	int coaHit = 15;
+	int coaHit = 10;
 	char coreCount = 0;
 
 	//プレイヤー関連

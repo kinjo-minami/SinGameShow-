@@ -664,12 +664,12 @@ void GamePlayScene::CoreMove()
 	OBJOutCoreA->SetRotation(CoreRotA);
 	OBJOutCoreB->SetRotation(CoreRotB);
 
-	if (coaHit <= 15 && coreCount == 0)
+	if (coaHit <= 10 && coreCount == 0)
 	{
 		audioBgm->SoundPlayWave();
 		coreCount = 1;
 	}
-	if (coaHit <= 10 && coreCount == 1)
+	if (coaHit <= 7 && coreCount == 1)
 	{
 		audioBgm->stopSound();
 		audioBgm->SoundLoadWave("Resources/BGM/BGM3.wav");
